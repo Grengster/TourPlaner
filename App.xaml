@@ -4,32 +4,6 @@
              xmlns:local="clr-namespace:TourPlaner"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-
-
-
-        <!--Normal Button Style -->
-        <Style TargetType="{x:Type Button}" x:Key="NormalButtonStyle">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ButtonBase}">
-                        <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Effect="{DynamicResource ShadowEffect}" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="16"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-
-                            <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" HorizontalAlignment="Left" Width="16" Stretch="None"  Margin="0,1" />
-                            <!-- <TextBlock Grid.Column="1" Text="{TemplateBinding Content}" Width="Auto" Margin="0,1" Padding="0" TextWrapping="Wrap" VerticalAlignment="Center" /> -->
-                            <ContentPresenter Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" 
-                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" />
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-
-
-
+         
     </Application.Resources>
 </Application>
