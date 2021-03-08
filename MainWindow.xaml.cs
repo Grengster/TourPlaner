@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace TourPlaner
 {
     /// <summary>
@@ -22,6 +23,7 @@ namespace TourPlaner
     {
         private string _output = "Hello";
         private string _input = "Test";
+        
 
         public string Output
         {
