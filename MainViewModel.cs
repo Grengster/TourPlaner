@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 
 namespace TourPlaner
@@ -64,7 +65,8 @@ namespace TourPlaner
         public MainViewModel()
         {
             Debug.Print("ctor MainViewModel");
-            this.ExecuteCommand = new ExecuteCommand(this);
+            this.ExecuteCommand = new RelayCommand((_) => { MessageBox.Show("hund"); }, (_) => { return true; } 
+                );
 
             #region Simpler Solution
 
@@ -79,5 +81,6 @@ namespace TourPlaner
             Debug.Print($"propertyChanged \"{propertyName}\"");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }

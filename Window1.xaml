@@ -6,20 +6,23 @@
         xmlns:local="clr-namespace:TourPlaner"
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="93*"/>
-            <ColumnDefinition Width="307*"/>
+            <ColumnDefinition Width="43*"/>
+            <ColumnDefinition Width="117*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="109*"/>
-            <RowDefinition Height="58*"/>
+            <RowDefinition Height="19*"/>
+            <RowDefinition Height="299*"/>
+            <RowDefinition Height="116*"/>
         </Grid.RowDefinitions>
-        <DockPanel LastChildFill="True" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <DockPanel LastChildFill="True" Grid.RowSpan="2" Margin="0,8,0,0" Grid.Row="1">
             <DockPanel LastChildFill="True" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Button Content="Button" DockPanel.Dock="Right" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                <Button Content="+" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <Button Content="+" Command="{Binding ExecuteCommand}" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Button Content="-" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Label Content="Label" DockPanel.Dock="Right" HorizontalAlignment="Stretch" Grid.Row="1"/>
             </DockPanel>
@@ -32,7 +35,17 @@
                 <ListViewItem Content="Testeroni"/>
             </ListView>
         </DockPanel>
-
+        <TabControl Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem Header="General">
+                <Label Content="Content goes here..." Background="AliceBlue" />
+            </TabItem>
+            <TabItem Header="Security">
+                <Label Content="Content goes here..." Background="Crimson"/>
+            </TabItem>
+            <TabItem Header="Details">
+                <Label Content="Content goes here..." Background="Lime"/>
+            </TabItem>
+        </TabControl>
 
     </Grid>
 </Window>

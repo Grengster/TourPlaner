@@ -21,31 +21,6 @@ namespace TourPlaner
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string _output = "Hello";
-        private string _input = "Test";
-        
-
-        public string Output
-        {
-            get
-            {
-                return "blabla" + _input;
-            }
-        }
-
-        public string Input
-        {
-            get
-            {
-                return _input;
-            }
-            set
-            {
-                _input = value;
-            }
-        }
-
-
         public MainWindow()
         {
             InitializeComponent();
