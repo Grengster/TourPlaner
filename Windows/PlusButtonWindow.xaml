@@ -19,9 +19,9 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Label FontSize="30" Margin="40,30,40,30" Grid.ColumnSpan="2" Grid.RowSpan="2">Hier dein scheiß eintippen</Label>
+        <Label FontSize="30" Margin="40,30,40,30" Grid.ColumnSpan="2" Grid.RowSpan="2">Hier iwas eintippen</Label>
         <TextBox Grid.Row="1" Margin="40,10,15,40" Grid.ColumnSpan="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"/>
-        <Button Grid.Column="0" Margin="40,30,40,30" Grid.Row="2" Content="CACNLEC"/>
+        <Button Grid.Column="0" Margin="40,30,40,30" Grid.Row="2" Content="CACNLEC" IsCancel="True"/>
         <Button Grid.Column="1" Margin="40,30,40,30" Grid.Row="2" Content="ADD THAT SHITE" MinWidth="40" Command="{Binding PlusButtonExecute}"/>
     </Grid>
 </Window>

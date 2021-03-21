@@ -11,6 +11,11 @@ namespace TourPlaner
 
         private string _output = "Hello World!";
         private string _input;
+        public class MyCommands
+        {
+            public static readonly ICommand CloseCommand =
+                new RelayCommand(o => ((Window)o).Close());
+        }
 
         public string Input
         {
