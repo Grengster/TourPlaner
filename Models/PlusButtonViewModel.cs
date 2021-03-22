@@ -11,6 +11,8 @@ namespace TourPlaner
 
         private string _output = "Hello World!";
         private string _input;
+        private PlusButtonWindow tempName = null;
+
         public class MyCommands
         {
             public static readonly ICommand CloseCommand =
@@ -31,12 +33,6 @@ namespace TourPlaner
                 {
                     Debug.Print("set Input-value");
                     _input = value;
-
-                    // it does not work to fire an event from outside in C#
-                    // can be achieved by creating a method like "RaiseCanExecuteChanged".
-                    // this.ExecuteCommand.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-
-                    // this triggers the UI and the ExecuteCommand
                     Debug.Print("fire propertyChanged: Input");
                     OnPropertyChanged(nameof(Input));
                 }
@@ -70,9 +66,25 @@ namespace TourPlaner
         public PlusButtonViewModel()
         {
             Debug.Print("ctor MainViewModel");
-            this.PlusButtonExecute = new RelayCommand((_) => { PlusButtonWindow plusWin = new PlusButtonWindow(); plusWin.Show(); }, (_) => { return true; }
-                );
+            this.PlusButtonExecute = new RelayCommand((_) => 
+            { 
+                
+                PlusButtonWindow plusWin = new PlusButtonWindow(); plusWin.Show();
+                tempName = plusWin;
 
+            },
+                (_) => { return true; }
+            );
+
+            this.CloseShitExecute = new RelayCommand((w) =>
+            {
+                if(w != null && w is Window)
+                {
+                    (w as Window).Close();
+                }
+            },
+                (_) => { return true; }
+            );
             #region Simpler Solution
 
             // Alternative: https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern#id0090030
@@ -86,6 +98,14 @@ namespace TourPlaner
             Debug.Print($"propertyChanged \"{propertyName}\"");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public ICommand CloseShitExecute { get; }
+
+        public void CloseShit(PlusButtonWindow temp)
+        {
+            temp.Close();
+        }
+
 
     }
 }

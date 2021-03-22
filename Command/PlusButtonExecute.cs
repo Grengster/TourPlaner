@@ -62,6 +62,11 @@ namespace TourPlaner
             return result;
         }
 
+        public void CloseWindow(PlusButtonWindow test)
+        {
+            test.Close();
+        }
+
 
 
         public event EventHandler CanExecuteChanged;

@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800" MinHeight="450" MinWidth="800">
     <Window.DataContext>
-        <local:MainViewModel />
+        <local:MainViewModel/>
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -15,27 +15,54 @@
             <ColumnDefinition Width="117*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="19*"/>
-            <RowDefinition Height="299*"/>
-            <RowDefinition Height="116*"/>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="145*"/>
+            <RowDefinition Height="58*"/>
         </Grid.RowDefinitions>
-        <DockPanel LastChildFill="True" Grid.RowSpan="2" Margin="0,8,0,0" Grid.Row="1">
+        <!-- <ToolBarTray DockPanel.Dock="Top" Grid.ColumnSpan="2">
+            <ToolBar>
+                <Button Command="File" Content="File" ToolTip="Cut selection to Windows Clipboard.">
+                    
+                </Button>
+                <Button Command="Copy" Content="Copy" ToolTip="Copy selection to Windows Clipboard.">
+                    
+                </Button>
+                <Button Command="Paste" ToolTip="Paste from Windows Clipboard.">
+                    <StackPanel Orientation="Horizontal">
+                        
+                        <TextBlock Margin="3,0,0,0">Paste</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Separator />
+                <Label>Font size:</Label>
+                <ComboBox>
+                    <ComboBoxItem>10</ComboBoxItem>
+                    <ComboBoxItem IsSelected="True">12</ComboBoxItem>
+                    <ComboBoxItem>14</ComboBoxItem>
+                    <ComboBoxItem>16</ComboBoxItem>
+                </ComboBox>
+            </ToolBar>
+        </ToolBarTray>
+        -->
+        <DockPanel LastChildFill="True" Grid.RowSpan="2" Grid.Row="1">
             <DockPanel LastChildFill="True" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Button Content="Button" DockPanel.Dock="Right" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Button Content="+" Command="{Binding ExecuteCommand}" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Button Content="-" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Label Content="Label" DockPanel.Dock="Right" HorizontalAlignment="Stretch" Grid.Row="1"/>
             </DockPanel>
-            <ListView Grid.Row="2">
-                <ListViewItem Content="Testeroni"/>
-                <ListViewItem Content="Testeroni"/>
-                <ListViewItem Content="Testeroni"/>
-                <ListViewItem Content="Testeroni"/>
-                <ListViewItem Content="Testeroni"/>
-                <ListViewItem Content="Testeroni"/>
-            </ListView>
+            <UserControl>
+                <ListView x:Name="FuckYou" Grid.Row="2">
+                    <ListViewItem Content="Testeroni"/>
+                    <ListViewItem Content="Testeroni"/>
+                    <ListViewItem Content="Testeroni"/>
+                    <ListViewItem Content="Testeroni"/>
+                    <ListViewItem Content="Testeroni"/>
+                    <ListViewItem Content="Testeroni"/>
+                </ListView>
+            </UserControl>
         </DockPanel>
-        <TabControl Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TabControl Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="1">
             <TabItem Header="General">
                 <Label Content="Content goes here..." Background="AliceBlue" />
             </TabItem>
