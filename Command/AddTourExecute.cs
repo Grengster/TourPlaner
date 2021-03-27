@@ -9,10 +9,10 @@ using System.Windows.Media.Animation;
 
 namespace TourPlaner
 {
-    public class PlusButtonExecute : ICommand
+    public class AddTourExecute : ICommand
     {
         private readonly MainViewModel _mainViewModel;
-        public PlusButtonExecute(MainViewModel mainViewModel)
+        public AddTourExecute(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
             _mainViewModel.PropertyChanged += (sender, args) =>
@@ -34,40 +34,11 @@ namespace TourPlaner
 
         public void Execute(object parameter)
         {
-            Random rn = new Random();
             Debug.Print("command: execute");
-            _mainViewModel.Output = $"Hello {_mainViewModel.Input}, nice to see you!";
-            // mw.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0, 0));
-            Application.Current.MainWindow.Background = PickBrush();
-            ColorAnimation ca = new ColorAnimation(Colors.Blue, new Duration(TimeSpan.FromSeconds(4)));
-            Application.Current.MainWindow.Background = new SolidColorBrush(Colors.Red);
-            Application.Current.MainWindow.Background.BeginAnimation(SolidColorBrush.ColorProperty, ca);
+            _mainViewModel.Output = _mainViewModel.Input;
             _mainViewModel.Input = string.Empty;
             Debug.Print("command: execute done");
         }
-
-        private Brush PickBrush()
-        {
-            Brush result = Brushes.Transparent;
-
-            Random rnd = new Random();
-
-            Type brushesType = typeof(Brushes);
-
-            PropertyInfo[] properties = brushesType.GetProperties();
-
-            int random = rnd.Next(properties.Length);
-            result = (Brush)properties[random].GetValue(null, null);
-
-            return result;
-        }
-
-        public void CloseWindow(PlusButtonWindow test)
-        {
-            test.Close();
-        }
-
-
 
         public event EventHandler CanExecuteChanged;
     }

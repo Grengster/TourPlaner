@@ -32,24 +32,22 @@ namespace TourPlaner
             return !string.IsNullOrWhiteSpace(_mainViewModel.Input);
         }
 
+        //Brush entweder in xaml oder in code behind
         public void Execute(object parameter)
         {
-            Random rn = new Random();
             Debug.Print("command: execute");
             _mainViewModel.Output = $"Hello {_mainViewModel.Input}, nice to see you!";
             // mw.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0, 0));
             Application.Current.MainWindow.Background = PickBrush();
-            ColorAnimation ca = new ColorAnimation(Colors.Blue, new Duration(TimeSpan.FromSeconds(4)));
+            ColorAnimation ca = new(Colors.Blue, new Duration(TimeSpan.FromSeconds(4)));
             Application.Current.MainWindow.Background = new SolidColorBrush(Colors.Red);
             Application.Current.MainWindow.Background.BeginAnimation(SolidColorBrush.ColorProperty, ca);
             _mainViewModel.Input = string.Empty;
             Debug.Print("command: execute done");
         }
 
-        private Brush PickBrush()
+        private static Brush PickBrush()
         {
-            Brush result = Brushes.Transparent;
-
             Random rnd = new Random();
 
             Type brushesType = typeof(Brushes);
@@ -57,9 +55,7 @@ namespace TourPlaner
             PropertyInfo[] properties = brushesType.GetProperties();
 
             int random = rnd.Next(properties.Length);
-            result = (Brush)properties[random].GetValue(null, null);
-
-            return result;
+            return (Brush)properties[random].GetValue(null, null);
         }
 
 

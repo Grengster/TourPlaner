@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -9,9 +11,10 @@ namespace TourPlaner
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        
-        private string _output = "Hello World!";
+
+        private string _output = "";
         private string _input;
+        public AddTourViewModel plusMod = new AddTourViewModel();
 
         public string Input
         {
@@ -53,21 +56,58 @@ namespace TourPlaner
             }
         }
 
+
+        public ObservableCollection<string> stringList = new ObservableCollection<string>();
+
+        public ObservableCollection<string> StringList
+        {
+            get
+            {
+                return stringList;
+            }
+            set
+            {
+                if (stringList != value)
+                {
+                    stringList = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         public ICommand ExecuteCommand { get; }
         public ICommand RemoveItems { get; }
+        public ICommand AddItems { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        //xaml gets from viewmodel -> only provide data here
+
         public MainViewModel()
         {
+            AddTourViewModel plusButtonVM;
             Debug.Print("ctor MainViewModel");
-            this.ExecuteCommand = new RelayCommand((_) => { PlusButtonWindow plusWin = new PlusButtonWindow(); plusWin.Show(); }, (_) => { return true; } 
+            this.ExecuteCommand = new RelayCommand((_) =>
+            {
+                PlusButtonWindow plusWin = new PlusButtonWindow();
+                plusButtonVM = (AddTourViewModel)plusWin.DataContext; //creates link to new window's data --> IMPORTANT
+                Debug.Print("Before");
+                foreach (var item in StringList)
+                {
+                    plusButtonVM.StringList.Add(item);
+                }
+                plusWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
+                if (plusButtonVM.Input != null)
+                    stringList.Add(plusButtonVM.Input);
+            }, (_) => { return true; }
                 );
+
             /* Dont know how to do this
             this.RemoveItems = new RelayCommand((_) =>
 
             {
-                var myListView = (ListView)this.FindName("FuckYou");
+                var myListView = (ListView)this.FindName("oops");
                 foreach (ListViewItem eachItem in listView1.SelectedItems)
                 {
                     listView1.Items.Remove(eachItem);
@@ -76,14 +116,6 @@ namespace TourPlaner
                 (_) => { return true; }
             );
             */
-
-
-            #region Simpler Solution
-
-            // Alternative: https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern#id0090030
-            // this.ExecuteCommand = new RelayCommand(() => Output = $"Hello {Input}!");
-
-            #endregion
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

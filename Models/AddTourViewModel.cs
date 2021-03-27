@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -6,18 +7,11 @@ using System.Windows.Input;
 
 namespace TourPlaner
 {
-    public class PlusButtonViewModel : INotifyPropertyChanged
+    public class AddTourViewModel : INotifyPropertyChanged
     {
 
         private string _output = "Hello World!";
         private string _input;
-        private PlusButtonWindow tempName = null;
-
-        public class MyCommands
-        {
-            public static readonly ICommand CloseCommand =
-                new RelayCommand(o => ((Window)o).Close());
-        }
 
         public string Input
         {
@@ -59,51 +53,79 @@ namespace TourPlaner
             }
         }
 
-        public ICommand PlusButtonExecute { get; }
+        public ICommand AddTourExecute { get; }
+        public ICommand PlusButtonClose { get; }
+        public ICommand AddItems { get; }
+
+
+        private ObservableCollection<string> stringList = new ObservableCollection<string>();
+
+        public ObservableCollection<string> StringList
+        {
+            get
+            {
+                return stringList;
+            }
+            set
+            {
+                if (stringList != value)
+                {
+                    stringList = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PlusButtonViewModel()
+        public AddTourViewModel()
         {
-            Debug.Print("ctor MainViewModel");
-            this.PlusButtonExecute = new RelayCommand((_) => 
-            { 
-                
-                PlusButtonWindow plusWin = new PlusButtonWindow(); plusWin.Show();
-                tempName = plusWin;
 
-            },
-                (_) => { return true; }
-            );
-
-            this.CloseShitExecute = new RelayCommand((w) =>
+            this.PlusButtonClose = new RelayCommand((w) =>
             {
-                if(w != null && w is Window)
-                {
-                    (w as Window).Close();
-                }
+                Input = null;
+                CloseWindow(w);
             },
                 (_) => { return true; }
             );
-            #region Simpler Solution
+            this.AddItems = new RelayCommand((_) =>
+            {
+                if(!StringList.Contains(Input))
+                {
+                    MessageBox.Show(Input + " has been added!");
+                    CloseWindow(_);
+                }
+                else
+                {
+                    MessageBox.Show("Duplicate entries not allowed!");
+                    Input = null;
+                    
+                }
+            }, (_) =>
+            {
+                if (Output != null && Output != "")
+                    return true;
+                else
+                {
+                    return false;
+                }
+            }
+            );
+        }
 
-            // Alternative: https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern#id0090030
-            //this.PlusButtonViewModel = new RelayCommand((_) => Output = $"Hello {Input}!");
-
-            #endregion
+        private static void CloseWindow(object w)
+        {
+            if (w != null && w is Window)
+            {
+                (w as Window).Close();
+            }
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             Debug.Print($"propertyChanged \"{propertyName}\"");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public ICommand CloseShitExecute { get; }
-
-        public void CloseShit(PlusButtonWindow temp)
-        {
-            temp.Close();
         }
 
 

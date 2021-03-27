@@ -51,16 +51,13 @@
                 <Button Content="-" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Label Content="Label" DockPanel.Dock="Right" HorizontalAlignment="Stretch" Grid.Row="1"/>
             </DockPanel>
-            <UserControl>
-                <ListView x:Name="FuckYou" Grid.Row="2">
-                    <ListViewItem Content="Testeroni"/>
-                    <ListViewItem Content="Testeroni"/>
-                    <ListViewItem Content="Testeroni"/>
-                    <ListViewItem Content="Testeroni"/>
-                    <ListViewItem Content="Testeroni"/>
-                    <ListViewItem Content="Testeroni"/>
-                </ListView>
-            </UserControl>
+            <ListView ItemsSource="{Binding StringList}" Name="oops" Grid.Row="2">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+            </ListView>
         </DockPanel>
         <TabControl Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="1">
             <TabItem Header="General">
