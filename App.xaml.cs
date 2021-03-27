@@ -13,6 +13,5 @@ namespace TourPlaner
     /// </summary>
     public partial class App : Application
     {
-
     }
 }

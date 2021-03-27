@@ -11,7 +11,6 @@ namespace TourPlaner
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-
         private string _output = "";
         private string _input;
         public AddTourViewModel plusMod = new AddTourViewModel();
@@ -123,6 +122,5 @@ namespace TourPlaner
             Debug.Print($"propertyChanged \"{propertyName}\"");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }

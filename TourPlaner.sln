@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlaner_Models", "..\Tou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlaner_BL", "..\TourPlaner_BL\TourPlaner_BL.csproj", "{139384AA-5EFC-4969-80F7-BB41271AD514}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourPlaner_DL", "..\TourPlaner_DL\TourPlaner_DL.csproj", "{F09DC312-FA0B-47C7-B6A5-911DE3BC59B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlaner_DL", "..\TourPlaner_DL\TourPlaner_DL.csproj", "{F09DC312-FA0B-47C7-B6A5-911DE3BC59B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourPlaner_VM", "..\TourPlaner_VM\TourPlaner_VM.csproj", "{D7238E4D-810C-4187-8B2C-7F7A370B86FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlaner_VM", "..\TourPlaner_VM\TourPlaner_VM.csproj", "{D7238E4D-810C-4187-8B2C-7F7A370B86FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
