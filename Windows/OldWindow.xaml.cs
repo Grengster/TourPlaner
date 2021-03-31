@@ -10,16 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 
 namespace TourPlaner
 {
     /// <summary>
-    /// Interaktionslogik für Window1.xaml
+    /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class OldWindow : Window
     {
-        public Window1()
+        public OldWindow()
         {
             InitializeComponent();
         }

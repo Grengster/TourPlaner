@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
-
+using TourPlaner_Models;
+using TourPlaner_BL;
 
 namespace TourPlaner
 {
-    public class AddTourViewModel : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged
     {
-        private string _output = "Hello World!";
+        private string _output = "";
         private string _input;
+        public AddTourViewModel plusMod = new();
+        public ObservableCollection<string> stringList = new();
+        
 
         public string Input
         {
@@ -58,13 +59,6 @@ namespace TourPlaner
             }
         }
 
-        public ICommand AddTourExecute { get; }
-        public ICommand PlusButtonClose { get; }
-        public ICommand AddItems { get; }
-
-
-        private ObservableCollection<string> stringList = new ObservableCollection<string>();
-
         public ObservableCollection<string> StringList
         {
             get
@@ -82,50 +76,34 @@ namespace TourPlaner
         }
 
 
+        public ICommand ExecuteCommand { get; }
+        public ICommand RemoveItems { get; }
+        public ICommand AddItems { get; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public AddTourViewModel()
+        //xaml gets from viewmodel -> only provide data here
+
+        public MainViewModel()
         {
-
-            this.PlusButtonClose = new RelayCommand((w) =>
+            /*AddTourViewModel plusButtonVM;
+            Debug.Print("ctor MainViewModel");
+            this.ExecuteCommand = new RelayCommand((_) =>
             {
-                Input = null;
-                CloseWindow(w);
-            },
-                (_) => { return true; }
-            );
-            this.AddItems = new RelayCommand((_) =>
-            {
-                if (!StringList.Contains(Input))
+                PlusButtonWindow plusWin = new();
+                plusButtonVM = (AddTourViewModel)plusWin.DataContext; //creates link to new window's data --> IMPORTANT
+                Debug.Print("Before");
+                foreach (var item in StringList)
                 {
-                    MessageBox.Show(Input + " has been added!");
-                    CloseWindow(_);
+                    plusButtonVM.StringList.Add(item);
                 }
-                else
-                {
-                    MessageBox.Show("Duplicate entries not allowed!");
-                    Input = null;
-
-                }
-            }, (_) =>
-            {
-                if (Output != null && Output != "")
-                    return true;
-                else
-                {
-                    return false;
-                }
-            }
-            );
+                plusWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
+                if (plusButtonVM.Input != null)
+                    stringList.Add(plusButtonVM.Input);
+            }, (_) => { return true; }
+                );*/
         }
 
-        private static void CloseWindow(object w)
-        {
-            if (w != null && w is Window)
-            {
-                (w as Window).Close();
-            }
-        }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

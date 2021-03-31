@@ -48,7 +48,7 @@ namespace TourPlaner
 
         private static Brush PickBrush()
         {
-            Random rnd = new Random();
+            Random rnd = new();
 
             Type brushesType = typeof(Brushes);
 

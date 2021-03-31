@@ -1,19 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
+using TourPlaner_Models;
+using TourPlaner_BL;
+
 
 namespace TourPlaner
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class AddTourViewModel : INotifyPropertyChanged
     {
-        private string _output = "";
+        private string _output = "Hello World!";
         private string _input;
-        public AddTourViewModel plusMod = new AddTourViewModel();
 
         public string Input
         {
@@ -55,66 +60,75 @@ namespace TourPlaner
             }
         }
 
+        public ICommand AddTourExecute { get; }
+        public ICommand PlusButtonClose { get; }
+        public ICommand AddItems { get; }
 
-        public ObservableCollection<string> stringList = new ObservableCollection<string>();
 
-        public ObservableCollection<string> StringList
+        private ObservableCollection<TourItem> tourList = new();
+
+        public ObservableCollection<TourItem> TourList
         {
             get
             {
-                return stringList;
+                return tourList;
             }
             set
             {
-                if (stringList != value)
+                if (tourList != value)
                 {
-                    stringList = value;
+                    tourList = value;
                     OnPropertyChanged();
                 }
             }
         }
 
 
-        public ICommand ExecuteCommand { get; }
-        public ICommand RemoveItems { get; }
-        public ICommand AddItems { get; }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //xaml gets from viewmodel -> only provide data here
-
-        public MainViewModel()
+        public AddTourViewModel()
         {
-            AddTourViewModel plusButtonVM;
-            Debug.Print("ctor MainViewModel");
-            this.ExecuteCommand = new RelayCommand((_) =>
-            {
-                PlusButtonWindow plusWin = new PlusButtonWindow();
-                plusButtonVM = (AddTourViewModel)plusWin.DataContext; //creates link to new window's data --> IMPORTANT
-                Debug.Print("Before");
-                foreach (var item in StringList)
-                {
-                    plusButtonVM.StringList.Add(item);
-                }
-                plusWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
-                if (plusButtonVM.Input != null)
-                    stringList.Add(plusButtonVM.Input);
-            }, (_) => { return true; }
-                );
 
-            /* Dont know how to do this
-            this.RemoveItems = new RelayCommand((_) =>
-
+            this.PlusButtonClose = new RelayCommand((w) =>
             {
-                var myListView = (ListView)this.FindName("oops");
-                foreach (ListViewItem eachItem in listView1.SelectedItems)
-                {
-                    listView1.Items.Remove(eachItem);
-                }
+                Input = null;
+                CloseWindow(w);
             },
                 (_) => { return true; }
             );
-            */
+            this.AddItems = new RelayCommand((_) =>
+            {
+
+                var find = TourList.FirstOrDefault(x => x.Name == Input);
+                if (find == null)
+                {
+                    MessageBox.Show(Input + " has been added!");
+                    CloseWindow(_);
+                }
+                else
+                {
+                    MessageBox.Show(Input + " already exists, please use another name!");
+                    Input = null;
+
+                }
+            }, (_) =>
+            {
+                if (Output != null && Output != "")
+                    return true;
+                else
+                {
+                    return false;
+                }
+            }
+            );
+        }
+
+        private static void CloseWindow(object w)
+        {
+            if (w != null && w is Window)
+            {
+                (w as Window).Close();
+            }
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

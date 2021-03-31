@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         <Label FontSize="30" Margin="40,30,40,30" Grid.ColumnSpan="2" Grid.RowSpan="2">Type your tourname:</Label>
         <TextBox Grid.Row="1" Margin="40,10,40,15" Grid.ColumnSpan="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Grid.Row="1" HorizontalAlignment="Left" Content="{Binding Input}" VerticalAlignment="Top" FontSize="14" RenderTransformOrigin="0.369,0.643" Grid.ColumnSpan="2" Margin="166,152,0,0"/>
+        <!--<Label Grid.Row="1" HorizontalAlignment="Left" Content="{Binding Input}" VerticalAlignment="Top" FontSize="14" RenderTransformOrigin="0.369,0.643" Grid.ColumnSpan="2" Margin="166,152,0,0"/>-->
         <Button Grid.Column="0" Margin="40,30,40,30" Grid.Row="2" Command="{Binding PlusButtonClose}" CommandParameter="{Binding ElementName=AddWindow}" Content="CANCEL" IsCancel="True" />
         <Button Grid.Column="1" Margin="40,30,40,30" Grid.Row="2" Content="ADD" MinWidth="40" Command="{Binding AddItems}" CommandParameter="{Binding ElementName=AddWindow}"/>
     </Grid>
