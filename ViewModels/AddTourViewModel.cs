@@ -123,8 +123,28 @@ namespace TourPlaner
             );
         }
 
+        public void ForceClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string msg = "Data is dirty. Close without saving?";
+            MessageBoxResult result =
+              MessageBox.Show(
+                msg,
+                "Data App",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+            if (result == MessageBoxResult.No)
+            {
+                // If user doesn't want to close, cancel closure
+                e.Cancel = true;
+            }
+            else
+                this.Input = null;
+
+        }
+
         private static void CloseWindow(object w)
         {
+
             if (w != null && w is Window)
             {
                 (w as Window).Close();

@@ -6,10 +6,6 @@
         xmlns:viewmodels="clr-namespace:TourPlaner.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:TourFolderVM}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="800">
-<!--    <Window.DataContext>
-        <local:MainViewModel/>
-    </Window.DataContext>
--->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="43*"/>

@@ -19,17 +19,9 @@ namespace TourPlaner.ViewModels
     public class TourFolderVM : ViewModelBase
     {
         private readonly ITourItemFactory tourItemFactory;
-        private TourItem currentItem;
         private string searchName;
-        private ICommand searchCommand;
-        private ICommand clearCommand;
-        public ICommand executeCommand;
-        public ICommand RemoveItems { get; }
-        public ICommand AddItems { get; }
         private string _output = "";
         private string _input;
-        public new event PropertyChangedEventHandler PropertyChanged;
-
         public string Input
         {
             get
@@ -49,7 +41,6 @@ namespace TourPlaner.ViewModels
                 }
             }
         }
-
         public string Output
         {
             get
@@ -69,13 +60,17 @@ namespace TourPlaner.ViewModels
                 }
             }
         }
-
+        private TourItem currentItem;
+        private ICommand searchCommand;
+        private ICommand clearCommand;
+        public ICommand executeCommand;
+        public ICommand RemoveItems { get; }
+        public ICommand AddItems { get; }
         public ICommand SearchCommand => searchCommand ??= new RelayCommand(Search);
         public ICommand ClearCommand => clearCommand ??= new RelayCommand(Clear);
         public ICommand ExecuteCommand => executeCommand ??= new RelayCommand(AddTourWindow);
-
+        public new event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<TourItem> Tours { get; set; }
-
         public TourItem CurrentItem
         {
             get
@@ -107,6 +102,7 @@ namespace TourPlaner.ViewModels
             }
         }
 
+
         public TourFolderVM()
         {
             this.tourItemFactory = TourItemFactory.GetInstance();
@@ -122,10 +118,13 @@ namespace TourPlaner.ViewModels
 
         private void FillListBox()
         {
-            foreach (TourItem item in this.tourItemFactory.GetItems())
-            {
-                Tours.Add(item);
-            }
+            if(this.tourItemFactory.GetItems() == null)
+                Tours.Add(new TourItem { Name = "No Tours added yet"});
+            else
+                foreach (TourItem item in this.tourItemFactory.GetItems())
+                {
+                    Tours.Add(item);
+                }
         }
 
         private void AddTourWindow(object commandParameter)
@@ -141,7 +140,8 @@ namespace TourPlaner.ViewModels
             plusWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
             if (plusButtonVM.Input != null)
             {
-                this.tourItemFactory.AddTour(plusButtonVM.Input);
+                if (this.tourItemFactory.AddTour(plusButtonVM.Input) == null)
+                    MessageBox.Show("There has been an error inserting your tour, please try again!");
                 Tours.Clear();
                 FillListBox();
             }
