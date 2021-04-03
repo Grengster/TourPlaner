@@ -70,29 +70,27 @@
             </ListView>-->
         </DockPanel>
 
-        <!--<Grid Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DockPanel.Dock="Top">
+        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="Person Details" FontSize="15"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Name" Margin="0,50,0,0"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem.Name,Mode=TwoWay}" Margin="50,50,0,0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Brand" Margin="0,100,0,0"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem._tourInfo.Start, Mode=TwoWay}" Margin="50,100,0,0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Type" Margin="0,150,0,0"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem._tourInfo.Description, Mode=TwoWay}" Margin="50,150,0,0"/>
+
+        <!--<Button Grid.Row="3" Grid.Column="1" Content="Choose" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Name="btnChoose" Width="90" Command="{Binding ChooseCommand}" CommandParameter="{Binding ElementName=lstRoster,Path=SelectedPerson}" />
+-->
+
+        <!--
+        <Grid Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DockPanel.Dock="Top">
             <DataGrid
               SelectedItem="{Binding Path=CurrentItem, Mode=TwoWay}">
             </DataGrid>
         </Grid>
         -->
-
-        <DockPanel Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="3">
-            <Border  DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="0,0,1,0">
-                <ItemsControl ItemsSource="{Binding Tours}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button Content="{Binding Tours.Name}"
-                            Command="{Binding DataContext.SetCurrentViewModelCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
-                            CommandParameter="{Binding }"
-                            Margin="2,5"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Border>
-
-            <ContentControl Content="{Binding Tours}" />
-        </DockPanel>
 
         <!--    
         <TabControl Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="0,8,0,0" Grid.Row="2">

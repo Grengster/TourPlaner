@@ -13,16 +13,18 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.IO;
 
 namespace TourPlaner.ViewModels
 {
     public class TourFolderVM : ViewModelBase
     {
+        #region Declarations
         private readonly ITourItemFactory tourItemFactory;
         private string searchName;
         private string _output = "";
         private string _input;
-        public string Input
+        public new string Input
         {
             get
             {
@@ -41,7 +43,7 @@ namespace TourPlaner.ViewModels
                 }
             }
         }
-        public string Output
+        public new string Output
         {
             get
             {
@@ -101,7 +103,7 @@ namespace TourPlaner.ViewModels
                 }
             }
         }
-
+        #endregion
 
         public TourFolderVM()
         {
@@ -165,7 +167,7 @@ namespace TourPlaner.ViewModels
         }
 
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual new void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             Debug.Print($"propertyChanged \"{propertyName}\"");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
