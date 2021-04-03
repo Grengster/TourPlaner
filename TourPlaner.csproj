@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Windows\OldWindow.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Windows\OldWindow.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TourPlaner_BL\TourPlaner_BL.csproj" />
     <ProjectReference Include="..\TourPlaner_DL\TourPlaner_DL.csproj" />
     <ProjectReference Include="..\TourPlaner_Models\TourPlaner_Models.csproj" />

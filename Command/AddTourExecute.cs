@@ -6,13 +6,20 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using TourPlaner_Models;
+using TourPlaner_BL;
+using TourPlaner.ViewModels;
 
 namespace TourPlaner
 {
     public class AddTourExecute : ICommand
     {
-        private readonly MainViewModel _mainViewModel;
-        public AddTourExecute(MainViewModel mainViewModel)
+        private readonly ViewModelBase _mainViewModel;
+        public AddTourExecute(ViewModelBase mainViewModel)
         {
             _mainViewModel = mainViewModel;
             _mainViewModel.PropertyChanged += (sender, args) =>
@@ -41,5 +48,9 @@ namespace TourPlaner
         }
 
         public event EventHandler CanExecuteChanged;
+
+
+        
+
     }
 }

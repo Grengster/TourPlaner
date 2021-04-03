@@ -140,7 +140,7 @@ namespace TourPlaner.ViewModels
             plusWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
             if (plusButtonVM.Input != null)
             {
-                if (this.tourItemFactory.AddTour(plusButtonVM.Input) == null)
+                if (this.tourItemFactory.AddTour(plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal, DateTime.Now) == null)
                     MessageBox.Show("There has been an error inserting your tour, please try again!");
                 Tours.Clear();
                 FillListBox();

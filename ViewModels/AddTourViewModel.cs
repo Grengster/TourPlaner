@@ -18,7 +18,7 @@ namespace TourPlaner
     public class AddTourViewModel : INotifyPropertyChanged
     {
         private string _output = "Hello World!";
-        private string _input;
+        private string _input, _start, _goal;
 
         public string Input
         {
@@ -36,6 +36,44 @@ namespace TourPlaner
                     _input = value;
                     Debug.Print("fire propertyChanged: Input");
                     OnPropertyChanged(nameof(Input));
+                }
+            }
+        }
+        public string Start
+        {
+            get
+            {
+                Debug.Print("read Input");
+                return _start;
+            }
+            set
+            {
+                Debug.Print("write Input");
+                if (Start != value)
+                {
+                    Debug.Print("set Input-value");
+                    _start = value;
+                    Debug.Print("fire propertyChanged: Input");
+                    OnPropertyChanged(nameof(Start));
+                }
+            }
+        }
+        public string Goal
+        {
+            get
+            {
+                Debug.Print("read Input");
+                return _goal;
+            }
+            set
+            {
+                Debug.Print("write Input");
+                if (Goal != value)
+                {
+                    Debug.Print("set Input-value");
+                    _goal = value;
+                    Debug.Print("fire propertyChanged: Input");
+                    OnPropertyChanged(nameof(Goal));
                 }
             }
         }
@@ -91,6 +129,7 @@ namespace TourPlaner
 
             this.PlusButtonClose = new RelayCommand((w) =>
             {
+                //MessageBox.Show("Input: " + Input + "\n" + "Start: " + Start + "\n" + "End: " + Goal + "\n");
                 Input = null;
                 CloseWindow(w);
             },
