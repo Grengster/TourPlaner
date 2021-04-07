@@ -63,14 +63,13 @@ namespace TourPlaner.ViewModels
             }
         }
         private TourItem currentItem;
-        private ICommand searchCommand;
-        private ICommand clearCommand;
-        public ICommand executeCommand;
+        private ICommand searchCommand, clearCommand, executeCommand, removeCommand;
         public ICommand RemoveItems { get; }
         public ICommand AddItems { get; }
         public ICommand SearchCommand => searchCommand ??= new RelayCommand(Search);
         public ICommand ClearCommand => clearCommand ??= new RelayCommand(Clear);
         public ICommand ExecuteCommand => executeCommand ??= new RelayCommand(AddTourWindow);
+        public ICommand RemoveCommand => removeCommand ??= new RelayCommand(RemoveTourWindow);
         public new event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<TourItem> Tours { get; set; }
         public TourItem CurrentItem
@@ -148,6 +147,20 @@ namespace TourPlaner.ViewModels
                 FillListBox();
             }
         }
+
+        private void RemoveTourWindow(object commandParameter)
+        {
+            if (commandParameter != null)
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete: " + commandParameter.ToString() + "?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                    if (this.tourItemFactory.RemoveTour(commandParameter.ToString()) == null)
+                        MessageBox.Show("There has been an error inserting your tour, please try again!");
+                Tours.Clear();
+                FillListBox();
+            }
+        }
+
 
         private void Search(object commandParameter)
         {

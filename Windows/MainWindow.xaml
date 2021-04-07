@@ -54,7 +54,7 @@
             <DockPanel LastChildFill="True" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Button Content="Button" DockPanel.Dock="Right" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Button Content="+" Command="{Binding ExecuteCommand}" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                <Button Content="-" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <Button Content="-" Command="{Binding RemoveCommand}" CommandParameter="{Binding CurrentItem.Name}" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Label Content="Label" DockPanel.Dock="Right" HorizontalAlignment="Stretch" Grid.Row="1"/>
             </DockPanel>
             <ListBox x:Name="listMediaItems" Grid.Row="1" Grid.Column="3"
