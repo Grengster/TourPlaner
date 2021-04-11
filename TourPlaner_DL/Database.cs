@@ -40,28 +40,6 @@ namespace TourPlaner_DL
                 return null;
         }
 
-        public T GetFirstInstance<T>(string propertyName, string json)
-        {
-            using (var stringReader = new StringReader(json))
-            using (var jsonReader = new JsonTextReader(stringReader))
-            {
-                while (jsonReader.Read())
-                {
-                    if (jsonReader.TokenType == JsonToken.PropertyName
-                        && (string)jsonReader.Value == propertyName)
-                    {
-                        jsonReader.Read();
-
-                        var serializer = new Newtonsoft.Json.JsonSerializer();
-                        return serializer.Deserialize<T>(jsonReader);
-                    }
-                }
-                return default(T);
-            }
-        }
-
-
-
         public void DBConnect()
         {
             try
@@ -112,7 +90,7 @@ namespace TourPlaner_DL
                         if (jsonitem.Name == item)
                             tempTour.Add(jsonitem);
                     }
-                    
+
                 };
                 return tempTour;
             }
@@ -144,7 +122,7 @@ namespace TourPlaner_DL
                 int a = cmd.ExecuteNonQuery();
                 if (a == 0)
                     isInserted = false;
-                
+
             };
             if (isInserted)
             {

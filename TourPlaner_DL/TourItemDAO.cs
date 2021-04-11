@@ -4,7 +4,7 @@ using TourPlaner_Models;
 
 namespace TourPlaner_DL
 {
-    public class TourItemDAO 
+    public class TourItemDAO
     {
 
         private IDataAccess dataAccess;

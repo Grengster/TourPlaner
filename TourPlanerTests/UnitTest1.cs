@@ -1,13 +1,19 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
+using NUnit;
+using TourPlaner_BL;
 
 namespace TourPlanerTests
 {
-    [TestClass]
+    [TestFixture()]
     public class UnitTest1
     {
-        [TestMethod]
+        private readonly ITourItemFactory tourItemFactory = TourItemFactory.GetInstance();
+
+        [Test, Description("Testing Empty List")]
         public void TestMethod1()
         {
+           // Assert.IsNull(tourItemFactory.GetItems());
+            Assert.Equals(1, 1);
         }
     }
 }

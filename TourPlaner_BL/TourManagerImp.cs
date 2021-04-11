@@ -10,13 +10,15 @@ using System.Threading.Tasks;
 
 namespace TourPlaner_BL
 {
-    internal class TourManagerImp : ITourItemFactory {
+    internal class TourManagerImp : ITourItemFactory
+    {
 
         private TourItemDAO tourItemDAO = new TourItemDAO();
         private MapQuestConn mapConnect = MapQuestConn.Instance();
 
 
-        public IEnumerable<TourItem> GetItems() {
+        public IEnumerable<TourItem> GetItems()
+        {
             // usually querying the disk, or from a DB, or ...
             return tourItemDAO.GetItems();
         }
@@ -26,7 +28,7 @@ namespace TourPlaner_BL
             IEnumerable<TourItem> tours = GetItems();
             if (itemName == null || itemName == "")
                 return tours;
-            if(caseSensitive)
+            if (caseSensitive)
             {
                 return tours.Where(x => x.Name.Contains(itemName));
             }
@@ -54,7 +56,7 @@ namespace TourPlaner_BL
             }
             else
                 tourItemDAO.AddTour(itemName, startName, goalName, dateTime);
-                return tours;
+            return tours;
 
         }
 
@@ -87,10 +89,6 @@ namespace TourPlaner_BL
         {
             await mapConnect.GetAndSaveImage(start, end, tourName);
         }
-
-
-
-
 
     }
 }

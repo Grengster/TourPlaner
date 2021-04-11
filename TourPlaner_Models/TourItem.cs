@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace TourPlaner_Models {
+namespace TourPlaner_Models
+{
 
-    public class TourItem{
+    public class TourItem
+    {
         public string Name { get; set; }
 
         public TourInfo _tourInfo { get; set; }

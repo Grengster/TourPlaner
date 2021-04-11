@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlaner_DL", "TourPlaner
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlaner_Models", "TourPlaner_Models\TourPlaner_Models.csproj", "{817F9A45-CA55-43FF-8864-70FC71C77808}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlanerTests", "TourPlanerTests\TourPlanerTests.csproj", "{BBB4B066-7FE3-4BD0-9E9D-AE4AD424D2EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourPlanerTests", "..\TourPlanerTests\TourPlanerTests.csproj", "{B8026F24-7A09-40E5-8DB0-01E5A566EABC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{817F9A45-CA55-43FF-8864-70FC71C77808}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{817F9A45-CA55-43FF-8864-70FC71C77808}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{817F9A45-CA55-43FF-8864-70FC71C77808}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BBB4B066-7FE3-4BD0-9E9D-AE4AD424D2EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBB4B066-7FE3-4BD0-9E9D-AE4AD424D2EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BBB4B066-7FE3-4BD0-9E9D-AE4AD424D2EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BBB4B066-7FE3-4BD0-9E9D-AE4AD424D2EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8026F24-7A09-40E5-8DB0-01E5A566EABC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8026F24-7A09-40E5-8DB0-01E5A566EABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8026F24-7A09-40E5-8DB0-01E5A566EABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8026F24-7A09-40E5-8DB0-01E5A566EABC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

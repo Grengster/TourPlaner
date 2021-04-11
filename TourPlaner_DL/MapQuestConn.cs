@@ -58,11 +58,6 @@ namespace TourPlanner_DL
             {
                 var response = httpClient.GetStringAsync("http://www.mapquestapi.com/directions/v2/route?key=" + key + "&from=" + fromDestination + "&to=" + toDestination);
                 string respBody = response.Result;
-                //string fileName = fromDestination + "-" + toDestination;
-                //db.InsertNewRoute(fileName);
-                //fileName += ".json";
-
-                //Task filetask = File.WriteAllTextAsync(RoutePath + fileName, response.Result.ToString() + "\n" + respBody);
                 return respBody;
             }
             catch (HttpRequestException e)

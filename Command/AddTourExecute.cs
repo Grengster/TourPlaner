@@ -50,7 +50,7 @@ namespace TourPlaner
         public event EventHandler CanExecuteChanged;
 
 
-        
+
 
     }
 }

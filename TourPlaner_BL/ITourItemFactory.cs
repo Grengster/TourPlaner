@@ -6,7 +6,8 @@ using TourPlaner_Models;
 
 namespace TourPlaner_BL
 {
-    public interface ITourItemFactory {
+    public interface ITourItemFactory
+    {
         IEnumerable<TourItem> GetItems();
         IEnumerable<TourItem> Search(string itemName, bool caseSensitive = false);
         IEnumerable<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime);
