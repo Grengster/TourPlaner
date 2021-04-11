@@ -29,7 +29,7 @@ namespace TourPlaner_DL
         public List<TourItem> LoadJson()
         {
             List<TourItem> tempTour = new();
-            using (StreamReader r = new StreamReader(@"C:\Users\Gregor\source\repos\TourPlaner_DL\TourJson\TourData.json"))
+            using (StreamReader r = new StreamReader(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json"))
             {
                 string json = r.ReadToEnd();
                 tempTour = JsonConvert.DeserializeObject<List<TourItem>>(json);
@@ -148,7 +148,7 @@ namespace TourPlaner_DL
             };
             if (isInserted)
             {
-                var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner_DL\TourJson\TourData.json");
+                var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
                 var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
                 employeeList.Add(new TourItem()
                 {
@@ -158,14 +158,14 @@ namespace TourPlaner_DL
                         Start = startName,
                         Goal = goalName,
                         Length = 100,
-                        MapImagePath = $@"C:\Users\Gregor\source\repos\TourPlaner_DL\TourMaps\{tourName}.png",
+                        MapImagePath = $@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\{tourName}.png",
                         CreationTime = dateTime,
                         StartTime = dateTime,
                         EndTime = dateTime
                     }
                 });
                 jsonData = JsonConvert.SerializeObject(employeeList);
-                File.WriteAllText(@"..\..\..\..\TourPlaner_DL\TourJson\TourData.json", jsonData);
+                File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
                 return GetItems();
             }
             else
@@ -198,12 +198,12 @@ namespace TourPlaner_DL
             };
             if (isDeleted)
             {
-                var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner_DL\TourJson\TourData.json");
+                var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
                 var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
                 var account = employeeList.FirstOrDefault(p => p.Name == tourName);
                 employeeList.Remove(account);
                 jsonData = JsonConvert.SerializeObject(employeeList);
-                File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner_DL\TourJson\TourData.json", jsonData);
+                File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
                 return GetItems();
             }
             else

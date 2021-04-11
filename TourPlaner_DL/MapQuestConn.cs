@@ -15,8 +15,8 @@ namespace TourPlanner_DL
         private static MapQuestConn instance = null;
         private static HttpClient httpClient = null;
         private static string key = "8O7UfQqRKqYcc4gvWcnAeYCNCOmKmKxn";
-        private static string RoutePath = @"..\..\..\..\TourPlaner_DL\UserRoutes\";
-        private static string storeMap = @"..\..\..\..\TourPlaner_DL\TourMaps";
+        private static string RoutePath = @"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\";
+        private static string storeMap = @"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps";
 
         public static MapQuestConn Instance()
         {
@@ -42,7 +42,7 @@ namespace TourPlanner_DL
             {
                 var response = httpClient.GetStringAsync("http://www.mapquestapi.com/directions/v2/route?key=" + key + "&from=Wien&to=Graz");
 
-                Task filetask = File.WriteAllTextAsync(RoutePath + "Test.json", response.Result.ToString());
+                Task filetask = File.WriteAllTextAsync(RoutePath + "TourData.json", response.Result.ToString());
                 return response.Result;
             }
             catch (HttpRequestException e)
@@ -58,11 +58,11 @@ namespace TourPlanner_DL
             {
                 var response = httpClient.GetStringAsync("http://www.mapquestapi.com/directions/v2/route?key=" + key + "&from=" + fromDestination + "&to=" + toDestination);
                 string respBody = response.Result;
-                string fileName = fromDestination + "-" + toDestination;
+                //string fileName = fromDestination + "-" + toDestination;
                 //db.InsertNewRoute(fileName);
-                fileName += ".json";
+                //fileName += ".json";
 
-                Task filetask = File.WriteAllTextAsync(RoutePath + fileName, response.Result.ToString() + "\n" + respBody);
+                //Task filetask = File.WriteAllTextAsync(RoutePath + fileName, response.Result.ToString() + "\n" + respBody);
                 return respBody;
             }
             catch (HttpRequestException e)
