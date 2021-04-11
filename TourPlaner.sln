@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlaner_BL", "..\TourPla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlaner_DL", "..\TourPlaner_DL\TourPlaner_DL.csproj", "{F09DC312-FA0B-47C7-B6A5-911DE3BC59B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourPlanerTests", "..\TourPlanerTests\TourPlanerTests.csproj", "{2E57A49A-2A74-4AAD-BE04-DFD4D36A8AE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F09DC312-FA0B-47C7-B6A5-911DE3BC59B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F09DC312-FA0B-47C7-B6A5-911DE3BC59B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F09DC312-FA0B-47C7-B6A5-911DE3BC59B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E57A49A-2A74-4AAD-BE04-DFD4D36A8AE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E57A49A-2A74-4AAD-BE04-DFD4D36A8AE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E57A49A-2A74-4AAD-BE04-DFD4D36A8AE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E57A49A-2A74-4AAD-BE04-DFD4D36A8AE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
