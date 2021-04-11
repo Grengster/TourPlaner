@@ -79,7 +79,7 @@
         <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem._tourInfo.Start, Mode=TwoWay}" Margin="50,100,0,0"/>
 
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Type" Margin="0,150,0,0"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem._tourInfo.Description, Mode=TwoWay}" Margin="50,150,0,0"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem._tourInfo.MapImagePath, Mode=TwoWay}" Margin="50,150,0,0"/>
 
         <!--<Button Grid.Row="3" Grid.Column="1" Content="Choose" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Name="btnChoose" Width="90" Command="{Binding ChooseCommand}" CommandParameter="{Binding ElementName=lstRoster,Path=SelectedPerson}" />
 -->

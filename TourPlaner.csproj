@@ -8,6 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="TourPlanerTests\**" />
+    <Compile Remove="TourPlaner_BL\**" />
+    <Compile Remove="TourPlaner_DL\**" />
+    <Compile Remove="TourPlaner_Models\**" />
+    <EmbeddedResource Remove="TourPlanerTests\**" />
+    <EmbeddedResource Remove="TourPlaner_BL\**" />
+    <EmbeddedResource Remove="TourPlaner_DL\**" />
+    <EmbeddedResource Remove="TourPlaner_Models\**" />
+    <None Remove="TourPlanerTests\**" />
+    <None Remove="TourPlaner_BL\**" />
+    <None Remove="TourPlaner_DL\**" />
+    <None Remove="TourPlaner_Models\**" />
+    <Page Remove="TourPlanerTests\**" />
+    <Page Remove="TourPlaner_BL\**" />
+    <Page Remove="TourPlaner_DL\**" />
+    <Page Remove="TourPlaner_Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Windows\OldWindow.xaml.cs" />
   </ItemGroup>
 
@@ -20,9 +39,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TourPlaner_BL\TourPlaner_BL.csproj" />
-    <ProjectReference Include="..\TourPlaner_DL\TourPlaner_DL.csproj" />
-    <ProjectReference Include="..\TourPlaner_Models\TourPlaner_Models.csproj" />
+    <ProjectReference Include="TourPlanerTests\TourPlanerTests.csproj" />
+    <ProjectReference Include="TourPlaner_BL\TourPlaner_BL.csproj" />
+    <ProjectReference Include="TourPlaner_DL\TourPlaner_DL.csproj" />
+    <ProjectReference Include="TourPlaner_Models\TourPlaner_Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
