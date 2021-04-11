@@ -204,6 +204,11 @@ namespace TourPlaner_DL
                 employeeList.Remove(account);
                 jsonData = JsonConvert.SerializeObject(employeeList);
                 File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
+                if (File.Exists(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\", $@"{tourName}.png")))
+                {
+                    // If file found, delete it    
+                    File.Delete(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\", $@"{tourName}.png"));
+                }
                 return GetItems();
             }
             else

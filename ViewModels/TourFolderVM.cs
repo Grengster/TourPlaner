@@ -15,8 +15,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.IO;
 using System.Windows.Media;
- 
- 
+using System.Windows.Media.Imaging;
+
 namespace TourPlaner.ViewModels
 {
     public class TourFolderVM : ViewModelBase
@@ -86,6 +86,7 @@ namespace TourPlaner.ViewModels
                 if ((currentItem != value) && (value != null))
                 {
                     currentItem = value;
+                    RaisePropertyChangedEvent(nameof(CurrentMap));
                     RaisePropertyChangedEvent(nameof(CurrentItem));
                 }
             }
@@ -131,7 +132,7 @@ namespace TourPlaner.ViewModels
                 }
         }
 
-        private void AddTourWindow(object commandParameter)
+        private async void AddTourWindow(object commandParameter)
         {
             AddTourViewModel plusButtonVM;
             PlusButtonWindow plusWin = new();
@@ -146,7 +147,10 @@ namespace TourPlaner.ViewModels
             {
                 if (this.tourItemFactory.AddTour(plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal, DateTime.Now) == null)
                     MessageBox.Show("There has been an error inserting your tour, please try again!");
-                this.tourItemFactory.ShowMapTourAsync(plusButtonVM.Start, plusButtonVM.Goal, plusButtonVM.Input);
+                else
+                {
+                    await this.tourItemFactory.ShowMapTourAsync(plusButtonVM.Start, plusButtonVM.Goal, plusButtonVM.Input);
+                }
                 Tours.Clear();
                 FillListBox();
             }
@@ -194,5 +198,35 @@ namespace TourPlaner.ViewModels
             Debug.Print($"propertyChanged \"{propertyName}\"");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+        public ImageSource CurrentMap
+        {
+            get
+            {
+                if (this?.CurrentItem?._tourInfo?.MapImagePath != null)
+                {
+                    try
+                    {
+                        if (File.Exists(this?.CurrentItem?._tourInfo?.MapImagePath))
+                        {
+                            var bitmap = new BitmapImage();
+                            bitmap.BeginInit();
+                            bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                            bitmap.UriSource = new Uri(this?.CurrentItem?._tourInfo?.MapImagePath);
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.EndInit();
+                            return bitmap;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show($"Exception was thrown when setting Tour Map Image: {e}");
+                    }
+                }
+                return null;
+            }
+        }
+
     }
 }

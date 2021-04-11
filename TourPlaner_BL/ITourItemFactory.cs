@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TourPlaner_Models;
 
 namespace TourPlaner_BL
@@ -10,6 +11,6 @@ namespace TourPlaner_BL
         IEnumerable<TourItem> Search(string itemName, bool caseSensitive = false);
         IEnumerable<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime);
         IEnumerable<TourItem> RemoveTour(string itemName);
-        void ShowMapTourAsync(string start, string end, string tourName);
+        Task ShowMapTourAsync(string start, string end, string tourName);
     }
 }

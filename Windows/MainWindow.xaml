@@ -80,7 +80,7 @@
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Type" Margin="0,150,56,0" Grid.ColumnSpan="2"/>
         <Canvas Grid.Row="3" Grid.Column="1" ClipToBounds="True">
             <Border  Name="border" Grid.ColumnSpan="2">
-                <Image Name="image" Source="{Binding CurrentItem._tourInfo.MapImagePath, Mode=TwoWay}" Opacity="1" RenderTransformOrigin="0.5,0.5"  />
+                <Image Name="image" Source="{Binding CurrentMap}" Opacity="1" RenderTransformOrigin="0.5,0.5"  />
             </Border>
         </Canvas>
         <!--<Button Grid.Row="3" Grid.Column="1" Content="Choose" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Name="btnChoose" Width="90" Command="{Binding ChooseCommand}" CommandParameter="{Binding ElementName=lstRoster,Path=SelectedPerson}" />

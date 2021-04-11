@@ -6,6 +6,7 @@ using TourPlaner_DL;
 using System.IO;
 using Newtonsoft.Json;
 using TourPlanner_DL;
+using System.Threading.Tasks;
 
 namespace TourPlaner_BL
 {
@@ -82,7 +83,7 @@ namespace TourPlaner_BL
         }
 
 
-        public async void ShowMapTourAsync(string start, string end, string tourName)
+        public async Task ShowMapTourAsync(string start, string end, string tourName)
         {
             await mapConnect.GetAndSaveImage(start, end, tourName);
         }
