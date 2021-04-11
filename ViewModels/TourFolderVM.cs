@@ -14,7 +14,9 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.IO;
-
+using System.Windows.Media;
+ 
+ 
 namespace TourPlaner.ViewModels
 {
     public class TourFolderVM : ViewModelBase
@@ -63,14 +65,14 @@ namespace TourPlaner.ViewModels
             }
         }
         private TourItem currentItem;
-        private ICommand searchCommand;
-        private ICommand clearCommand;
-        public ICommand executeCommand;
+        private ICommand searchCommand, clearCommand, executeCommand, removeCommand, showMap;
         public ICommand RemoveItems { get; }
         public ICommand AddItems { get; }
         public ICommand SearchCommand => searchCommand ??= new RelayCommand(Search);
+        public ICommand ShowMap => showMap ??= new RelayCommand(Show);
         public ICommand ClearCommand => clearCommand ??= new RelayCommand(Clear);
         public ICommand ExecuteCommand => executeCommand ??= new RelayCommand(AddTourWindow);
+        public ICommand RemoveCommand => removeCommand ??= new RelayCommand(RemoveTourWindow);
         public new event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<TourItem> Tours { get; set; }
         public TourItem CurrentItem
@@ -81,7 +83,7 @@ namespace TourPlaner.ViewModels
             }
             set
             {
-                if((currentItem != value) && (value != null))
+                if ((currentItem != value) && (value != null))
                 {
                     currentItem = value;
                     RaisePropertyChangedEvent(nameof(CurrentItem));
@@ -120,8 +122,8 @@ namespace TourPlaner.ViewModels
 
         private void FillListBox()
         {
-            if(this.tourItemFactory.GetItems() == null)
-                Tours.Add(new TourItem { Name = "No Tours added yet"});
+            if (this.tourItemFactory.GetItems() == null)
+                Tours.Add(new TourItem { Name = "No Tours added yet" });
             else
                 foreach (TourItem item in this.tourItemFactory.GetItems())
                 {
@@ -144,10 +146,25 @@ namespace TourPlaner.ViewModels
             {
                 if (this.tourItemFactory.AddTour(plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal, DateTime.Now) == null)
                     MessageBox.Show("There has been an error inserting your tour, please try again!");
+                this.tourItemFactory.ShowMapTourAsync(plusButtonVM.Start, plusButtonVM.Goal, plusButtonVM.Input);
                 Tours.Clear();
                 FillListBox();
             }
         }
+
+        private void RemoveTourWindow(object commandParameter)
+        {
+            if (commandParameter != null)
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete: " + commandParameter.ToString() + "?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                    if (this.tourItemFactory.RemoveTour(commandParameter.ToString()) == null)
+                        MessageBox.Show("There has been an error inserting your tour, please try again!");
+                Tours.Clear();
+                FillListBox();
+            }
+        }
+
 
         private void Search(object commandParameter)
         {
@@ -164,6 +181,11 @@ namespace TourPlaner.ViewModels
             Tours.Clear();
             SearchName = "";
             FillListBox();
+        }
+
+        private void Show(object commandParameter)
+        {
+            //MessageBox.Show(this.tourItemFactory.ShowMapTourAsync(plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal));
         }
 
 
