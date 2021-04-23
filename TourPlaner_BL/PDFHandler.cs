@@ -57,7 +57,7 @@ namespace TourPlaner_BL
                                             Distance: {distance}km <br> 
                                             Image: <img width=364 height=160 src='file:///C:/Users/Gregor/source/repos/TourPlaner/TourPlaner_DL/TourMaps/{tourName}.png' hspace=12>",
                         WebSettings = { DefaultEncoding = "utf-8" },
-                        HeaderSettings = { FontSize = 20, Right = "Page [page] of [toPage]", Line = true, Spacing = 2.812 }
+                        HeaderSettings = { FontSize = 9, Right = "Page [page] of [toPage]", Line = true, Spacing = 2.812 }
                     }
                 }
             };
