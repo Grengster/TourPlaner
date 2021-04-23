@@ -26,10 +26,10 @@ namespace TourPlaner_DL
             DBConnect();
         }
 
-        public List<TourItem> LoadJson()
+        public static List<TourItem> LoadJson()
         {
             List<TourItem> tempTour = new();
-            using (StreamReader r = new StreamReader(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json"))
+            using (StreamReader r = new(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json"))
             {
                 string json = r.ReadToEnd();
                 tempTour = JsonConvert.DeserializeObject<List<TourItem>>(json);
@@ -100,7 +100,7 @@ namespace TourPlaner_DL
             }
         }
 
-        public List<TourItem> AddTour(string tourName, string startName, string goalName, DateTime dateTime)
+        public List<TourItem> AddTour(string tourName, string startName, string goalName, DateTime dateTime, int distance)
         {
             bool isFound = false, isInserted = true;
             using (var cmd = new NpgsqlCommand("SELECT * FROM tours where name = @n", conn))
@@ -116,9 +116,12 @@ namespace TourPlaner_DL
                     return null;
             };
 
-            using (var cmd = new NpgsqlCommand("INSERT INTO tours (name) VALUES (@n)", conn))
+            using (var cmd = new NpgsqlCommand("INSERT INTO tours (name, goal, start, distance) VALUES (@n,@g,@s,@d)", conn))
             {
                 cmd.Parameters.AddWithValue("n", tourName);
+                cmd.Parameters.AddWithValue("g", goalName);
+                cmd.Parameters.AddWithValue("s", startName);
+                cmd.Parameters.AddWithValue("d", distance);
                 int a = cmd.ExecuteNonQuery();
                 if (a == 0)
                     isInserted = false;
@@ -131,11 +134,11 @@ namespace TourPlaner_DL
                 employeeList.Add(new TourItem()
                 {
                     Name = tourName,
-                    _tourInfo = new TourInfo()
+                    tourInfo = new TourInfo()
                     {
                         Start = startName,
                         Goal = goalName,
-                        Length = 100,
+                        Distance = distance,
                         MapImagePath = $@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\{tourName}.png",
                         CreationTime = dateTime,
                         StartTime = dateTime,

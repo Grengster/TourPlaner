@@ -11,14 +11,14 @@ using System.Windows;
 using System.Windows.Input;
 using TourPlaner_Models;
 using TourPlaner_BL;
-
+using System.Text.RegularExpressions;
 
 namespace TourPlaner
 {
     public class AddTourViewModel : INotifyPropertyChanged
     {
         private string _output = "Hello World!";
-        private string _input, _start, _goal;
+        private string _input, _start, _goal, _distance;
 
         public string Input
         {
@@ -58,6 +58,34 @@ namespace TourPlaner
                 }
             }
         }
+
+        private static readonly Regex _regex = new("[^0-9]+"); //regex that matches disallowed text
+        private static bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+
+
+        public string Distance
+        {
+            get
+            {
+                Debug.Print("read Input");
+                return _distance;
+            }
+            set
+            {
+                Debug.Print("write Input");
+                if (Distance != value && IsTextAllowed(value))
+                {
+                    Debug.Print("set Input-value");
+                    _distance = value;
+                    Debug.Print("fire propertyChanged: Input");
+                    OnPropertyChanged(nameof(Distance));
+                }
+            }
+        }
+
         public string Goal
         {
             get

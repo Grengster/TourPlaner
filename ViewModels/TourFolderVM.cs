@@ -145,7 +145,7 @@ namespace TourPlaner.ViewModels
             plusWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
             if (plusButtonVM.Input != null)
             {
-                if (this.tourItemFactory.AddTour(plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal, DateTime.Now) == null)
+                if (this.tourItemFactory.AddTour(plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal, DateTime.Now, Convert.ToInt32(plusButtonVM.Distance)) == null)
                     MessageBox.Show("There has been an error inserting your tour, please try again!");
                 else
                 {
@@ -204,16 +204,16 @@ namespace TourPlaner.ViewModels
         {
             get
             {
-                if (this?.CurrentItem?._tourInfo?.MapImagePath != null)
+                if (this?.CurrentItem?.tourInfo?.MapImagePath != null)
                 {
                     try
                     {
-                        if (File.Exists(this?.CurrentItem?._tourInfo?.MapImagePath))
+                        if (File.Exists(this?.CurrentItem?.tourInfo?.MapImagePath))
                         {
                             var bitmap = new BitmapImage();
                             bitmap.BeginInit();
                             bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                            bitmap.UriSource = new Uri(this?.CurrentItem?._tourInfo?.MapImagePath);
+                            bitmap.UriSource = new Uri(this?.CurrentItem?.tourInfo?.MapImagePath);
                             bitmap.CacheOption = BitmapCacheOption.OnLoad;
                             bitmap.EndInit();
                             return bitmap;

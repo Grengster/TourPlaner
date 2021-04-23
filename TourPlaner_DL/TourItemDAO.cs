@@ -7,7 +7,7 @@ namespace TourPlaner_DL
     public class TourItemDAO
     {
 
-        private IDataAccess dataAccess;
+        private readonly IDataAccess dataAccess;
 
         public TourItemDAO()
         {
@@ -19,9 +19,9 @@ namespace TourPlaner_DL
             return dataAccess.GetItems();
         }
 
-        public List<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime)
+        public List<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, int distance)
         {
-            return dataAccess.AddTour(itemName, startName, goalName, dateTime);
+            return dataAccess.AddTour(itemName, startName, goalName, dateTime, distance);
         }
 
         public List<TourItem> RemoveTour(string itemName)

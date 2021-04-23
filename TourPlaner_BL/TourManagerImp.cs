@@ -13,8 +13,8 @@ namespace TourPlaner_BL
     internal class TourManagerImp : ITourItemFactory
     {
 
-        private TourItemDAO tourItemDAO = new TourItemDAO();
-        private MapQuestConn mapConnect = MapQuestConn.Instance();
+        private readonly TourItemDAO tourItemDAO = new(); //anhand config file variieren
+        private readonly MapQuestConn mapConnect = MapQuestConn.Instance();
 
 
         public IEnumerable<TourItem> GetItems()
@@ -35,7 +35,7 @@ namespace TourPlaner_BL
             return tours.Where(x => x.Name.ToLower().Contains(itemName.ToLower()));
         }
 
-        public IEnumerable<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime)
+        public IEnumerable<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, int distance)
         {
             IEnumerable<TourItem> tours = null;
             if (GetItems() != null)
@@ -46,7 +46,7 @@ namespace TourPlaner_BL
                     var find = tours.FirstOrDefault(x => x.Name == itemName);
                     if (find == null)
                     {
-                        if (tourItemDAO.AddTour(itemName, startName, goalName, dateTime) == null)
+                        if (tourItemDAO.AddTour(itemName, startName, goalName, dateTime, distance) == null)
                             return null;
                         else
                             return tours;
@@ -55,7 +55,7 @@ namespace TourPlaner_BL
                 return tours;
             }
             else
-                tourItemDAO.AddTour(itemName, startName, goalName, dateTime);
+                tourItemDAO.AddTour(itemName, startName, goalName, dateTime, distance);
             return tours;
 
         }
@@ -87,7 +87,7 @@ namespace TourPlaner_BL
 
         public async Task ShowMapTourAsync(string start, string end, string tourName)
         {
-            await mapConnect.GetAndSaveImage(start, end, tourName);
+            await MapQuestConn.GetAndSaveImage(start, end, tourName);
         }
 
     }

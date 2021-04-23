@@ -76,7 +76,7 @@
         <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem.Name,Mode=TwoWay}" Margin="50,50,56,0" Grid.ColumnSpan="2"/>
 
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Brand" Margin="0,100,56,0" Grid.ColumnSpan="2"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem._tourInfo.Start, Mode=TwoWay}" Margin="50,100,56,0" Grid.ColumnSpan="2"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem.tourInfo.Start, Mode=TwoWay}" Margin="50,100,56,0" Grid.ColumnSpan="2"/>
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Type" Margin="0,150,56,0" Grid.ColumnSpan="2"/>
         <Canvas Grid.Row="3" Grid.Column="1" ClipToBounds="True">
             <Border  Name="border" Grid.ColumnSpan="2">

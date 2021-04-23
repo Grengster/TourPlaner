@@ -14,9 +14,9 @@ namespace TourPlanner_DL
     {
         private static MapQuestConn instance = null;
         private static HttpClient httpClient = null;
-        private static string key = "8O7UfQqRKqYcc4gvWcnAeYCNCOmKmKxn";
-        private static string RoutePath = @"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\";
-        private static string storeMap = @"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps";
+        private readonly static string key = "8O7UfQqRKqYcc4gvWcnAeYCNCOmKmKxn";
+        private readonly static string RoutePath = @"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\";
+        private readonly static string storeMap = @"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps";
 
         public static MapQuestConn Instance()
         {
@@ -36,7 +36,7 @@ namespace TourPlanner_DL
             }
         }
 
-        public string TryConnection()
+        public static string TryConnection()
         {
             try
             {
@@ -52,7 +52,7 @@ namespace TourPlanner_DL
                 return e.Message;
             }
         }
-        public string FindRoute(string fromDestination, string toDestination)
+        public static string FindRoute(string fromDestination, string toDestination)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace TourPlanner_DL
             }
         }
 
-        public async Task GetAndSaveImage(string start, string end, string tourName)
+        public static async Task GetAndSaveImage(string start, string end, string tourName)
         {
             System.IO.Directory.CreateDirectory($@"{storeMap}\");
 

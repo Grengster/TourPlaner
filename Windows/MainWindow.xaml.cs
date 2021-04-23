@@ -29,12 +29,12 @@ namespace TourPlaner
             InitializeComponent();
             this.DataContext = new TourFolderVM();
 
-            TransformGroup group = new TransformGroup();
+            TransformGroup group = new();
 
-            ScaleTransform xform = new ScaleTransform();
+            ScaleTransform xform = new();
             group.Children.Add(xform);
 
-            TranslateTransform tt = new TranslateTransform();
+            TranslateTransform tt = new();
             group.Children.Add(tt);
 
             image.RenderTransform = group;
