@@ -65,11 +65,12 @@ namespace TourPlaner.ViewModels
             }
         }
         private TourItem currentItem;
-        private ICommand searchCommand, clearCommand, executeCommand, removeCommand, showMap;
+        private ICommand searchCommand, clearCommand, executeCommand, removeCommand, showMap, createCommand;
         public ICommand RemoveItems { get; }
         public ICommand AddItems { get; }
         public ICommand SearchCommand => searchCommand ??= new RelayCommand(Search);
         public ICommand ShowMap => showMap ??= new RelayCommand(Show);
+        public ICommand CreateCommand => createCommand ??= new RelayCommand(Create);
         public ICommand ClearCommand => clearCommand ??= new RelayCommand(Clear);
         public ICommand ExecuteCommand => executeCommand ??= new RelayCommand(AddTourWindow);
         public ICommand RemoveCommand => removeCommand ??= new RelayCommand(RemoveTourWindow);
@@ -190,6 +191,22 @@ namespace TourPlaner.ViewModels
         private void Show(object commandParameter)
         {
             //MessageBox.Show(this.tourItemFactory.ShowMapTourAsync(plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal));
+        }
+
+        private void Create(object commandParameter)
+        {
+            if (commandParameter != null)
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to create PDF for: " + commandParameter.ToString() + "?", "Select Confirmation", System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                    if (this?.CurrentItem?.tourInfo?.MapImagePath != null)
+                    {
+                        if (this.tourItemFactory.CreatePDF(commandParameter.ToString(), this?.CurrentItem?.tourInfo?.Start, this?.CurrentItem?.tourInfo?.Goal, this.CurrentItem.tourInfo.Distance) == null)
+                            MessageBox.Show("There has been an error inserting your tour, please try again!");
+                    }
+                Tours.Clear();
+                FillListBox();
+            }
         }
 
 

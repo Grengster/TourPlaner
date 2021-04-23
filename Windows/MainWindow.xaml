@@ -52,7 +52,7 @@
         </StackPanel>
         <DockPanel LastChildFill="True" Grid.RowSpan="2" Margin="0,8,546,0" Grid.Row="2" Grid.ColumnSpan="2">
             <DockPanel LastChildFill="True" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Button Content="Button" Command="{Binding ShowMap}" DockPanel.Dock="Right" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <Button Content="Button" Command="{Binding CreateCommand}" CommandParameter="{Binding CurrentItem.Name}" DockPanel.Dock="Right" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Button Content="+" Command="{Binding ExecuteCommand}" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Button Content="-" Command="{Binding RemoveCommand}" CommandParameter="{Binding CurrentItem.Name}" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Label Content="Label" DockPanel.Dock="Right" HorizontalAlignment="Stretch" Grid.Row="1"/>

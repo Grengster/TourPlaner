@@ -13,5 +13,6 @@ namespace TourPlaner_BL
         IEnumerable<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, int distance);
         IEnumerable<TourItem> RemoveTour(string itemName);
         Task ShowMapTourAsync(string start, string end, string tourName);
+        Task CreatePDF(string tourName, string start, string end, int distance);
     }
 }
