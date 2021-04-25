@@ -27,6 +27,7 @@ namespace TourPlaner
         public MainWindow()
         {
             InitializeComponent();
+
             this.DataContext = new TourFolderVM();
 
             TransformGroup group = new();

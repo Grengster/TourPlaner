@@ -16,6 +16,8 @@ using System.Windows.Controls;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using log4net;
+using log4net.Config;
 
 namespace TourPlaner.ViewModels
 {
@@ -107,7 +109,10 @@ namespace TourPlaner.ViewModels
                 }
             }
         }
+
+        private static readonly ILog log = LogManager.GetLogger(typeof(TourFolderVM));
         #endregion
+        
 
         public TourFolderVM()
         {
@@ -118,6 +123,7 @@ namespace TourPlaner.ViewModels
 
         private void InitListbox()
         {
+            log.Info("test");
             Tours = new ObservableCollection<TourItem>();
             FillListBox();
         }
@@ -130,6 +136,7 @@ namespace TourPlaner.ViewModels
                 foreach (TourItem item in this.tourItemFactory.GetItems())
                 {
                     Tours.Add(item);
+                    log.Info("Added Tour called: " + item.Name);
                 }
         }
 
