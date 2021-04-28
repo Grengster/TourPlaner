@@ -10,9 +10,9 @@ namespace TourPlaner_BL
     {
         IEnumerable<TourItem> GetItems();
         IEnumerable<TourItem> Search(string itemName, bool caseSensitive = false);
-        IEnumerable<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, int distance);
+        IEnumerable<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, string method);
         IEnumerable<TourItem> RemoveTour(string itemName);
         Task ShowMapTourAsync(string start, string end, string tourName);
-        Task CreatePDF(string tourName, string start, string end, int distance);
+        Task CreatePDF(string tourName, string start, string end, string method);
     }
 }

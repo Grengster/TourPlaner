@@ -10,12 +10,11 @@ using TourPlaner_Models;
 
 namespace TourPlanner_DL
 {
-    public class MapQuestConn
+    public sealed class MapQuestConn
     {
         private static MapQuestConn instance = null;
         private static HttpClient httpClient = null;
         private readonly static string key = "8O7UfQqRKqYcc4gvWcnAeYCNCOmKmKxn";
-        private readonly static string RoutePath = @"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\";
         private readonly static string storeMap = @"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps";
 
         public static MapQuestConn Instance()
@@ -24,39 +23,18 @@ namespace TourPlanner_DL
             {
                 instance = new MapQuestConn();
             }
-            return instance;
-        }
-
-
-        private MapQuestConn()
-        {
             if (httpClient == null)
             {
                 httpClient = new HttpClient();
             }
+            return instance;
         }
 
-        public static string TryConnection()
+        public string FindRoute(string fromDestination, string toDestination, string method)
         {
             try
             {
-                var response = httpClient.GetStringAsync("http://www.mapquestapi.com/directions/v2/route?key=" + key + "&from=Wien&to=Graz");
-
-                Task filetask = File.WriteAllTextAsync(RoutePath + "TourData.json", response.Result.ToString());
-                return response.Result;
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine("Exception Caught!!");
-                Debug.WriteLine($"Message :{e.Message} ");
-                return e.Message;
-            }
-        }
-        public static string FindRoute(string fromDestination, string toDestination)
-        {
-            try
-            {
-                var response = httpClient.GetStringAsync("http://www.mapquestapi.com/directions/v2/route?key=" + key + "&from=" + fromDestination + "&to=" + toDestination);
+                var response = httpClient.GetStringAsync("http://www.mapquestapi.com/directions/v2/route?key=" + key + "&from=" + fromDestination + "&to=" + toDestination + "&routeType=" + method);
                 string respBody = response.Result;
                 return respBody;
             }

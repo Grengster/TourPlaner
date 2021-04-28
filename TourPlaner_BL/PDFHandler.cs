@@ -32,7 +32,7 @@ namespace TourPlaner_BL
     public class PDFHandler
     {
         
-        public static async Task CreatePDF(string tourName, string start, string goal, int distance)
+        public static async Task CreatePDF(string tourName, string start, string goal, string method)
         {
             //SynchronizedConverter converter = SynchronizedConverter.Instance();
             //var converter = new SynchronizedConverter(new PdfTools());
@@ -54,7 +54,7 @@ namespace TourPlaner_BL
                         HtmlContent = @$"   Tourname: {tourName} <br> 
                                             Startname: {start} <br> 
                                             Destinationname: {goal} <br> 
-                                            Distance: {distance}km <br> 
+                                            Method of travelling: {method}km <br> 
                                             Image: <img width=364 height=160 src='file:///C:/Users/Gregor/source/repos/TourPlaner/TourPlaner_DL/TourMaps/{tourName}.png' hspace=12>",
                         WebSettings = { DefaultEncoding = "utf-8" },
                         HeaderSettings = { FontSize = 9, Right = "Page [page] of [toPage]", Line = true, Spacing = 2.812 }

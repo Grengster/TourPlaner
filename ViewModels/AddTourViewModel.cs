@@ -12,13 +12,15 @@ using System.Windows.Input;
 using TourPlaner_Models;
 using TourPlaner_BL;
 using System.Text.RegularExpressions;
+using System.Windows.Markup;
 
 namespace TourPlaner
 {
     public class AddTourViewModel : INotifyPropertyChanged
     {
         private string _output = "Hello World!";
-        private string _input, _start, _goal, _distance;
+        private string _input, _start, _goal;
+        selectedMethod _method;
 
         public string Input
         {
@@ -65,23 +67,22 @@ namespace TourPlaner
             return !_regex.IsMatch(text);
         }
 
-
-        public string Distance
+        public selectedMethod Method
         {
             get
             {
                 Debug.Print("read Input");
-                return _distance;
+                return _method;
             }
             set
             {
                 Debug.Print("write Input");
-                if (Distance != value && IsTextAllowed(value))
+                if (Method != value)
                 {
                     Debug.Print("set Input-value");
-                    _distance = value;
+                    _method = value;
                     Debug.Print("fire propertyChanged: Input");
-                    OnPropertyChanged(nameof(Distance));
+                    OnPropertyChanged(nameof(_method));
                 }
             }
         }
@@ -222,6 +223,24 @@ namespace TourPlaner
         {
             Debug.Print($"propertyChanged \"{propertyName}\"");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    class ComboEnumBinding : MarkupExtension
+    {
+        public Type EnumType { get; private set; }
+
+        public ComboEnumBinding(Type enumType)
+        {
+            if (enumType is null || !enumType.IsEnum)
+                throw new Exception("EnumType must not be null and of type Enum!");
+
+            EnumType = enumType;
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return Enum.GetValues(EnumType);
         }
     }
 }

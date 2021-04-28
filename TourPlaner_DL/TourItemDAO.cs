@@ -19,9 +19,9 @@ namespace TourPlaner_DL
             return dataAccess.GetItems();
         }
 
-        public List<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, int distance)
+        public List<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, string method)
         {
-            return dataAccess.AddTour(itemName, startName, goalName, dateTime, distance);
+            return dataAccess.AddTour(itemName, startName, goalName, dateTime, method);
         }
 
         public List<TourItem> RemoveTour(string itemName)

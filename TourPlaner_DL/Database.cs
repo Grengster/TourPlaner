@@ -11,7 +11,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using TourPlaner_Models;
 using Newtonsoft.Json;
-
+using log4net;
+using log4net.Config;
+using TourPlanner_DL;
+using NugetJObject;
+using Newtonsoft.Json.Linq;
 
 namespace TourPlaner_DL
 {
@@ -19,6 +23,7 @@ namespace TourPlaner_DL
     {
         private readonly string connString;
         private NpgsqlConnection conn;
+        private static readonly ILog log = LogManager.GetLogger(typeof(Database));
 
         public Database()
         {
@@ -100,7 +105,7 @@ namespace TourPlaner_DL
             }
         }
 
-        public List<TourItem> AddTour(string tourName, string startName, string goalName, DateTime dateTime, int distance)
+        public List<TourItem> AddTour(string tourName, string startName, string goalName, DateTime dateTime, string method)
         {
             bool isFound = false, isInserted = true;
             using (var cmd = new NpgsqlCommand("SELECT * FROM tours where name = @n", conn))
@@ -115,13 +120,21 @@ namespace TourPlaner_DL
                 if (isFound)
                     return null;
             };
+            var jsonResponse = JObject.Parse(MapQuestConn.Instance().FindRoute(startName, goalName, method));
+            float jDistance = float.Parse(jsonResponse["route"]["distance"].ToString()); //reads out of mapquest json response
+            var jTime = jsonResponse["route"]["formattedTime"].ToString();
 
-            using (var cmd = new NpgsqlCommand("INSERT INTO tours (name, goal, start, distance) VALUES (@n,@g,@s,@d)", conn))
+           // log.Info("Got ");
+
+            //log.Info(response);
+            using (var cmd = new NpgsqlCommand("INSERT INTO tours (name, goal, start, distance, response, esttime) VALUES (@n,@g,@s,@d,@r,@t)", conn))
             {
                 cmd.Parameters.AddWithValue("n", tourName);
                 cmd.Parameters.AddWithValue("g", goalName);
                 cmd.Parameters.AddWithValue("s", startName);
-                cmd.Parameters.AddWithValue("d", distance);
+                cmd.Parameters.AddWithValue("d", jDistance);
+                cmd.Parameters.AddWithValue("r", jsonResponse.ToString());
+                cmd.Parameters.AddWithValue("t", jTime);
                 int a = cmd.ExecuteNonQuery();
                 if (a == 0)
                     isInserted = false;
@@ -134,17 +147,17 @@ namespace TourPlaner_DL
                 employeeList.Add(new TourItem()
                 {
                     Name = tourName,
-                    tourInfo = new TourInfo()
+                    TourInfo = new TourInfo()
                     {
                         Start = startName,
                         Goal = goalName,
-                        Distance = distance,
+                        Method = method,
+                        Distance = jDistance,
                         MapImagePath = $@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\{tourName}.png",
                         CreationTime = dateTime,
-                        StartTime = dateTime,
-                        EndTime = dateTime
+                        TotalTime = jTime
                     }
-                });
+                }); ;
                 jsonData = JsonConvert.SerializeObject(employeeList);
                 File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
                 return GetItems();

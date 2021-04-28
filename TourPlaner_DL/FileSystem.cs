@@ -13,7 +13,7 @@ namespace TourPlaner_DL
             //this.filePath = "";
         }
 
-        public List<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, int distance)
+        public List<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, string method)
         {
             throw new NotImplementedException();
         }

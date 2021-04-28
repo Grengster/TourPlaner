@@ -14,7 +14,6 @@ namespace TourPlaner_BL
     {
 
         private readonly TourItemDAO tourItemDAO = new(); //anhand config file variieren
-        private readonly MapQuestConn mapConnect = MapQuestConn.Instance();
 
 
         public IEnumerable<TourItem> GetItems()
@@ -35,7 +34,7 @@ namespace TourPlaner_BL
             return tours.Where(x => x.Name.ToLower().Contains(itemName.ToLower()));
         }
 
-        public IEnumerable<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, int distance)
+        public IEnumerable<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, string method)
         {
             IEnumerable<TourItem> tours = null;
             if (GetItems() != null)
@@ -46,7 +45,7 @@ namespace TourPlaner_BL
                     var find = tours.FirstOrDefault(x => x.Name == itemName);
                     if (find == null)
                     {
-                        if (tourItemDAO.AddTour(itemName, startName, goalName, dateTime, distance) == null)
+                        if (tourItemDAO.AddTour(itemName, startName, goalName, dateTime, method) == null)
                             return null;
                         else
                             return tours;
@@ -55,7 +54,7 @@ namespace TourPlaner_BL
                 return tours;
             }
             else
-                tourItemDAO.AddTour(itemName, startName, goalName, dateTime, distance);
+                tourItemDAO.AddTour(itemName, startName, goalName, dateTime, method);
             return tours;
 
         }
@@ -90,9 +89,9 @@ namespace TourPlaner_BL
             await MapQuestConn.GetAndSaveImage(start, end, tourName);
         }
 
-        public async Task CreatePDF(string tourName, string start, string goal, int distance)
+        public async Task CreatePDF(string tourName, string start, string goal, string method)
         {
-            await PDFHandler.CreatePDF(tourName, start, goal, distance);
+            await PDFHandler.CreatePDF(tourName, start, goal, method);
         }
 
     }

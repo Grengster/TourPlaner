@@ -40,18 +40,18 @@ namespace TourPlaner
 
             image.RenderTransform = group;
 
-            image.MouseWheel += image_MouseWheel;
-            image.MouseLeftButtonDown += image_MouseLeftButtonDown;
-            image.MouseLeftButtonUp += image_MouseLeftButtonUp;
-            image.MouseMove += image_MouseMove;
+            image.MouseWheel += Image_MouseWheel;
+            image.MouseLeftButtonDown += Image_MouseLeftButtonDown;
+            image.MouseLeftButtonUp += Image_MouseLeftButtonUp;
+            image.MouseMove += Image_MouseMove;
         }
 
-        private void image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             image.ReleaseMouseCapture();
         }
 
-        private void image_MouseMove(object sender, MouseEventArgs e)
+        private void Image_MouseMove(object sender, MouseEventArgs e)
         {
             if (!image.IsMouseCaptured) return;
 
@@ -61,7 +61,7 @@ namespace TourPlaner
             tt.Y = origin.Y - v.Y;
         }
 
-        private void image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             image.CaptureMouse();
             var tt = (TranslateTransform)((TransformGroup)image.RenderTransform).Children.First(tr => tr is TranslateTransform);
@@ -69,7 +69,7 @@ namespace TourPlaner
             origin = new Point(tt.X, tt.Y);
         }
 
-        private void image_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void Image_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             TransformGroup transformGroup = (TransformGroup)image.RenderTransform;
             ScaleTransform transform = (ScaleTransform)transformGroup.Children[0];

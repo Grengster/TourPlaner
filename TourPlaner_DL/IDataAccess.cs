@@ -7,7 +7,7 @@ namespace TourPlaner_DL
     public interface IDataAccess
     {
         public List<TourItem> GetItems();
-        public List<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, int distance);
+        public List<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, string method);
         public List<TourItem> RemoveTour(string itemName);
     }
 }

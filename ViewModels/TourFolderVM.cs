@@ -110,6 +110,8 @@ namespace TourPlaner.ViewModels
             }
         }
 
+
+
         private static readonly ILog log = LogManager.GetLogger(typeof(TourFolderVM));
         #endregion
         
@@ -153,7 +155,7 @@ namespace TourPlaner.ViewModels
             plusWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
             if (plusButtonVM.Input != null)
             {
-                if (this.tourItemFactory.AddTour(plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal, DateTime.Now, Convert.ToInt32(plusButtonVM.Distance)) == null)
+                if (this.tourItemFactory.AddTour(plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal, DateTime.Now, EnumDescriptionExtension.GetDescription(plusButtonVM.Method)) == null)
                     MessageBox.Show("There has been an error inserting your tour, please try again!");
                 else
                 {
@@ -206,9 +208,9 @@ namespace TourPlaner.ViewModels
             {
                 MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to create PDF for: " + commandParameter.ToString() + "?", "Select Confirmation", System.Windows.MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
-                    if (this?.CurrentItem?.tourInfo?.MapImagePath != null)
+                    if (this?.CurrentItem?.TourInfo?.MapImagePath != null)
                     {
-                        if (this.tourItemFactory.CreatePDF(commandParameter.ToString(), this?.CurrentItem?.tourInfo?.Start, this?.CurrentItem?.tourInfo?.Goal, this.CurrentItem.tourInfo.Distance) == null)
+                        if (this.tourItemFactory.CreatePDF(commandParameter.ToString(), this?.CurrentItem?.TourInfo?.Start, this?.CurrentItem?.TourInfo?.Goal, this.CurrentItem.TourInfo.Method) == null)
                             MessageBox.Show("There has been an error inserting your tour, please try again!");
                     }
                 Tours.Clear();
@@ -228,16 +230,16 @@ namespace TourPlaner.ViewModels
         {
             get
             {
-                if (this?.CurrentItem?.tourInfo?.MapImagePath != null)
+                if (this?.CurrentItem?.TourInfo?.MapImagePath != null)
                 {
                     try
                     {
-                        if (File.Exists(this?.CurrentItem?.tourInfo?.MapImagePath))
+                        if (File.Exists(this?.CurrentItem?.TourInfo?.MapImagePath))
                         {
                             var bitmap = new BitmapImage();
                             bitmap.BeginInit();
                             bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                            bitmap.UriSource = new Uri(this?.CurrentItem?.tourInfo?.MapImagePath);
+                            bitmap.UriSource = new Uri(this?.CurrentItem?.TourInfo?.MapImagePath);
                             bitmap.CacheOption = BitmapCacheOption.OnLoad;
                             bitmap.EndInit();
                             return bitmap;
