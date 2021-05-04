@@ -89,9 +89,9 @@ namespace TourPlaner_BL
             await MapQuestConn.GetAndSaveImage(start, end, tourName);
         }
 
-        public async Task CreatePDF(string tourName, string start, string goal, string method)
+        public async Task CreatePDF(string tourName)
         {
-            await PDFHandler.CreatePDF(tourName, start, goal, method);
+            await PDFHandler.CreatePDF(tourName);
         }
 
     }

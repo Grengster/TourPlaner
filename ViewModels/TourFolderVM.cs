@@ -210,7 +210,7 @@ namespace TourPlaner.ViewModels
                 if (messageBoxResult == MessageBoxResult.Yes)
                     if (this?.CurrentItem?.TourInfo?.MapImagePath != null)
                     {
-                        if (this.tourItemFactory.CreatePDF(commandParameter.ToString(), this?.CurrentItem?.TourInfo?.Start, this?.CurrentItem?.TourInfo?.Goal, this.CurrentItem.TourInfo.Method) == null)
+                        if (this.tourItemFactory.CreatePDF(commandParameter.ToString()) == null)
                             MessageBox.Show("There has been an error inserting your tour, please try again!");
                     }
                 Tours.Clear();

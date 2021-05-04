@@ -19,5 +19,13 @@ namespace TourPlaner_Models
         public string MapImagePath { get; set; }
         public DateTime CreationTime { get; set; }
         public string TotalTime { get; set; }
+        public string JsonData { get; set; }
+    }
+    public class UserRating
+    { //KALENDERFUNKTION EINBAUEN ALS UNIQUE FEATURE
+        public DateTime TravelDate { get; set; }
+        public string Description { get; set; }
+        public int ActualTime { get; set; }
+        public int Rating { get; set; }
     }
 }

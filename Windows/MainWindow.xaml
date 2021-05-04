@@ -69,15 +69,30 @@
                 </ListView.ItemTemplate>
             </ListView>-->
         </DockPanel>
-
         <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="Person Details" FontSize="15" Margin="0,33,56,0" Grid.RowSpan="2"/>
-
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="Name" Margin="0,50,56,0" Grid.ColumnSpan="2"/>
+        <DataGrid Grid.Row="2" Grid.Column="1" IsReadOnly="true" ItemsSource="{Binding Path=SelectedItems, ElementName=listMediaItems}" AutoGenerateColumns="false" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Distance" Binding="{Binding TourInfo.Start}" />
+                <DataGridTextColumn Header="Distance" Binding="{Binding TourInfo.Goal}" />
+                <DataGridTextColumn Header="Distance" Binding="{Binding TourInfo.Distance}" />
+                <DataGridTextColumn Header="Distance" Binding="{Binding TourInfo.Method}" />
+                <!--<DataGridTemplateColumn Header="Birthday">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding Birthday}" BorderThickness="0" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+            </DataGrid.Columns>
+        </DataGrid>
+        <!--
         <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem.Name,Mode=TwoWay}" Margin="50,50,56,0" Grid.ColumnSpan="2"/>
 
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Brand" Margin="0,100,56,0" Grid.ColumnSpan="2"/>
         <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem.TourInfo.Start, Mode=TwoWay}" Margin="50,100,56,0" Grid.ColumnSpan="2"/>
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Type" Margin="0,150,56,0" Grid.ColumnSpan="2"/>
+        -->
         <Canvas Grid.Row="3" Grid.Column="1" ClipToBounds="True">
             <Border  Name="border" Grid.ColumnSpan="2">
                 <Image Name="image" Source="{Binding CurrentMap}" Opacity="1" RenderTransformOrigin="0.5,0.5"  />

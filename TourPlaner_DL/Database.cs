@@ -155,9 +155,10 @@ namespace TourPlaner_DL
                         Distance = jDistance,
                         MapImagePath = $@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\{tourName}.png",
                         CreationTime = dateTime,
-                        TotalTime = jTime
+                        TotalTime = jTime,
+                        JsonData = jsonResponse.ToString()
                     }
-                }); ;
+                });
                 jsonData = JsonConvert.SerializeObject(employeeList);
                 File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
                 return GetItems();
