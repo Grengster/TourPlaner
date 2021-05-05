@@ -16,47 +16,84 @@ using System.Windows.Markup;
 
 namespace TourPlaner
 {
-    public class AddTourViewModel : INotifyPropertyChanged
+    public class AddLogsViewModel : INotifyPropertyChanged
     {
-        private string _output = "Hello World!";
-        private string _input, _start, _goal;
-        SelectedMethod _method;
+        private int _rating, _actualTime;
+        private string _logs, _description;
 
-        public string Input
+        public int Rating
         {
             get
             {
                 Debug.Print("read Input");
-                return _input;
+                return _rating;
             }
             set
             {
                 Debug.Print("write Input");
-                if (Input != value)
+                if (Rating != value)
                 {
                     Debug.Print("set Input-value");
-                    _input = value;
+                    _rating = value;
                     Debug.Print("fire propertyChanged: Input");
-                    OnPropertyChanged(nameof(Input));
+                    OnPropertyChanged(nameof(Rating));
                 }
             }
         }
-        public string Start
+        public int ActualTime
         {
             get
             {
                 Debug.Print("read Input");
-                return _start;
+                return _actualTime;
             }
             set
             {
                 Debug.Print("write Input");
-                if (Start != value)
+                if (ActualTime != value)
                 {
                     Debug.Print("set Input-value");
-                    _start = value;
+                    _actualTime = value;
                     Debug.Print("fire propertyChanged: Input");
-                    OnPropertyChanged(nameof(Start));
+                    OnPropertyChanged(nameof(ActualTime));
+                }
+            }
+        }
+        public string Logs
+        {
+            get
+            {
+                Debug.Print("read Input");
+                return _logs;
+            }
+            set
+            {
+                Debug.Print("write Input");
+                if (Logs != value)
+                {
+                    Debug.Print("set Input-value");
+                    _logs = value;
+                    Debug.Print("fire propertyChanged: Input");
+                    OnPropertyChanged(nameof(Logs));
+                }
+            }
+        }
+        public string Description
+        {
+            get
+            {
+                Debug.Print("read Output");
+                return _description;
+            }
+            set
+            {
+                Debug.Print("write Output");
+                if (_description != value)
+                {
+                    Debug.Print("set Output");
+                    _description = value;
+                    Debug.Print("fire propertyChanged: Output");
+                    OnPropertyChanged(nameof(Description));
                 }
             }
         }
@@ -67,69 +104,8 @@ namespace TourPlaner
             return !_regex.IsMatch(text);
         }
 
-        public SelectedMethod Method
-        {
-            get
-            {
-                Debug.Print("read Input");
-                return _method;
-            }
-            set
-            {
-                Debug.Print("write Input");
-                if (Method != value)
-                {
-                    Debug.Print("set Input-value");
-                    _method = value;
-                    Debug.Print("fire propertyChanged: Input");
-                    OnPropertyChanged(nameof(_method));
-                }
-            }
-        }
-
-        public string Goal
-        {
-            get
-            {
-                Debug.Print("read Input");
-                return _goal;
-            }
-            set
-            {
-                Debug.Print("write Input");
-                if (Goal != value)
-                {
-                    Debug.Print("set Input-value");
-                    _goal = value;
-                    Debug.Print("fire propertyChanged: Input");
-                    OnPropertyChanged(nameof(Goal));
-                }
-            }
-        }
-
-        public string Output
-        {
-            get
-            {
-                Debug.Print("read Output");
-                return _output;
-            }
-            set
-            {
-                Debug.Print("write Output");
-                if (_output != value)
-                {
-                    Debug.Print("set Output");
-                    _output = value;
-                    Debug.Print("fire propertyChanged: Output");
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public ICommand AddTourExecute { get; }
-        public ICommand PlusButtonClose { get; }
-        public ICommand AddItems { get; }
+        public ICommand CloseLogsCommand { get; }
+        public ICommand AddLogsCommand { get; }
 
 
         private ObservableCollection<TourItem> tourList = new();
@@ -152,35 +128,32 @@ namespace TourPlaner
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public AddTourViewModel()
+        public AddLogsViewModel()
         {
 
-            this.PlusButtonClose = new RelayCommand((w) =>
+            this.CloseLogsCommand = new RelayCommand((w) =>
             {
                 //MessageBox.Show("Input: " + Input + "\n" + "Start: " + Start + "\n" + "End: " + Goal + "\n");
-                Input = null;
+                Description = null;
+                Logs = null;
                 CloseWindow(w);
             },
                 (_) => { return true; }
             );
-            this.AddItems = new RelayCommand((_) =>
+            this.AddLogsCommand = new RelayCommand((_) =>
             {
-
-                var find = TourList.FirstOrDefault(x => x.Name == Input);
-                if (find == null)
+                if (Logs != null || Description != null)
                 {
-                    MessageBox.Show(Input + " has been added!");
+                    MessageBox.Show("Information has been added!");
                     CloseWindow(_);
                 }
                 else
                 {
-                    MessageBox.Show(Input + " already exists, please use another name!");
-                    Input = null;
-
+                    MessageBox.Show("Please fill out all fields!");
                 }
             }, (_) =>
             {
-                if (Output != null && Output != "")
+                if (Logs != null || Logs != "" && Description != null || Description != "")
                     return true;
                 else
                 {
@@ -205,8 +178,10 @@ namespace TourPlaner
                 e.Cancel = true;
             }
             else
-                this.Input = null;
-
+            {
+                this.Description = null;
+                this.Logs = null;
+            }
         }
 
         private static void CloseWindow(object w)
@@ -222,24 +197,6 @@ namespace TourPlaner
         {
             Debug.Print($"propertyChanged \"{propertyName}\"");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-
-    class ComboEnumBinding : MarkupExtension
-    {
-        public Type EnumType { get; private set; }
-
-        public ComboEnumBinding(Type enumType)
-        {
-            if (enumType is null || !enumType.IsEnum)
-                throw new Exception("EnumType must not be null and of type Enum!");
-
-            EnumType = enumType;
-        }
-
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            return Enum.GetValues(EnumType);
         }
     }
 }

@@ -59,6 +59,19 @@ namespace TourPlaner_BL
 
         }
 
+        public IEnumerable<TourItem> AddLogs(string tourName, string logEntry, int rating, int actualTime, string description, DateTime date)
+        {
+            IEnumerable<TourItem> tours = null;
+            if (GetItems() != null)
+            {
+                tours = GetItems();
+                if (tourItemDAO.AddLogs(tourName, logEntry, rating, actualTime, description, date) == null)
+                    return null;
+                return tours;
+            }
+            return tours;
+        }
+
 
         public IEnumerable<TourItem> RemoveTour(string itemName)
         {

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TourPlaner
 {
-    public enum selectedMethod
+    public enum SelectedMethod
     {   [Description("fastest")]
         Car,
         [Description("bicycle")]

@@ -67,7 +67,7 @@ namespace TourPlaner.ViewModels
             }
         }
         private TourItem currentItem;
-        private ICommand searchCommand, clearCommand, executeCommand, removeCommand, showMap, createCommand;
+        private ICommand searchCommand, clearCommand, executeCommand, removeCommand, showMap, createCommand, logsCommand;
         public ICommand RemoveItems { get; }
         public ICommand AddItems { get; }
         public ICommand SearchCommand => searchCommand ??= new RelayCommand(Search);
@@ -75,6 +75,7 @@ namespace TourPlaner.ViewModels
         public ICommand CreateCommand => createCommand ??= new RelayCommand(Create);
         public ICommand ClearCommand => clearCommand ??= new RelayCommand(Clear);
         public ICommand ExecuteCommand => executeCommand ??= new RelayCommand(AddTourWindow);
+        public ICommand LogsCommand => logsCommand ??= new RelayCommand(AddLogWindow);
         public ICommand RemoveCommand => removeCommand ??= new RelayCommand(RemoveTourWindow);
         public new event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<TourItem> Tours { get; set; }
@@ -90,6 +91,7 @@ namespace TourPlaner.ViewModels
                 {
                     currentItem = value;
                     RaisePropertyChangedEvent(nameof(TourInformations));
+                    RaisePropertyChangedEvent(nameof(TourLogInformations));
                     RaisePropertyChangedEvent(nameof(CurrentMap));
                     RaisePropertyChangedEvent(nameof(CurrentItem));
                 }
@@ -110,6 +112,25 @@ namespace TourPlaner.ViewModels
                     return new ObservableCollection<TourItem>();
             }
         }
+
+        public ObservableCollection<UserRating> TourLogInformations
+        {
+            get
+            {
+                if (CurrentItem != null)
+                {
+                    var collection = new ObservableCollection<UserRating>();
+                    foreach (var item in CurrentItem.TourLogs)
+                    {
+                        collection.Add(item);
+                    }
+                    return collection;
+                }
+                else
+                    return new ObservableCollection<UserRating>();
+            }
+        }
+
         public string SearchName
         {
             get
@@ -157,6 +178,25 @@ namespace TourPlaner.ViewModels
                     log.Info("Added Tour called: " + item.Name);
                 }
         }
+
+
+        private void AddLogWindow(object commandParameter)
+        {
+            AddLogsViewModel logVM;
+            AddLogs logsWin = new();
+            logVM = (AddLogsViewModel)logsWin.DataContext; //creates link to new window's data --> IMPORTANT
+
+            Debug.Print("Before");
+            logsWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
+            if (logVM.Logs != null || logVM.Description != null )
+            {
+                if (this.tourItemFactory.AddLogs(commandParameter.ToString(), logVM.Logs, logVM.Rating, logVM.ActualTime, "Sunny", DateTime.Now) == null)
+                    MessageBox.Show("There has been an error inserting your tour, please try again!");
+                Tours.Clear();
+                FillListBox();
+            }
+        }
+
 
         private async void AddTourWindow(object commandParameter)
         {

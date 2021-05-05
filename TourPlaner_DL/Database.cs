@@ -105,6 +105,27 @@ namespace TourPlaner_DL
             }
         }
 
+
+        public List<TourItem> AddLogs(string tourName, string logEntry, int rating, int actualTime, string description, DateTime date)
+        {
+
+            var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
+            var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
+            var account = employeeList.FirstOrDefault(p => p.Name == tourName);
+            UserRating tempRating = new();
+            tempRating.Logs = logEntry;
+            tempRating.Rating = rating;
+            tempRating.ActualTime = actualTime;
+            tempRating.Description = description;
+            tempRating.TravelDate = date;
+            account.TourLogs.Add(tempRating);
+
+            jsonData = JsonConvert.SerializeObject(employeeList);
+            File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
+            return GetItems();
+        }
+
+
         public List<TourItem> AddTour(string tourName, string startName, string goalName, DateTime dateTime, string method)
         {
             bool isFound = false, isInserted = true;

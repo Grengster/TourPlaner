@@ -18,7 +18,12 @@ namespace TourPlaner_DL
             throw new NotImplementedException();
         }
 
-        public List<TourItem> GetItems()
+        public List<TourItem> AddLogs(string tourName, string logEntry, int rating, int actualTime, string description, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+            public List<TourItem> GetItems()
         {
             //Get items from folder
             throw new NotImplementedException();

@@ -11,6 +11,7 @@ namespace TourPlaner_BL
         IEnumerable<TourItem> GetItems();
         IEnumerable<TourItem> Search(string itemName, bool caseSensitive = false);
         IEnumerable<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, string method);
+        IEnumerable<TourItem> AddLogs(string tourName, string logEntry, int rating, int actualTime, string description, DateTime date);
         IEnumerable<TourItem> RemoveTour(string itemName);
         Task ShowMapTourAsync(string start, string end, string tourName);
         Task CreatePDF(string tourName);

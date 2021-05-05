@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,18 +15,13 @@ using System.Windows.Shapes;
 namespace TourPlaner
 {
     /// <summary>
-    /// Interaktionslogik für PlusButtonWindow.xaml
+    /// Interaction logic for AddLogs.xaml
     /// </summary>
-    public partial class PlusButtonWindow : Window
+    public partial class AddLogs : Window
     {
-        
-        public PlusButtonWindow()
+        public AddLogs()
         {
             InitializeComponent();
-            /*AddTourViewModel viewmodel = new();
-            this.DataContext = viewmodel;
-            Closing += viewmodel.ForceClosing; //NOT WORKING https://stackoverflow.com/questions/3683450/handling-the-window-closing-event-with-wpf-mvvm-light-toolkit
-            */
         }
     }
 }

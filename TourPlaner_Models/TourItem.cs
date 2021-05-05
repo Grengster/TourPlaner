@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace TourPlaner_Models
 {
@@ -9,7 +10,13 @@ namespace TourPlaner_Models
         public string Name { get; set; }
 
         public TourInfo TourInfo { get; set; }
+        public List<UserRating> TourLogs { get; set; }
+        public TourItem()
+        {
+            TourLogs = new List<UserRating>();
+        }
     }
+
     public class TourInfo
     {
         public string Start { get; set; }
@@ -25,7 +32,8 @@ namespace TourPlaner_Models
     { //KALENDERFUNKTION EINBAUEN ALS UNIQUE FEATURE
         public DateTime TravelDate { get; set; }
         public string Description { get; set; }
+        public string Logs { get; set; }
         public int ActualTime { get; set; }
-        public int Rating { get; set; }
+        public int Rating { get; set; } 
     }
 }
