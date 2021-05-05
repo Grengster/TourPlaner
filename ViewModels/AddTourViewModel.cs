@@ -150,7 +150,6 @@ namespace TourPlaner
             }
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public AddTourViewModel()
@@ -219,7 +218,7 @@ namespace TourPlaner
             }
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             Debug.Print($"propertyChanged \"{propertyName}\"");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

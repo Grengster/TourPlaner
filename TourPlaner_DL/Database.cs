@@ -120,9 +120,22 @@ namespace TourPlaner_DL
                 if (isFound)
                     return null;
             };
-            var jsonResponse = JObject.Parse(MapQuestConn.Instance().FindRoute(startName, goalName, method));
-            float jDistance = float.Parse(jsonResponse["route"]["distance"].ToString()); //reads out of mapquest json response
-            var jTime = jsonResponse["route"]["formattedTime"].ToString();
+            float jDistance = 1f;
+            var jTime = "";
+            string jsonString = "";
+            try
+            {
+                var jsonResponse = JObject.Parse(MapQuestConn.Instance().FindRoute(startName, goalName, method));
+                jDistance = float.Parse(jsonResponse["route"]["distance"].ToString()); //reads out of mapquest json response
+                jTime = jsonResponse["route"]["formattedTime"].ToString();
+                jsonString = jsonResponse.ToString();
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+            }
+            
+            
 
            // log.Info("Got ");
 
@@ -133,7 +146,7 @@ namespace TourPlaner_DL
                 cmd.Parameters.AddWithValue("g", goalName);
                 cmd.Parameters.AddWithValue("s", startName);
                 cmd.Parameters.AddWithValue("d", jDistance);
-                cmd.Parameters.AddWithValue("r", jsonResponse.ToString());
+                cmd.Parameters.AddWithValue("r", jsonString);
                 cmd.Parameters.AddWithValue("t", jTime);
                 int a = cmd.ExecuteNonQuery();
                 if (a == 0)
@@ -156,7 +169,7 @@ namespace TourPlaner_DL
                         MapImagePath = $@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\{tourName}.png",
                         CreationTime = dateTime,
                         TotalTime = jTime,
-                        JsonData = jsonResponse.ToString()
+                        JsonData = jsonString
                     }
                 });
                 jsonData = JsonConvert.SerializeObject(employeeList);

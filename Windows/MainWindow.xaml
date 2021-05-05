@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:TourPlaner.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:TourFolderVM}"
+        xmlns:local="clr-namespace:TourPlaner.UserControls"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="900" MinHeight="450" MinWidth="900">
     <Grid>
@@ -50,7 +51,7 @@
             <Button Grid.Column="4" Content="Clear" Width="50" Height="20" Command="{Binding ClearCommand}"></Button>
             <Button Grid.Column="3" Content="Search" Width="50" Height="20" Command="{Binding SearchCommand}"></Button>
         </StackPanel>
-        <DockPanel LastChildFill="True" Grid.RowSpan="2" Margin="0,8,546,0" Grid.Row="2" Grid.ColumnSpan="2">
+        <DockPanel LastChildFill="True" Grid.RowSpan="2"  Grid.Row="2">
             <DockPanel LastChildFill="True" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Button Content="Button" Command="{Binding CreateCommand}" CommandParameter="{Binding CurrentItem.Name}" DockPanel.Dock="Right" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Button Content="+" Command="{Binding ExecuteCommand}" DockPanel.Dock="Right" MinWidth="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
@@ -61,66 +62,13 @@
                      ItemsSource="{Binding Tours}"
                      SelectedItem="{Binding CurrentItem}"
                      DisplayMemberPath="Name"/>
-            <!--<ListView ItemsSource="{Binding Tours}" Name="oops" Grid.Row="2">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>-->
         </DockPanel>
         <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="Person Details" FontSize="15" Margin="0,33,56,0" Grid.RowSpan="2"/>
-        <DataGrid Grid.Row="2" Grid.Column="1" IsReadOnly="true" ItemsSource="{Binding Path=SelectedItems, ElementName=listMediaItems}" AutoGenerateColumns="false" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="Distance" Binding="{Binding TourInfo.Start}" />
-                <DataGridTextColumn Header="Distance" Binding="{Binding TourInfo.Goal}" />
-                <DataGridTextColumn Header="Distance" Binding="{Binding TourInfo.Distance}" />
-                <DataGridTextColumn Header="Distance" Binding="{Binding TourInfo.Method}" />
-                <!--<DataGridTemplateColumn Header="Birthday">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <DatePicker SelectedDate="{Binding Birthday}" BorderThickness="0" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
-            </DataGrid.Columns>
-        </DataGrid>
-        <!--
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem.Name,Mode=TwoWay}" Margin="50,50,56,0" Grid.ColumnSpan="2"/>
-
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="Brand" Margin="0,100,56,0" Grid.ColumnSpan="2"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentItem.TourInfo.Start, Mode=TwoWay}" Margin="50,100,56,0" Grid.ColumnSpan="2"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="Type" Margin="0,150,56,0" Grid.ColumnSpan="2"/>
-        -->
+        <local:TourData TourInformations="{Binding TourInformations}" Grid.Row="2" Grid.Column="1" ></local:TourData>
         <Canvas Grid.Row="3" Grid.Column="1" ClipToBounds="True">
             <Border  Name="border" Grid.ColumnSpan="2">
                 <Image Name="image" Source="{Binding CurrentMap}" Opacity="1" RenderTransformOrigin="0.5,0.5"  />
             </Border>
         </Canvas>
-        <!--<Button Grid.Row="3" Grid.Column="1" Content="Choose" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Name="btnChoose" Width="90" Command="{Binding ChooseCommand}" CommandParameter="{Binding ElementName=lstRoster,Path=SelectedPerson}" />
--->
-
-        <!--
-        <Grid Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DockPanel.Dock="Top">
-            <DataGrid
-              SelectedItem="{Binding Path=CurrentItem, Mode=TwoWay}">
-            </DataGrid>
-        </Grid>
-        -->
-
-        <!--    
-        <TabControl Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="0,8,0,0" Grid.Row="2">
-            <TabItem Header="General">
-                <Label Content="Content goes here..." Background="AliceBlue" />
-            </TabItem>
-            <TabItem Header="Security">
-                <Label Content="Content goes here..." Background="Crimson"/>
-            </TabItem>
-            <TabItem Header="Details">
-                <Label Content="Content goes here..." Background="Lime"/>
-            </TabItem>
-        </TabControl>
--->
     </Grid>
 </Window>

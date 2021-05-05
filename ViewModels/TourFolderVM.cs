@@ -89,9 +89,25 @@ namespace TourPlaner.ViewModels
                 if ((currentItem != value) && (value != null))
                 {
                     currentItem = value;
+                    RaisePropertyChangedEvent(nameof(TourInformations));
                     RaisePropertyChangedEvent(nameof(CurrentMap));
                     RaisePropertyChangedEvent(nameof(CurrentItem));
                 }
+            }
+        }
+
+        public ObservableCollection<TourItem> TourInformations
+        {
+            get
+            {
+                if (CurrentItem != null)
+                {
+                    var collection = new ObservableCollection<TourItem>();
+                    collection.Add(CurrentItem);
+                    return collection;
+                }
+                else
+                    return new ObservableCollection<TourItem>();
             }
         }
         public string SearchName

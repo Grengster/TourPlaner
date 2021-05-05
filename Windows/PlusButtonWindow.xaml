@@ -4,16 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TourPlaner" 
+        xmlns:local="clr-namespace:TourPlaner.UserControls"
         mc:Ignorable="d"
-        Title="PlusButtonWindow" Height="500" Width="550" MinHeight="500" MinWidth="550">
+        Title="PlusButtonWindow" Height="500" Width="1100" MinHeight="500" MinWidth="1100">
 
     <Window.DataContext>
         <vm:AddTourViewModel />
     </Window.DataContext>
-    <Grid Margin="40,30,40,30">
+    <Grid Margin="32,10,36,-6">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="315*"/>
+            <ColumnDefinition Width="227*"/>
+            <ColumnDefinition Width="390*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="4*"/>
@@ -22,19 +24,20 @@
             <RowDefinition Height="4*"/>
             <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" FontSize="20" VerticalAlignment="Center" >Type in Tourname:</Label>
-        <TextBox Grid.Column="1" Grid.Row="0" Height="50" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,28"/>
-        <Label Grid.Column="0" Grid.Row="1" FontSize="20" VerticalAlignment="Center">Type in Start Destination:</Label>
-        <TextBox Grid.Column="1" Grid.Row="1" Height="50" Text="{Binding Start, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,28"/>
-        <Label Grid.Column="0" Grid.Row="2" FontSize="20" VerticalAlignment="Center" >Type in Goal Destination:</Label>
-        <TextBox Grid.Column="1" Grid.Row="2" Height="50"  Text="{Binding Goal, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,28"/>
-        <Label Grid.Column="0" Grid.Row="3" FontSize="20" VerticalAlignment="Center" >Type of travelling:</Label>
+        <Label FontSize="35" VerticalAlignment="Center" HorizontalAlignment="Center" Height="56" Width="146" >Tour List:</Label>
+        <local:TourData Grid.Column="0" TourInformations="{Binding TourList}" Margin="0,96,0,0" Grid.RowSpan="2"/>
+        <Label Grid.Column="1" FontSize="20" VerticalAlignment="Center" Height="36" >Type in Tourname:</Label>
+        <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,20"/>
+        <Label Grid.Column="1" Grid.Row="1" FontSize="20" VerticalAlignment="Center" Height="36">Type in Start Destination:</Label>
+        <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Start, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,20"/>
+        <Label Grid.Column="1" Grid.Row="2" FontSize="20" VerticalAlignment="Center" Height="36" >Type in Goal Destination:</Label>
+        <TextBox Grid.Column="2" Grid.Row="2"  Text="{Binding Goal, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,20"/>
+        <Label Grid.Column="1" Grid.Row="3" FontSize="20" VerticalAlignment="Center" Height="36" >Type of travelling:</Label>
 
-        <ComboBox FontSize="15" HorizontalContentAlignment="Center" Grid.Column="1" Grid.Row="3" Height="25" VerticalContentAlignment="Center" ItemsSource="{Binding Source={vm:ComboEnumBinding {x:Type vm:selectedMethod}}}" SelectedItem="{Binding Method}">
-        </ComboBox>
+        <ComboBox FontSize="15" HorizontalContentAlignment="Center" Grid.Column="2" Grid.Row="3" VerticalContentAlignment="Center" ItemsSource="{Binding Source={vm:ComboEnumBinding {x:Type vm:selectedMethod}}}" SelectedItem="{Binding Method}" Height="30"/>
         <!--<TextBox Grid.Column="1" Grid.Row="3" Height="50"  Text="{Binding Distance, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,28"/>-->
         <!--<Label Grid.Row="1" HorizontalAlignment="Left" Content="{Binding Input}" VerticalAlignment="Top" FontSize="14" RenderTransformOrigin="0.369,0.643" Grid.ColumnSpan="2" Margin="166,152,0,0"/>-->
-        <Button Grid.Column="0" Margin="40,30,40,30" Grid.Row="4" Command="{Binding PlusButtonClose}" CommandParameter="{Binding ElementName=AddWindow}" Content="CANCEL" IsCancel="True" Grid.RowSpan="2" />
-        <Button Grid.Column="1" Margin="40,30,40,30" Grid.Row="4" Content="ADD" MinWidth="40" Command="{Binding AddItems}" CommandParameter="{Binding ElementName=AddWindow}" Grid.RowSpan="2"/>
+        <Button Grid.Column="1" Margin="3,30,40,30" Grid.Row="4" Command="{Binding PlusButtonClose}" CommandParameter="{Binding ElementName=AddWindow}" Content="CANCEL" IsCancel="True" />
+        <Button Grid.Column="2" Margin="40,30,40,30" Grid.Row="4" Content="ADD" MinWidth="40" Command="{Binding AddItems}" CommandParameter="{Binding ElementName=AddWindow}"/>
     </Grid>
 </Window>
