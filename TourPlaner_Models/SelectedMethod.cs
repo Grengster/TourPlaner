@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Linq;
 
-namespace TourPlaner
+namespace TourPlaner_Models
 {
     public enum SelectedMethod
     {   [Description("fastest")]

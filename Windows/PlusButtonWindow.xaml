@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:TourPlaner" 
+        xmlns:vm="clr-namespace:TourPlaner"
+        xmlns:models="clr-namespace:TourPlaner_Models;assembly=TourPlaner_Models"
         xmlns:local="clr-namespace:TourPlaner.UserControls"
         mc:Ignorable="d"
         Title="PlusButtonWindow" Height="500" Width="1100" MinHeight="500" MinWidth="1100">
@@ -34,7 +35,8 @@
         <TextBox Grid.Column="2" Grid.Row="2"  Text="{Binding Goal, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,20"/>
         <Label Grid.Column="1" Grid.Row="3" FontSize="20" VerticalAlignment="Center" Height="36" >Type of travelling:</Label>
 
-        <ComboBox FontSize="15" HorizontalContentAlignment="Center" Grid.Column="2" Grid.Row="3" VerticalContentAlignment="Center" ItemsSource="{Binding Source={vm:ComboEnumBinding {x:Type vm:selectedMethod}}}" SelectedItem="{Binding Method}" Height="30"/>
+        <ComboBox FontSize="15" HorizontalContentAlignment="Center" Grid.Column="2" Grid.Row="3" Height="25" VerticalContentAlignment="Center" ItemsSource="{Binding Source={vm:ComboEnumBinding {x:Type models:SelectedMethod}}}" SelectedItem="{Binding Method}">
+        </ComboBox>
         <!--<TextBox Grid.Column="1" Grid.Row="3" Height="50"  Text="{Binding Distance, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,28"/>-->
         <!--<Label Grid.Row="1" HorizontalAlignment="Left" Content="{Binding Input}" VerticalAlignment="Top" FontSize="14" RenderTransformOrigin="0.369,0.643" Grid.ColumnSpan="2" Margin="166,152,0,0"/>-->
         <Button Grid.Column="1" Margin="3,30,40,30" Grid.Row="4" Command="{Binding PlusButtonClose}" CommandParameter="{Binding ElementName=AddWindow}" Content="CANCEL" IsCancel="True" />

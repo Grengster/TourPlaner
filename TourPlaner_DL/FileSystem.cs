@@ -33,5 +33,10 @@ namespace TourPlaner_DL
         {
             throw new NotImplementedException();
         }
+
+        public List<TourItem> EditLogs(string tourName, string oldLogEntry, string logEntry, int rating, int actualTime, string description, DateTime date, bool toDelete = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

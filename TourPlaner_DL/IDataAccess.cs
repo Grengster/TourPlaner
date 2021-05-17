@@ -9,6 +9,7 @@ namespace TourPlaner_DL
         public List<TourItem> GetItems();
         public List<TourItem> AddTour(string itemName, string startName, string goalName, DateTime dateTime, string method);
         public List<TourItem> AddLogs(string tourName, string logEntry, int rating, int actualTime, string description, DateTime date);
+        public List<TourItem> EditLogs(string tourName, string oldLogEntry, string logEntry, int rating, int actualTime, string description, DateTime date, bool toDelete = false);
         public List<TourItem> RemoveTour(string itemName);
     }
 }

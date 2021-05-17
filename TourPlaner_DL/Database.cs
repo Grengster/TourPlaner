@@ -16,6 +16,7 @@ using log4net.Config;
 using TourPlanner_DL;
 using NugetJObject;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace TourPlaner_DL
 {
@@ -125,6 +126,32 @@ namespace TourPlaner_DL
             return GetItems();
         }
 
+        public List<TourItem> EditLogs(string tourName, string oldLogEntry, string logEntry, int rating, int actualTime, string description, DateTime date, bool toDelete = false)
+        {
+
+            var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
+            var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
+            var account = employeeList.FirstOrDefault(p => p.Name == tourName);
+            var oldLog = account.TourLogs.FirstOrDefault(p => p.Logs == oldLogEntry);
+            if(toDelete)
+            {
+                account.TourLogs.Remove(oldLog);
+            }
+            else
+            {
+                oldLog.Logs = logEntry;
+                oldLog.Rating = rating;
+                oldLog.ActualTime = actualTime;
+                oldLog.Description = description;
+                oldLog.TravelDate = date;
+            }
+            
+
+            jsonData = JsonConvert.SerializeObject(employeeList);
+            File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
+            return GetItems();
+        }
+
 
         public List<TourItem> AddTour(string tourName, string startName, string goalName, DateTime dateTime, string method)
         {
@@ -155,7 +182,6 @@ namespace TourPlaner_DL
             {
                 log.Error(e);
             }
-            
             
 
            // log.Info("Got ");
