@@ -127,6 +127,22 @@ namespace TourPlaner
             }
         }
 
+        private DateTime selectedDate;
+        public DateTime SelectedDate
+        {
+            get
+            {
+                return selectedDate;
+            }
+            set
+            {
+                if (selectedDate != value)
+                {
+                    selectedDate = value;
+                    OnPropertyChanged(nameof(SelectedDate));
+                }
+            }
+        }
         public ICommand AddTourExecute { get; }
         public ICommand PlusButtonClose { get; }
         public ICommand AddItems { get; }
@@ -180,7 +196,7 @@ namespace TourPlaner
                 }
             }, (_) =>
             {
-                if (Output != null && Output != "")
+                if (Output != null || Output != "" && Start != "" && Start != null || Goal != "" && Goal != null || Input != "" && Input != null)
                     return true;
                 else
                 {

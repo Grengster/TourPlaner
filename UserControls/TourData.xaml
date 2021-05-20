@@ -14,6 +14,7 @@
                 <DataGridTextColumn Header="Goal" Binding="{Binding TourInfo.Goal}" />
                 <DataGridTextColumn Header="Distance" Binding="{Binding TourInfo.Distance}" />
                 <DataGridTextColumn Header="Method" Binding="{Binding TourInfo.Method}" />
+                <DataGridTextColumn Header="Date" Binding="{Binding TourInfo.CreationTime}" />
             </DataGrid.Columns>
         </DataGrid>
     </StackPanel>

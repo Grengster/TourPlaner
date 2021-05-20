@@ -32,7 +32,7 @@
         <Label Grid.Column="0" Grid.Row="2" FontSize="20" VerticalAlignment="Center" Height="36" Content="Actual Time taken:" />
         <TextBox Grid.Column="1" Grid.Row="2"  Text="{Binding ActualTime, UpdateSourceTrigger=PropertyChanged}"  />
         <Label Grid.Column="0" Grid.Row="3" FontSize="20" VerticalAlignment="Center" Height="36" Content="Weather:" />
-        <TextBox Grid.Column="1" Grid.Row="3"  Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"  />
+        <TextBox Grid.Column="1" Grid.Row="3"  Text="{Binding Weather, UpdateSourceTrigger=PropertyChanged}"  />
         <Label Grid.Column="0" Grid.Row="4" FontSize="20" VerticalAlignment="Center" Content="Type of travelling:"/>
         <!--<TextBox Grid.Column="1" Grid.Row="3" Height="50"  Text="{Binding Distance, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,28"/>-->
         <!--<Label Grid.Row="1" HorizontalAlignment="Left" Content="{Binding Input}" VerticalAlignment="Top" FontSize="14" RenderTransformOrigin="0.369,0.643" Grid.ColumnSpan="2" Margin="166,152,0,0"/>-->

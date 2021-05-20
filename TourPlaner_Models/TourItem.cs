@@ -31,8 +31,8 @@ namespace TourPlaner_Models
     public class UserRating
     { //KALENDERFUNKTION EINBAUEN ALS UNIQUE FEATURE
         public DateTime TravelDate { get; set; }
-        public string Description { get; set; }
         public string Logs { get; set; }
+        public string Weather { get; set; }
         public int ActualTime { get; set; }
         public int Rating { get; set; } 
     }

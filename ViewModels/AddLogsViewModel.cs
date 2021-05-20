@@ -18,10 +18,11 @@ namespace TourPlaner
 {
     public class AddLogsViewModel : INotifyPropertyChanged
     {
-        private int _rating, _actualTime;
-        private string _logs, _description;
+        private string _rating, _actualTime;
+        private string _logs, _weather;
+        int ratingNum, actualTimeNum;
 
-        public int Rating
+        public string Rating
         {
             get
             {
@@ -31,7 +32,7 @@ namespace TourPlaner
             set
             {
                 Debug.Print("write Input");
-                if (Rating != value)
+                if(Rating != value && IsTextAllowed(value))
                 {
                     Debug.Print("set Input-value");
                     _rating = value;
@@ -40,7 +41,7 @@ namespace TourPlaner
                 }
             }
         }
-        public int ActualTime
+        public string ActualTime
         {
             get
             {
@@ -50,7 +51,7 @@ namespace TourPlaner
             set
             {
                 Debug.Print("write Input");
-                if (ActualTime != value)
+                if (ActualTime != value && IsTextAllowed(value))
                 {
                     Debug.Print("set Input-value");
                     _actualTime = value;
@@ -78,22 +79,22 @@ namespace TourPlaner
                 }
             }
         }
-        public string Description
+        public string Weather
         {
             get
             {
                 Debug.Print("read Output");
-                return _description;
+                return _weather;
             }
             set
             {
                 Debug.Print("write Output");
-                if (_description != value)
+                if (_weather != value)
                 {
                     Debug.Print("set Output");
-                    _description = value;
+                    _weather = value;
                     Debug.Print("fire propertyChanged: Output");
-                    OnPropertyChanged(nameof(Description));
+                    OnPropertyChanged(nameof(Weather));
                 }
             }
         }
@@ -134,7 +135,7 @@ namespace TourPlaner
             this.CloseLogsCommand = new RelayCommand((w) =>
             {
                 //MessageBox.Show("Input: " + Input + "\n" + "Start: " + Start + "\n" + "End: " + Goal + "\n");
-                Description = null;
+                Weather = null;
                 Logs = null;
                 CloseWindow(w);
             },
@@ -142,18 +143,25 @@ namespace TourPlaner
             );
             this.AddLogsCommand = new RelayCommand((_) =>
             {
-                if (Logs != null || Description != null)
+                if (Logs != null && Logs != "" && Weather != null && Weather != "" && Convert.ToInt32(Rating) >= 1 && Convert.ToInt32(Rating) <= 5 && Convert.ToInt32(ActualTime) >= 0)
                 {
                     MessageBox.Show("Information has been added!");
                     CloseWindow(_);
                 }
-                else
+                else if (Convert.ToInt32(Rating) < 1 || Convert.ToInt32(Rating) > 5)
                 {
-                    MessageBox.Show("Please fill out all fields!");
+                    MessageBox.Show("Please choose a Rating between 1 and 5!");
                 }
+                else if(Convert.ToInt32(ActualTime) < 0)
+                {
+                    MessageBox.Show("Please choose a valid Time");
+                }
+                else
+                    MessageBox.Show("Please fill out all forms!");
+
             }, (_) =>
             {
-                if (Logs != null || Logs != "" && Description != null || Description != "")
+                if (Logs != null && Logs != "" && Weather != null && Weather != "")
                     return true;
                 else
                 {
@@ -179,7 +187,7 @@ namespace TourPlaner
             }
             else
             {
-                this.Description = null;
+                this.Weather = null;
                 this.Logs = null;
             }
         }

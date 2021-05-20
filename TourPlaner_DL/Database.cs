@@ -117,7 +117,7 @@ namespace TourPlaner_DL
             tempRating.Logs = logEntry;
             tempRating.Rating = rating;
             tempRating.ActualTime = actualTime;
-            tempRating.Description = description;
+            tempRating.Weather = description;
             tempRating.TravelDate = date;
             account.TourLogs.Add(tempRating);
 
@@ -142,7 +142,7 @@ namespace TourPlaner_DL
                 oldLog.Logs = logEntry;
                 oldLog.Rating = rating;
                 oldLog.ActualTime = actualTime;
-                oldLog.Description = description;
+                oldLog.Weather = description;
                 oldLog.TravelDate = date;
             }
             

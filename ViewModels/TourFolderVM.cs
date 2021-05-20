@@ -78,7 +78,7 @@ namespace TourPlaner.ViewModels
         public ICommand ClearCommand => clearCommand ??= new RelayCommand(Clear);
         public ICommand ExecuteCommand => executeCommand ??= new RelayCommand(AddTourWindow);
         public ICommand LogsCommand => logsCommand ??= new RelayCommand(AddLogWindow, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null || currentLog == null) return false; else return true; });
-        public ICommand EditLogsCommand => editLogsCommand ??= new RelayCommand(EditLogWindow, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null || currentLog == null) return false; else return true; });
+        public ICommand EditLogsCommand => editLogsCommand ??= new RelayCommand(EditLogWindow, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null || currentLog == null || currentLog.Logs == "No Logs added yet.") return false; else return true; });
         public ICommand RemoveCommand => removeCommand ??= new RelayCommand(RemoveTourWindow);
         public new event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<TourItem> Tours { get; set; }
@@ -116,6 +116,8 @@ namespace TourPlaner.ViewModels
                 }
             }
         }
+
+        
 
         public ImageSource CurrentMap
         {
@@ -179,7 +181,7 @@ namespace TourPlaner.ViewModels
                         {
                             new UserRating()
                             {
-                                Description = "No Logs added yet."
+                                Logs = "No Logs added yet."
                             }
                         };
                     }
@@ -254,11 +256,11 @@ namespace TourPlaner.ViewModels
 
             Debug.Print("Before");
             logsWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
-            if (logVM.Logs != null || logVM.Description != null )
+            if (logVM.Logs != null || logVM.Weather != null )
             {
                 try
                 {
-                    var temp = this.tourItemFactory.AddLogs(currentItem.Name, logVM.Logs, logVM.Rating, logVM.ActualTime, logVM.Description, DateTime.Now);
+                    var temp = this.tourItemFactory.AddLogs(currentItem.Name, logVM.Logs, Convert.ToInt32(logVM.Rating), Convert.ToInt32(logVM.ActualTime), logVM.Weather, DateTime.Now);
                     if (temp == null)
                         throw (new Exception("Error inserting Logs"));
                 }
@@ -280,18 +282,18 @@ namespace TourPlaner.ViewModels
             AddLogs logsWin = new();
             logVM = (AddLogsViewModel)logsWin.DataContext; //creates link to new window's data --> IMPORTANT
             string oldLog = CurrentLog.Logs;
-            logVM.Description = CurrentLog.Description;
-            logVM.ActualTime = CurrentLog.ActualTime;
+            logVM.Weather = CurrentLog.Weather;
+            logVM.ActualTime = CurrentLog.ActualTime.ToString();
             logVM.Logs = CurrentLog.Logs;
-            logVM.Rating = CurrentLog.Rating;
+            logVM.Rating = CurrentLog.Rating.ToString();
 
             Debug.Print("Before");
             logsWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
-            if (logVM.Logs != null || logVM.Description != null)
+            if (logVM.Logs != null || logVM.Weather != null)
             {
                 try
                 {
-                    var temp = this.tourItemFactory.EditLogs(currentItem.Name, oldLog, logVM.Logs, logVM.Rating, logVM.ActualTime, logVM.Description, DateTime.Now);
+                    var temp = this.tourItemFactory.EditLogs(currentItem.Name, oldLog, logVM.Logs, Convert.ToInt32(logVM.Rating), Convert.ToInt32(logVM.ActualTime), logVM.Weather, DateTime.Now);
                     if (temp == null)
                         throw (new Exception("Error editing Logs"));
                 }
@@ -321,7 +323,7 @@ namespace TourPlaner.ViewModels
             {
                 try
                 {
-                    var tempVar = await this.tourItemFactory.AddTourAsync(plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal, DateTime.Now, EnumDescriptionExtension.GetDescription(plusButtonVM.Method));
+                    var tempVar = await this.tourItemFactory.AddTourAsync(plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal, plusButtonVM.SelectedDate, EnumDescriptionExtension.GetDescription(plusButtonVM.Method));
                     if (tempVar == null)
                         MessageBox.Show("There has been an error inserting your tour, please try again!");
                     else

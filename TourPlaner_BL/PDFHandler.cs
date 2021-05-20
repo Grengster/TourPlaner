@@ -85,8 +85,8 @@ namespace TourPlaner_BL
             {
                 string test = i.ToString();
                 logText +=  @$"Logs-Nr." + test + 
-                            "<br><span style='margin-left: 50px;'> Text: " + item.Logs + "</span>" +
-                            "<br><span style='margin-left: 50px;'>Weather: " + item.Description + "</span>" +
+                            "<br><span style='margin-left: 50px;'>Text: " + item.Logs + "</span>" +
+                            "<br><span style='margin-left: 50px;'>Weather: " + item.Weather + "</span>" +
                             "<br><span style='margin-left: 50px;'>Rating: " + item.Rating + "</span>" +
                             "<br><span style='margin-left: 50px;'>Date: " + item.ActualTime + "</span>" +
                             "<br>";

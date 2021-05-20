@@ -26,13 +26,27 @@ namespace TourPlaner_BL
         public IEnumerable<TourItem> Search(string itemName, bool caseSensitive = false)
         {
             IEnumerable<TourItem> tours = GetItems();
-            if (itemName == null || itemName == "")
+            IEnumerable<TourItem> searchTours;
+            if (itemName == null || itemName == "") 
                 return tours;
             if (caseSensitive)
             {
-                return tours.Where(x => x.Name.Contains(itemName));
+                searchTours = tours.Where(x => x.Name.Contains(itemName));
+                searchTours = searchTours.Union(tours.Where(x => x.TourInfo.JsonData.Contains(itemName)));
+                searchTours = searchTours.Union(tours.Where(x => x.TourInfo.Goal.Contains(itemName)));
+                searchTours = searchTours.Union(tours.Where(x => x.TourInfo.Start.Contains(itemName)));
+                searchTours = searchTours.Union(tours.Where(x => x.TourLogs.Any(y => y.Logs.Contains(itemName))));
+                //searchTours = searchTours.Union(tours.Where(x => x.TourLogs.Any(y => y.Weather.Contains(itemName))));
+                return searchTours;
             }
-            return tours.Where(x => x.Name.ToLower().Contains(itemName.ToLower()));
+            searchTours = tours.Where(x => x.Name.ToLower().Contains(itemName.ToLower()));
+            searchTours = searchTours.Union(tours.Where(x => x.TourInfo.JsonData.ToLower().Contains(itemName.ToLower())));
+            searchTours = searchTours.Union(tours.Where(x => x.TourInfo.Goal.ToLower().Contains(itemName.ToLower())));
+            searchTours = searchTours.Union(tours.Where(x => x.TourInfo.Start.ToLower().Contains(itemName.ToLower())));
+            searchTours = searchTours.Union(tours.Where(x => x.TourLogs.Any(y => y.Logs.ToLower().Contains(itemName.ToLower()))));
+            //searchTours = searchTours.Union(tours.Where(x => x.TourLogs.Any(y => y.Weather.ToLower().Contains(itemName.ToLower()))));
+            return searchTours;
+            
         }
 
         private async Task<List<TourItem>> GetListAsync(string itemName, string startName, string goalName, DateTime dateTime, string method)
