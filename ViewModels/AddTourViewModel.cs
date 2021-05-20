@@ -13,6 +13,8 @@ using TourPlaner_Models;
 using TourPlaner_BL;
 using System.Text.RegularExpressions;
 using System.Windows.Markup;
+using System.Windows.Data;
+using System.Globalization;
 
 namespace TourPlaner
 {
@@ -21,7 +23,6 @@ namespace TourPlaner
         private string _output = "Hello World!";
         private string _input, _start, _goal;
         SelectedMethod _method;
-
         public string Input
         {
             get
@@ -58,6 +59,20 @@ namespace TourPlaner
                     Debug.Print("fire propertyChanged: Input");
                     OnPropertyChanged(nameof(Start));
                 }
+            }
+        }
+
+        public HashSet<DateTime> dates = new HashSet<DateTime>();
+
+        public HashSet<DateTime> Dates {
+            get
+            {
+                return dates;
+            }
+            set
+            {
+                dates = value;
+                OnPropertyChanged();
             }
         }
 
@@ -170,7 +185,7 @@ namespace TourPlaner
 
         public AddTourViewModel()
         {
-
+            
             this.PlusButtonClose = new RelayCommand((w) =>
             {
                 //MessageBox.Show("Input: " + Input + "\n" + "Start: " + Start + "\n" + "End: " + Goal + "\n");
@@ -206,7 +221,17 @@ namespace TourPlaner
             );
         }
 
-        public void ForceClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        public void RefreshList()
+        {
+            foreach (var item in this.TourList)
+            {
+                this.Dates.Add(item.TourInfo.CreationTime.Date);
+            }
+            OnPropertyChanged(nameof(Dates));
+        }
+
+
+            public void ForceClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             string msg = "Data is dirty. Close without saving?";
             MessageBoxResult result =
@@ -239,6 +264,23 @@ namespace TourPlaner
             Debug.Print($"propertyChanged \"{propertyName}\"");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        
+    }
+
+    public class LookupConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            var date = (DateTime)values[0];
+            var dates = values[1] as HashSet<DateTime>;
+            return dates.Contains(date);
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     class ComboEnumBinding : MarkupExtension
@@ -258,4 +300,6 @@ namespace TourPlaner
             return Enum.GetValues(EnumType);
         }
     }
+
+    
 }

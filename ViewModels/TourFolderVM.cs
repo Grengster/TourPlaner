@@ -318,6 +318,8 @@ namespace TourPlaner.ViewModels
             {
                 plusButtonVM.TourList.Add(item);
             }
+            plusButtonVM.RefreshList();
+
             plusWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
             if (plusButtonVM.Input != null)
             {

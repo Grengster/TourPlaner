@@ -20,7 +20,6 @@ namespace TourPlaner
     /// </summary>
     public partial class PlusButtonWindow : Window
     {
-        
         public PlusButtonWindow()
         {
             InitializeComponent();

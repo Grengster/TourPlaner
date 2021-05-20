@@ -8,7 +8,22 @@
         xmlns:local="clr-namespace:TourPlaner.UserControls"
         mc:Ignorable="d"
         Title="PlusButtonWindow" Height="500" Width="1500" MinHeight="500" MinWidth="1500">
-
+    <Window.Resources>
+        <vm:LookupConverter x:Key="LookupConverter" />
+        <Style x:Key="calendarDayButtonStyle" TargetType="CalendarDayButton">
+            <Style.Triggers>
+                <DataTrigger Value="True">
+                    <DataTrigger.Binding>
+                        <MultiBinding Converter="{StaticResource LookupConverter}">
+                            <Binding />
+                            <Binding Path="DataContext.Dates" RelativeSource="{RelativeSource AncestorType=Calendar}" />
+                        </MultiBinding>
+                    </DataTrigger.Binding>
+                    <Setter Property="Background" Value="Pink" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Window.DataContext>
         <vm:AddTourViewModel />
     </Window.DataContext>
@@ -38,7 +53,7 @@
 
         <ComboBox FontSize="15" HorizontalContentAlignment="Center" Grid.Column="2" Grid.Row="3" VerticalContentAlignment="Center" ItemsSource="{Binding Source={vm:ComboEnumBinding {x:Type models:SelectedMethod}}}" SelectedItem="{Binding Method}" Margin="0,36,0,35"/>
 
-        <Calendar Name="SelCal" SelectionMode="SingleDate" Grid.Column="4" Grid.Row="1" Grid.RowSpan="4" SelectedDate="{Binding SelectedDate}"/>
+        <Calendar Name="SelCal" SelectionMode="SingleDate" Grid.Column="4" Grid.Row="1" Grid.RowSpan="4" CalendarDayButtonStyle="{DynamicResource calendarDayButtonStyle}" SelectedDate="{Binding SelectedDate}"/>
 
         <Label FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="4" Grid.Row="3">Selected date:</Label>
         <TextBox  Grid.Column="4" Grid.Row="4" Text="{Binding ElementName=SelCal, Path=SelectedDate, StringFormat=d, UpdateSourceTrigger=PropertyChanged}" Height="50" />
