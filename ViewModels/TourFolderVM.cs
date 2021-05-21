@@ -153,8 +153,10 @@ namespace TourPlaner.ViewModels
             {
                 if (CurrentItem != null)
                 {
-                    var collection = new ObservableCollection<TourItem>();
-                    collection.Add(CurrentItem);
+                    var collection = new ObservableCollection<TourItem>
+                    {
+                        CurrentItem
+                    };
                     return collection;
                 }
                 else
@@ -260,7 +262,7 @@ namespace TourPlaner.ViewModels
             {
                 try
                 {
-                    var temp = this.tourItemFactory.AddLogs(currentItem.Name, logVM.Logs, Convert.ToInt32(logVM.Rating), Convert.ToInt32(logVM.ActualTime), logVM.Weather, DateTime.Now);
+                    var temp = this.tourItemFactory.AddLogs(currentItem.Name, logVM.Logs, Convert.ToInt32(logVM.Rating), Convert.ToInt32(logVM.ActualTime), logVM.Weather, DateTime.Today);
                     if (temp == null)
                         throw (new Exception("Error inserting Logs"));
                 }
@@ -293,7 +295,7 @@ namespace TourPlaner.ViewModels
             {
                 try
                 {
-                    var temp = this.tourItemFactory.EditLogs(currentItem.Name, oldLog, logVM.Logs, Convert.ToInt32(logVM.Rating), Convert.ToInt32(logVM.ActualTime), logVM.Weather, DateTime.Now);
+                    var temp = this.tourItemFactory.EditLogs(currentItem.Name, oldLog, logVM.Logs, Convert.ToInt32(logVM.Rating), Convert.ToInt32(logVM.ActualTime), logVM.Weather, DateTime.Today);
                     if (temp == null)
                         throw (new Exception("Error editing Logs"));
                 }

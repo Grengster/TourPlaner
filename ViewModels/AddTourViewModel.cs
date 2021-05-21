@@ -62,7 +62,7 @@ namespace TourPlaner
             }
         }
 
-        public HashSet<DateTime> dates = new HashSet<DateTime>();
+        public HashSet<DateTime> dates = new();
 
         public HashSet<DateTime> Dates {
             get
@@ -76,11 +76,11 @@ namespace TourPlaner
             }
         }
 
-        private static readonly Regex _regex = new("[^0-9]+"); //regex that matches disallowed text
-        private static bool IsTextAllowed(string text)
+        //private static readonly Regex _regex = new("[^0-9]+"); //regex that matches disallowed text
+        /*private static bool IsTextAllowed(string text)
         {
             return !_regex.IsMatch(text);
-        }
+        }*/
 
         public SelectedMethod Method
         {
@@ -180,6 +180,11 @@ namespace TourPlaner
                 }
             }
         }
+
+
+        
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -301,5 +306,30 @@ namespace TourPlaner
         }
     }
 
-    
+    public class DataTriggerAssists
+    {
+        public static readonly DependencyProperty ValueProperty =
+            DependencyProperty.RegisterAttached(
+                "Value",
+                typeof(object),
+                typeof(DataTriggerAssists),
+                new FrameworkPropertyMetadata(null, OnValueChanged));
+
+        public static object GetValue(DependencyObject d)
+        {
+            return d.GetValue(ValueProperty);
+        }
+
+        public static void SetValue(DependencyObject d, object value)
+        {
+            d.SetValue(ValueProperty, value);
+        }
+
+        public static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            if (d is DataTrigger trigger)
+                trigger.Value = args.NewValue;
+        }
+    }
+
 }

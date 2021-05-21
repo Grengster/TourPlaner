@@ -24,11 +24,10 @@ namespace TourPlaner_BL
             var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
             var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
             float totalDistance = 0;
-            int hours = 0, minutes = 0, seconds = 0;
             //dynamic dynJson = JToken.Parse(account.TourInfo.JsonData).ToObject<dynamic>(); //need to find a way of iterating through narrative
             string summaryText = "";
 
-            TimeSpan total = new TimeSpan();
+            TimeSpan total = new();
             var totalDisplay = "";
             foreach (var item in employeeList)
             {
@@ -137,8 +136,13 @@ namespace TourPlaner_BL
             //await SaveDoc(doc);
         }
 
-        private static async Task SaveDoc(HtmlToPdfDocument doc)
+        private static void SaveDoc(HtmlToPdfDocument doc)
         {
+            if (doc is null)
+            {
+                throw new ArgumentNullException(nameof(doc));
+            }
+
             var converter = new SynchronizedConverter(new PdfTools());
 
 

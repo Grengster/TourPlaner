@@ -10,6 +10,9 @@
         Title="PlusButtonWindow" Height="500" Width="1500" MinHeight="500" MinWidth="1500">
     <Window.Resources>
         <vm:LookupConverter x:Key="LookupConverter" />
+
+        
+
         <Style x:Key="calendarDayButtonStyle" TargetType="CalendarDayButton">
             <Style.Triggers>
                 <DataTrigger Value="True">
@@ -42,7 +45,7 @@
             <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
         <Label FontSize="35" VerticalAlignment="Center" HorizontalAlignment="Center" Height="56" Width="146" >Tour List:</Label>
-        <local:TourData Grid.Column="0" TourInformations="{Binding TourList}" Margin="0,96,0,0" Grid.RowSpan="2"/>
+        <local:TourData Grid.Column="0" TourInformations="{Binding TourList}" Grid.Row="1" Grid.RowSpan="4"/>
         <Label FontSize="20" VerticalAlignment="Center" Height="36" Grid.ColumnSpan="2" Margin="484,0,96,0" >Type in Tourname:</Label>
         <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,20"/>
         <Label Grid.Row="1" FontSize="20" VerticalAlignment="Center" Height="36" Grid.ColumnSpan="2" Margin="484,0,96,0">Type in Start Destination:</Label>
@@ -51,7 +54,7 @@
         <TextBox Grid.Column="2" Grid.Row="2"  Text="{Binding Goal, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,20"/>
         <Label Grid.Row="3" FontSize="20" VerticalAlignment="Center" Height="36" Grid.ColumnSpan="2" Margin="484,0,96,0" >Type of travelling:</Label>
 
-        <ComboBox FontSize="15" HorizontalContentAlignment="Center" Grid.Column="2" Grid.Row="3" VerticalContentAlignment="Center" ItemsSource="{Binding Source={vm:ComboEnumBinding {x:Type models:SelectedMethod}}}" SelectedItem="{Binding Method}" Margin="0,36,0,35"/>
+        <ComboBox FontSize="15" HorizontalContentAlignment="Center" Grid.Column="2" Grid.Row="3" VerticalContentAlignment="Center" Height="30" ItemsSource="{Binding Source={vm:ComboEnumBinding {x:Type models:SelectedMethod}}}" SelectedItem="{Binding Method}" />
 
         <Calendar Name="SelCal" SelectionMode="SingleDate" Grid.Column="4" Grid.Row="1" Grid.RowSpan="4" CalendarDayButtonStyle="{DynamicResource calendarDayButtonStyle}" SelectedDate="{Binding SelectedDate}"/>
 
