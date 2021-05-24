@@ -70,10 +70,19 @@
         <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding TourLogInformations}" SelectedItem="{Binding CurrentLog}" Margin="0,61,0,0" Grid.RowSpan="2"></DataGrid>
         <Button Grid.Row="2" Grid.Column="2" Content="Add Logs" Command="{Binding LogsCommand}" CommandParameter="{Binding CurrentItem.Name}" Height="25" DockPanel.Dock="Right" MinWidth="40" VerticalAlignment="Top" Margin="0,61,0,0" Grid.RowSpan="2"/>
         <Button Grid.Row="2" Grid.Column="3" Content="Edit Logs" Command="{Binding EditLogsCommand}" CommandParameter="{Binding CurrentLog}" Height="25" DockPanel.Dock="Right" MinWidth="40" VerticalAlignment="Top" Margin="0,61,0,0" Grid.RowSpan="2"/>
-        <Canvas Grid.Row="3" Grid.Column="1" ClipToBounds="True" Margin="0,121,0,0" Grid.RowSpan="2" >
-            <Border Grid.Row="4" Grid.Column="1" Name="border" Grid.ColumnSpan="2">
-                <Image Grid.Row="4" Grid.Column="1" Name="image" Source="{Binding CurrentMap}" Opacity="1" RenderTransformOrigin="0.5,0.5"  />
-            </Border>
-        </Canvas>
+        <Button Grid.Row="3" Grid.Column="3" Content="Remove Logs" Command="{Binding RemoveLogsCommand}" CommandParameter="{Binding CurrentLog}" Height="25" DockPanel.Dock="Right"  MinWidth="40" VerticalAlignment="Top" Margin="0,30,0,0" Grid.RowSpan="2"/>
+        <TabControl Grid.Row="4" Grid.Column="1">
+            <TabItem Header="Map">
+                <Canvas Grid.Row="4" Grid.Column="1" ClipToBounds="True"  Grid.RowSpan="2" >
+                    <Border Grid.Row="4" Grid.Column="1" Name="border" Grid.ColumnSpan="2">
+                        <Image Grid.Row="4" Grid.Column="1" Name="image" Source="{Binding CurrentMap}" Opacity="1" RenderTransformOrigin="0.5,0.5"  />
+                    </Border>
+                </Canvas>
+            </TabItem>
+            <TabItem Header="Preview Pic">
+                <Image Grid.Row="4" Grid.Column="1" Name="prevImage" Source="{Binding CurrentPic}" Opacity="1" RenderTransformOrigin="0.5,0.5"  />
+            </TabItem>
+        </TabControl>
+        
     </Grid>
 </Window>

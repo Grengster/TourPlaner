@@ -68,7 +68,7 @@ namespace TourPlaner.ViewModels
         }
         private UserRating currentLog;
         private TourItem currentItem;
-        private ICommand searchCommand, clearCommand, executeCommand, removeCommand, showMap, createCommand, logsCommand, createSummaryCommand, editLogsCommand;
+        private ICommand searchCommand, removeLogCommand, clearCommand, executeCommand, removeCommand, showMap, createCommand, logsCommand, createSummaryCommand, editLogsCommand;
         public ICommand RemoveItems { get; }
         public ICommand AddItems { get; }
         public ICommand SearchCommand => searchCommand ??= new RelayCommand(Search);
@@ -80,6 +80,7 @@ namespace TourPlaner.ViewModels
         public ICommand LogsCommand => logsCommand ??= new RelayCommand(AddLogWindow, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null || currentLog == null) return false; else return true; });
         public ICommand EditLogsCommand => editLogsCommand ??= new RelayCommand(EditLogWindow, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null || currentLog == null || currentLog.Logs == "No Logs added yet.") return false; else return true; });
         public ICommand RemoveCommand => removeCommand ??= new RelayCommand(RemoveTourWindow);
+        public ICommand RemoveLogCommand => removeLogCommand ??= new RelayCommand(RemoveLogWindow, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null || currentLog == null || currentLog.Logs == "No Logs added yet.") return false; else return true; });
         public new event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<TourItem> Tours { get; set; }
         public TourItem CurrentItem
@@ -96,6 +97,7 @@ namespace TourPlaner.ViewModels
                     RaisePropertyChangedEvent(nameof(TourInformations));
                     RaisePropertyChangedEvent(nameof(TourLogInformations));
                     RaisePropertyChangedEvent(nameof(CurrentMap));
+                    RaisePropertyChangedEvent(nameof(CurrentPic));
                     RaisePropertyChangedEvent(nameof(CurrentItem));
                 }
             }
@@ -133,6 +135,36 @@ namespace TourPlaner.ViewModels
                             bitmap.BeginInit();
                             bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                             bitmap.UriSource = new Uri(this?.CurrentItem?.TourInfo?.MapImagePath);
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.EndInit();
+                            return bitmap;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show($"Exception was thrown when setting Tour Map Image: {e}");
+                    }
+                }
+                return null;
+            }
+        }
+
+
+        public ImageSource CurrentPic
+        {
+            get
+            {
+                var previewString = $@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\GoalPics\{this?.CurrentItem?.Name}.png";
+                if (previewString != null)
+                {
+                    try
+                    {
+                        if (File.Exists(previewString))
+                        {
+                            var bitmap = new BitmapImage();
+                            bitmap.BeginInit();
+                            bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                            bitmap.UriSource = new Uri(previewString);
                             bitmap.CacheOption = BitmapCacheOption.OnLoad;
                             bitmap.EndInit();
                             return bitmap;
@@ -277,6 +309,29 @@ namespace TourPlaner.ViewModels
             }
         }
 
+        private void RemoveLogWindow(object commandParameter)
+        {
+            if (commandParameter != null)
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete: " + commandParameter.ToString() + "?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                    if (this.tourItemFactory.EditLogs(currentItem.Name, commandParameter.ToString(), "", 0, 0, "", null, true) == null)
+                        MessageBox.Show("There has been an error deleting your log, please try again!");
+                Tours.Clear();
+                currentItem = null;
+                currentLog = null;
+                RaisePropertyChangedEvent(nameof(CurrentMap));
+                RaisePropertyChangedEvent(nameof(CurrentPic));
+                RaisePropertyChangedEvent(nameof(CurrentItem));
+                RaisePropertyChangedEvent(nameof(CurrentLog));
+                FillListBox();
+            }
+            else
+            {
+                MessageBox.Show("Please click on a Tour and then click on this Button again to delete a tour!");
+            }
+        }
+
 
         private void EditLogWindow(object commandParameter)
         {
@@ -354,6 +409,7 @@ namespace TourPlaner.ViewModels
                 Tours.Clear();
                 currentItem = null;
                 RaisePropertyChangedEvent(nameof(CurrentMap));
+                RaisePropertyChangedEvent(nameof(CurrentPic));
                 FillListBox();
             }
             else

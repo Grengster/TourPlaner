@@ -13,9 +13,16 @@ namespace TourPlaner_BL
 {
     internal class TourManagerImp : ITourItemFactory
     {
-
-        private readonly TourItemDAO tourItemDAO = new(); //anhand config file variieren
-
+        private readonly TourItemDAO tourItemDAO = null;
+        public TourManagerImp(bool mockDatabase = false)
+        {
+            if (!mockDatabase)
+            {
+                tourItemDAO = new TourItemDAO();
+            }
+            else
+                tourItemDAO = new TourItemDAO(true);
+        }
 
         public IEnumerable<TourItem> GetItems()
         {
@@ -81,13 +88,28 @@ namespace TourPlaner_BL
                             log.Error(e);
                         }
                     }
+                    else
+                    {
+                        log.Error("User tried to add duplicate Tour: " + itemName);
+                        return null;
+                    }
                 }
                 return tours;
             }
             else
-                tourItemDAO.AddTour(itemName, startName, goalName, dateTime, method);
+            {
+                try
+                {
+                    tourItemDAO.AddTour(itemName, startName, goalName, dateTime, method);
+                }
+                catch (Exception e)
+                {
+                    log.Error("Error adding Tour: " + e);
+                    return null;
+                }
+                tours = GetItems();
+            }
             return tours;
-
         }
 
         public IEnumerable<TourItem> AddLogs(string tourName, string logEntry, int rating, int actualTime, string description, DateTime date)
@@ -103,13 +125,13 @@ namespace TourPlaner_BL
             return tours;
         }
 
-        public IEnumerable<TourItem> EditLogs(string tourName, string oldLogEntry, string logEntry, int rating, int actualTime, string description, DateTime date, bool toDelete = false)
+        public IEnumerable<TourItem> EditLogs(string tourName, string oldLogEntry, string logEntry, int rating, int actualTime, string description, DateTime? date = null, bool toDelete = false)
         {
             IEnumerable<TourItem> tours = null;
             if (GetItems() != null)
             {
                 tours = GetItems();
-                if (tourItemDAO.EditLogs(tourName, oldLogEntry, logEntry, rating, actualTime, description, date, toDelete) == null)
+                if (tourItemDAO.EditLogs(tourName, oldLogEntry, logEntry, rating, actualTime, description, (DateTime)date, toDelete) == null)
                     return null;
                 return tours;
             }

@@ -7,11 +7,15 @@ namespace TourPlaner_BL
     {
         private static ITourItemFactory manager;
 
-        public static ITourItemFactory GetInstance()
+        public static ITourItemFactory GetInstance(bool mockDatabase = false)
         {
-            if (manager == null)
+            if (manager == null && !mockDatabase)
             {
                 manager = new TourManagerImp();
+            }
+            else if (manager == null && mockDatabase)
+            {
+                manager = new TourManagerImp(true);
             }
             return manager;
         }

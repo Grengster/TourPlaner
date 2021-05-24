@@ -9,9 +9,12 @@ namespace TourPlaner_DL
 
         private readonly IDataAccess dataAccess;
 
-        public TourItemDAO()
+        public TourItemDAO(bool mockDatabase = false)
         {
-            dataAccess = new Database();
+            if (!mockDatabase)
+                dataAccess = new Database();
+            else
+                dataAccess = new FileSystem();
         }
 
         public List<TourItem> GetItems()

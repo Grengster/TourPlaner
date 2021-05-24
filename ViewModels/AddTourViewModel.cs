@@ -195,6 +195,8 @@ namespace TourPlaner
             {
                 //MessageBox.Show("Input: " + Input + "\n" + "Start: " + Start + "\n" + "End: " + Goal + "\n");
                 Input = null;
+                Goal = null;
+                Start = null;
                 CloseWindow(w);
             },
                 (_) => { return true; }
@@ -203,10 +205,26 @@ namespace TourPlaner
             {
 
                 var find = TourList.FirstOrDefault(x => x.Name == Input);
-                if (find == null)
+                if (find == null && Input != null && Input != ""  && Goal != null && Goal != "" && Start != null && Start != "" && DateTime.Compare(SelectedDate, DateTime.Parse("1/1/0001")) != 0)
                 {
                     MessageBox.Show(Input + " has been added!");
                     CloseWindow(_);
+                }
+                else if (Input == null || Input == "")
+                {
+                    MessageBox.Show("Please put in a valid Tourname!");
+                }
+                else if (Start == null && Start == "")
+                {
+                    MessageBox.Show("Please put in a valid Start Destination!");
+                }
+                else if (Goal == null || Goal == "")
+                {
+                    MessageBox.Show("Please put in a valid Goal Destination!");
+                }
+                else if (DateTime.Compare(SelectedDate, DateTime.Parse("1/1/0001")) == 0)
+                {
+                    MessageBox.Show("Please select a Date!");
                 }
                 else
                 {
@@ -228,9 +246,12 @@ namespace TourPlaner
 
         public void RefreshList()
         {
-            foreach (var item in this.TourList)
+            if(TourList[0].Name != "No Tours added yet")
             {
-                this.Dates.Add(item.TourInfo.CreationTime.Date);
+                foreach (var item in this.TourList)
+                {
+                    this.Dates.Add(item.TourInfo.CreationTime.Date);
+                }
             }
             OnPropertyChanged(nameof(Dates));
         }

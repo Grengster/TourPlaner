@@ -17,6 +17,7 @@ using TourPlanner_DL;
 using NugetJObject;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace TourPlaner_DL
 {
@@ -28,7 +29,7 @@ namespace TourPlaner_DL
 
         public Database()
         {
-            connString = "Host=localhost;Username=admin;Password=1234;Database=TourPlaner";
+            connString = ConfigurationManager.ConnectionStrings["dbConfig"].ConnectionString;
             DBConnect();
         }
 
@@ -126,7 +127,7 @@ namespace TourPlaner_DL
             return GetItems();
         }
 
-        public List<TourItem> EditLogs(string tourName, string oldLogEntry, string logEntry, int rating, int actualTime, string description, DateTime date, bool toDelete = false)
+        public List<TourItem> EditLogs(string tourName, string oldLogEntry, string logEntry, int rating, int actualTime, string description, DateTime? date = null, bool toDelete = false)
         {
 
             var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
@@ -143,7 +144,7 @@ namespace TourPlaner_DL
                 oldLog.Rating = rating;
                 oldLog.ActualTime = actualTime;
                 oldLog.Weather = description;
-                oldLog.TravelDate = date;
+                oldLog.TravelDate = (DateTime)date;
             }
             
 
@@ -174,6 +175,12 @@ namespace TourPlaner_DL
             try
             {
                 var jsonResponse = JObject.Parse(MapQuestConn.Instance().FindRoute(startName, goalName, method));
+                var placeDesc = JObject.Parse(MapQuestConn.Instance().FindPlace(goalName));
+
+                var stringo = placeDesc["candidates"][0]["photos"][0]["photo_reference"].ToString();
+
+                var task = Task.Run(async () => await MapQuestConn.Instance().GetPhoto(stringo, tourName));
+
                 jDistance = float.Parse(jsonResponse["route"]["distance"].ToString()); //reads out of mapquest json response
                 jTime = jsonResponse["route"]["formattedTime"].ToString();
                 jsonString = jsonResponse.ToString();
@@ -263,6 +270,18 @@ namespace TourPlaner_DL
                 {
                     // If file found, delete it    
                     File.Delete(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\", $@"{tourName}.png"));
+                }
+
+                if (File.Exists(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\GoalPics\", $@"{tourName}.png")))
+                {
+                    // If file found, delete it    
+                    File.Delete(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\GoalPics\", $@"{tourName}.png"));
+                }
+
+                if (File.Exists(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourPDFs\", $@"{tourName}Log.pdf")))
+                {
+                    // If file found, delete it    
+                    File.Delete(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourPDFs\", $@"{tourName}Log.pdf"));
                 }
                 return GetItems();
             }

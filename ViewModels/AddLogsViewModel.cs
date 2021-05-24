@@ -20,7 +20,6 @@ namespace TourPlaner
     {
         private string _rating, _actualTime;
         private string _logs, _weather;
-        int ratingNum, actualTimeNum;
 
         public string Rating
         {
