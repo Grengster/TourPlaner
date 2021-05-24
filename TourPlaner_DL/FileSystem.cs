@@ -68,7 +68,8 @@ namespace TourPlaner_DL
         {
             if(tourName == "" || logEntry == "" || rating > 5 || rating < 0 || actualTime < 0 || description == "" || date == DateTime.Parse("1 / 1 / 0001"))
             {
-                return null;
+                log.Error(new ArgumentNullException("Empty Arguments"));
+                throw new ArgumentNullException("Empty Arguments");
             }
             var account = mockList.FirstOrDefault(p => p.Name == tourName);
             if (account == null)
@@ -144,7 +145,7 @@ namespace TourPlaner_DL
             }
         }
 
-        public List<TourItem> RemoveTour(string tourName)
+        public List<TourItem> RemoveTour(string tourName, bool mockItem = false)
         {
             bool foundTour = mockList.Any(x => x.Name == tourName);
             if (!foundTour)

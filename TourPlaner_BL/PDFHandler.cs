@@ -1,5 +1,6 @@
 ﻿using DinkToPdf;
 using DinkToPdf.Contracts;
+using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -18,11 +19,21 @@ namespace TourPlaner_BL
 
     public class PDFHandler
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(PDFHandler));
 
-        public static async Task CreateSummary()
+        public static async Task CreateSummary(List<TourItem> mockList = null)
         {
-            var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
-            var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
+            var employeeList = new List<TourItem>();
+            if (mockList == null)
+            {
+                var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
+                employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
+            }
+            else
+            {
+                employeeList = mockList;
+            }
+            
             float totalDistance = 0;
             //dynamic dynJson = JToken.Parse(account.TourInfo.JsonData).ToObject<dynamic>(); //need to find a way of iterating through narrative
             string summaryText = "";
@@ -33,11 +44,12 @@ namespace TourPlaner_BL
             {
                 totalDistance += item.TourInfo.Distance;
 
-                
-                
-                var split = item.TourInfo.TotalTime.Split(':');
-                total = total.Add(new TimeSpan(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2])));
-                totalDisplay = total.ToString(@"dd\:hh\:mm\:ss");
+                if(mockList == null)
+                {
+                    var split = item.TourInfo.TotalTime.Split(':');
+                    total = total.Add(new TimeSpan(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2])));
+                    totalDisplay = total.ToString(@"dd\:hh\:mm\:ss");
+                }
 
                 summaryText += @$"Tourname: {item.Name} || Start: {item.TourInfo.Start} -> Destination: {item.TourInfo.Goal} || Time: {item.TourInfo.TotalTime} || Distance: {item.TourInfo.Distance}km <br>";
             }
@@ -70,13 +82,24 @@ namespace TourPlaner_BL
         }
 
 
-        public static async Task CreatePDF(string tourName)
+        public static async Task CreatePDF(string tourName, TourItem mockItem = null)
         {
-            var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
-            var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
-            var account = employeeList.FirstOrDefault(p => p.Name == tourName);
+            var account = new TourItem();
+            var employeeList = new List<TourItem>();
+            var jsonData = "";
+            dynamic dynJson = null;
+            if (mockItem == null)
+            {
+                jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
+                employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
+                account = employeeList.FirstOrDefault(p => p.Name == tourName);
+                dynJson = JToken.Parse(account.TourInfo.JsonData).ToObject<dynamic>(); //need to find a way of iterating through narrative
+            }
+            else
+                account = mockItem;
+            
 
-            dynamic dynJson = JToken.Parse(account.TourInfo.JsonData).ToObject<dynamic>(); //need to find a way of iterating through narrative
+            
             string navigationText = "", logText = "";
 
             int i = 1;
@@ -92,9 +115,12 @@ namespace TourPlaner_BL
                 i++;
             }
 
-            foreach (var item in dynJson.route.legs[0].maneuvers)
+            if (mockItem == null)
             {
-                navigationText += "<span style='margin-left: 50px; '>" + item.narrative + "</span><br>";
+                foreach (var item in dynJson.route.legs[0].maneuvers)
+                {
+                    navigationText += "<span style='margin-left: 50px; '>" + item.narrative + "</span><br>";
+                }
             }
 
             var converter = new BasicConverter(new PdfTools());
@@ -128,12 +154,15 @@ namespace TourPlaner_BL
                     }
                 }
             };
-
-            converter.Convert(doc);
-
-            //byte[] pdf = converter.Convert(doc);
-
-            //await SaveDoc(doc);
+            try
+            {
+                converter.Convert(doc);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+            }
+            
         }
 
         private static void SaveDoc(HtmlToPdfDocument doc)

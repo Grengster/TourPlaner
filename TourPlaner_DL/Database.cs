@@ -234,7 +234,7 @@ namespace TourPlaner_DL
                 return null;
         }
 
-        public List<TourItem> RemoveTour(string tourName)
+        public List<TourItem> RemoveTour(string tourName, bool mockItem = false)
         {
             bool isFound = false, isDeleted = true;
             using (var cmd = new NpgsqlCommand("SELECT * FROM tours where name = @n", conn))

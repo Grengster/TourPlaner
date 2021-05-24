@@ -139,7 +139,7 @@ namespace TourPlaner_BL
         }
 
 
-        public IEnumerable<TourItem> RemoveTour(string itemName)
+        public IEnumerable<TourItem> RemoveTour(string itemName, bool mockItem = false)
         {
             IEnumerable<TourItem> tours = null;
             if (GetItems() != null)
@@ -168,14 +168,20 @@ namespace TourPlaner_BL
             await MapQuestConn.GetAndSaveImage(start, end, tourName);
         }
 
-        public async Task CreatePDF(string tourName)
+        public async Task CreatePDF(string tourName, TourItem mockItem = null)
         {
-            await PDFHandler.CreatePDF(tourName);
+            if(mockItem == null)
+                await PDFHandler.CreatePDF(tourName);
+            else
+                await PDFHandler.CreatePDF(tourName, mockItem);
         }
 
-        public async Task CreateSummary()
+        public async Task CreateSummary(List<TourItem> mockList = null)
         {
-            await PDFHandler.CreateSummary();
+            if (mockList == null)
+                await PDFHandler.CreateSummary();
+            else
+                await PDFHandler.CreateSummary(mockList);
         }
     }
 }
