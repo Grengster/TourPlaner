@@ -234,6 +234,91 @@ namespace TourPlaner_DL
                 return null;
         }
 
+
+        public List<TourItem> EditTour(string tourName, string newTourName, string startName, string goalName, DateTime dateTime, string method)
+        {
+            bool isFound = false, isInserted = true;
+            using (var cmd = new NpgsqlCommand("SELECT * FROM tours where name = @n", conn))
+            {
+                cmd.Parameters.AddWithValue("n", tourName);
+                cmd.ExecuteNonQuery();
+                using (var reader = cmd.ExecuteReader())
+                    while (reader.Read())
+                    {
+                        isFound = true;
+                    }
+                if (!isFound)
+                    return null;
+            };
+            float jDistance = 1f;
+            var jTime = "";
+            string jsonString = "";
+            try
+            {
+                var jsonResponse = JObject.Parse(MapQuestConn.Instance().FindRoute(startName, goalName, method));
+                var placeDesc = JObject.Parse(MapQuestConn.Instance().FindPlace(goalName));
+
+                var stringo = placeDesc["candidates"][0]["photos"][0]["photo_reference"].ToString();
+
+                var task = Task.Run(async () => await MapQuestConn.Instance().GetPhoto(stringo, newTourName));
+
+                jDistance = float.Parse(jsonResponse["route"]["distance"].ToString()); //reads out of mapquest json response
+                jTime = jsonResponse["route"]["formattedTime"].ToString();
+                jsonString = jsonResponse.ToString();
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+            }
+
+
+            // log.Info("Got ");
+
+            //log.Info(response);
+            using (var cmd = new NpgsqlCommand("UPDATE tours SET name = @n, goal = @g, start = @s, distance = @d, response = @r, esttime = @t WHERE name = @o", conn))
+            {
+                cmd.Parameters.AddWithValue("n", newTourName);
+                cmd.Parameters.AddWithValue("g", goalName);
+                cmd.Parameters.AddWithValue("s", startName);
+                cmd.Parameters.AddWithValue("d", jDistance);
+                cmd.Parameters.AddWithValue("r", jsonString);
+                cmd.Parameters.AddWithValue("t", jTime);
+                cmd.Parameters.AddWithValue("o", tourName);
+                int a = cmd.ExecuteNonQuery();
+                if (a != 1)
+                    isInserted = false;
+
+            };
+            if (isInserted)
+            {
+                var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
+                var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
+                var account = employeeList.FirstOrDefault(p => p.Name == tourName);
+                try
+                {
+                    account.Name = newTourName;
+                    account.TourInfo.Start = startName;
+                    account.TourInfo.Goal = goalName;
+                    account.TourInfo.Method = method;
+                    account.TourInfo.Distance = jDistance;
+                    account.TourInfo.MapImagePath = $@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\{newTourName}.png";
+                    account.TourInfo.CreationTime = dateTime;
+                    account.TourInfo.TotalTime = jTime;
+                    account.TourInfo.JsonData = jsonString;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Error occurred! " + e);
+                }
+                jsonData = JsonConvert.SerializeObject(employeeList);
+                File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
+                return GetItems();
+            }
+            else
+                return null;
+        }
+
+
         public List<TourItem> RemoveTour(string tourName, bool mockItem = false)
         {
             bool isFound = false, isDeleted = true;

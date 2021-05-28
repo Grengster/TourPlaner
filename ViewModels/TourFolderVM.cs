@@ -215,7 +215,8 @@ namespace TourPlaner.ViewModels
                         {
                             new UserRating()
                             {
-                                Logs = "No Logs added yet."
+                                Logs = "No Logs added yet.",
+                                Weather = "-"
                             }
                         };
                     }
@@ -315,7 +316,7 @@ namespace TourPlaner.ViewModels
             {
                 MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete: " + commandParameter.ToString() + "?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
-                    if (this.tourItemFactory.EditLogs(currentItem.Name, commandParameter.ToString(), "", 0, 0, "", null, true) == null)
+                    if (this.tourItemFactory.EditLogs(currentItem.Name, commandParameter.ToString(), "Test", 1, 1, "Test", DateTime.Today, true) == null)
                         MessageBox.Show("There has been an error deleting your log, please try again!");
                 Tours.Clear();
                 currentItem = null;

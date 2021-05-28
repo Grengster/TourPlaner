@@ -73,21 +73,34 @@ namespace TourPlaner_DL
             }
             var account = mockList.FirstOrDefault(p => p.Name == tourName);
             if (account == null)
-                return null;
-            UserRating tempRating = new();
-            tempRating.Logs = logEntry;
-            tempRating.Rating = rating;
-            tempRating.ActualTime = actualTime;
-            tempRating.Weather = description;
-            tempRating.TravelDate = date;
-            account.TourLogs.Add(tempRating);
-            return GetItems();
+            {
+                throw new NullReferenceException("No Tour found");
+            }
+            else
+            {
+                UserRating tempRating = new();
+                tempRating.Logs = logEntry;
+                tempRating.Rating = rating;
+                tempRating.ActualTime = actualTime;
+                tempRating.Weather = description;
+                tempRating.TravelDate = date;
+                account.TourLogs.Add(tempRating);
+                return GetItems();
+            }
         }
 
         public List<TourItem> EditLogs(string tourName, string oldLogEntry, string logEntry, int rating, int actualTime, string description, DateTime? date = null, bool toDelete = false)
         {
             var account = mockList.FirstOrDefault(p => p.Name == tourName);
-            var oldLog = account.TourLogs.FirstOrDefault(p => p.Logs == oldLogEntry);
+            var oldLog = account.TourLogs[0];
+            try
+            {
+                oldLog = account.TourLogs.FirstOrDefault(p => p.Logs == oldLogEntry);
+            }
+            catch (Exception e)
+            {
+                throw new NullReferenceException("Wrong Log" + e);
+            }
             if (toDelete)
             {
                 account.TourLogs.Remove(oldLog);
@@ -144,6 +157,50 @@ namespace TourPlaner_DL
                     return GetItems();
             }
         }
+
+        public List<TourItem> EditTour(string tourName, string newTourName, string startName, string goalName, DateTime dateTime, string method)
+        {
+            var account = mockList.FirstOrDefault(p => p.Name == tourName);
+            //var account = mockList.FirstOrDefault(p => p.Name == tourName);
+            if (account == null)
+                throw new ArgumentException("No tour with this name found!");
+            else
+            {
+                float jDistance = 1f;
+                var jTime = "";
+                string jsonString = "";
+                try
+                {
+                    var jsonResponse = JObject.Parse(MapQuestConn.Instance().FindRoute(startName, goalName, method));
+                    jDistance = float.Parse(jsonResponse["route"]["distance"].ToString()); //reads out of mapquest json response
+                    jTime = jsonResponse["route"]["formattedTime"].ToString();
+                    jsonString = jsonResponse.ToString();
+                }
+                catch (Exception e)
+                {
+                    log.Error(e);
+                }
+                try
+                {
+                    account.Name = newTourName;
+                    account.TourInfo.Start = startName;
+                    account.TourInfo.Goal = goalName;
+                    account.TourInfo.Method = method;
+                    account.TourInfo.Distance = jDistance;
+                    account.TourInfo.MapImagePath = $@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\{newTourName}.png";
+                    account.TourInfo.CreationTime = dateTime;
+                    account.TourInfo.TotalTime = jTime;
+                    account.TourInfo.JsonData = jsonString;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Error occurred! " + e);
+                }
+
+                return GetItems();
+            }
+        }
+
 
         public List<TourItem> RemoveTour(string tourName, bool mockItem = false)
         {

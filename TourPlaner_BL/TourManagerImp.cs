@@ -43,7 +43,7 @@ namespace TourPlaner_BL
                 searchTours = searchTours.Union(tours.Where(x => x.TourInfo.Goal.Contains(itemName)));
                 searchTours = searchTours.Union(tours.Where(x => x.TourInfo.Start.Contains(itemName)));
                 searchTours = searchTours.Union(tours.Where(x => x.TourLogs.Any(y => y.Logs.Contains(itemName))));
-                //searchTours = searchTours.Union(tours.Where(x => x.TourLogs.Any(y => y.Weather.Contains(itemName))));
+                searchTours = searchTours.Union(tours.Where(x => x.TourLogs.Any(y => y.Weather.Contains(itemName))));
                 return searchTours;
             }
             searchTours = tours.Where(x => x.Name.ToLower().Contains(itemName.ToLower()));
@@ -51,7 +51,7 @@ namespace TourPlaner_BL
             searchTours = searchTours.Union(tours.Where(x => x.TourInfo.Goal.ToLower().Contains(itemName.ToLower())));
             searchTours = searchTours.Union(tours.Where(x => x.TourInfo.Start.ToLower().Contains(itemName.ToLower())));
             searchTours = searchTours.Union(tours.Where(x => x.TourLogs.Any(y => y.Logs.ToLower().Contains(itemName.ToLower()))));
-            //searchTours = searchTours.Union(tours.Where(x => x.TourLogs.Any(y => y.Weather.ToLower().Contains(itemName.ToLower()))));
+            searchTours = searchTours.Union(tours.Where(x => x.TourLogs.Any(y => y.Weather.ToLower().Contains(itemName.ToLower()))));
             return searchTours;
             
         }
@@ -111,6 +111,24 @@ namespace TourPlaner_BL
             }
             return tours;
         }
+
+        public async Task<IEnumerable<TourItem>> EditTour(string itemName, string newTourName, string startName, string goalName, DateTime dateTime, string method)
+        {
+            IEnumerable<TourItem> tours = null;
+            if (GetItems() == null)
+            {
+                log.Error("User tried to edit non existing Tour: " + itemName);
+                return null;
+            }
+            else
+            {
+                tourItemDAO.EditTour(itemName, newTourName,startName, goalName, dateTime, method);
+                tours = GetItems();
+            }
+            return tours;
+        }
+
+
 
         public IEnumerable<TourItem> AddLogs(string tourName, string logEntry, int rating, int actualTime, string description, DateTime date)
         {
