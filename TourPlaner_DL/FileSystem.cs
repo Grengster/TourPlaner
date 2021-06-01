@@ -218,5 +218,15 @@ namespace TourPlaner_DL
             }
             return null;
         }
+
+        public List<TourItem> Import(string fileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Export(IEnumerable<TourItem> tourList, string filename)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

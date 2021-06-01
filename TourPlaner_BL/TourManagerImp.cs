@@ -114,7 +114,6 @@ namespace TourPlaner_BL
 
         public async Task<IEnumerable<TourItem>> EditTour(string itemName, string newTourName, string startName, string goalName, DateTime dateTime, string method)
         {
-            IEnumerable<TourItem> tours = null;
             if (GetItems() == null)
             {
                 log.Error("User tried to edit non existing Tour: " + itemName);
@@ -123,37 +122,32 @@ namespace TourPlaner_BL
             else
             {
                 tourItemDAO.EditTour(itemName, newTourName,startName, goalName, dateTime, method);
-                tours = GetItems();
             }
-            return tours;
+            return GetItems();
         }
 
 
 
         public IEnumerable<TourItem> AddLogs(string tourName, string logEntry, int rating, int actualTime, string description, DateTime date)
         {
-            IEnumerable<TourItem> tours = null;
             if (GetItems() != null)
             {
-                tours = GetItems();
                 if (tourItemDAO.AddLogs(tourName, logEntry, rating, actualTime, description, date) == null)
                     return null;
-                return tours;
+                return GetItems();
             }
-            return tours;
+            return GetItems();
         }
 
         public IEnumerable<TourItem> EditLogs(string tourName, string oldLogEntry, string logEntry, int rating, int actualTime, string description, DateTime? date = null, bool toDelete = false)
         {
-            IEnumerable<TourItem> tours = null;
             if (GetItems() != null)
             {
-                tours = GetItems();
                 if (tourItemDAO.EditLogs(tourName, oldLogEntry, logEntry, rating, actualTime, description, (DateTime)date, toDelete) == null)
                     return null;
-                return tours;
+                return GetItems();
             }
-            return tours;
+            return GetItems();
         }
 
 
@@ -180,6 +174,23 @@ namespace TourPlaner_BL
                 return tours;
         }
 
+        public List<TourItem> Import(string fileName)
+        {
+            IEnumerable<TourItem> tours = null;
+            tours = tourItemDAO.Import(fileName);
+            if (tours != null)
+                return (List<TourItem>)tours;
+            else
+            {
+                log.Info("Trying to Import Empty Tours");
+                return null;
+            }
+        }
+
+        public void Export(IEnumerable<TourItem> tourList, string filename)
+        {
+            tourItemDAO.Export(tourList, filename);
+        }
 
         public async Task ShowMapTourAsync(string start, string end, string tourName)
         {

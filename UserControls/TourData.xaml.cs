@@ -44,7 +44,7 @@ namespace TourPlaner.UserControls
         /// </summary>
         public ObservableCollection<TourItem> TourInformations { get; set; }
 
-        public static event PropertyChangedEventHandler PropertyChanged;
+        
 
         private static void TourDataValueChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {

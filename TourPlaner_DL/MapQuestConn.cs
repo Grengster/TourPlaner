@@ -8,6 +8,7 @@ using System.IO;
 using System.Net;
 using TourPlaner_Models;
 using System.Configuration;
+using log4net;
 
 namespace TourPlanner_DL
 {
@@ -18,6 +19,7 @@ namespace TourPlanner_DL
         private readonly static string key = ConfigurationManager.AppSettings["mqKey"];
         private readonly static string storeMap = @"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps";
         private readonly static string placePic = @"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\GoalPics";
+        private static readonly ILog log = LogManager.GetLogger(typeof(MapQuestConn));
 
         public static MapQuestConn Instance()
         {
@@ -42,6 +44,7 @@ namespace TourPlanner_DL
             }
             catch (HttpRequestException e)
             {
+                log.Fatal("Error with getting Response: " + e);
                 Debug.WriteLine("Exception Caught!!");
                 Debug.WriteLine("Message :{0} ", e.Message);
                 return e.Message;

@@ -15,6 +15,8 @@ namespace TourPlaner_BL
         IEnumerable<TourItem> AddLogs(string tourName, string logEntry, int rating, int actualTime, string description, DateTime date);
         IEnumerable<TourItem> EditLogs(string tourName, string oldLogEntry, string logEntry, int rating, int actualTime, string description, DateTime? date = null, bool toDelete = false);
         IEnumerable<TourItem> RemoveTour(string itemName, bool mockItem = false);
+        public List<TourItem> Import(string fileName);
+        public void Export(IEnumerable<TourItem> tourList, string filename);
         Task ShowMapTourAsync(string start, string end, string tourName);
         Task CreatePDF(string tourName, TourItem mockItem = null);
         Task CreateSummary(List<TourItem> mockList = null);

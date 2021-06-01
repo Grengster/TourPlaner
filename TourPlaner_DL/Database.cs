@@ -18,6 +18,7 @@ using NugetJObject;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Text.Json.Serialization;
 
 namespace TourPlaner_DL
 {
@@ -26,6 +27,7 @@ namespace TourPlaner_DL
         private readonly string connString;
         private NpgsqlConnection conn;
         private static readonly ILog log = LogManager.GetLogger(typeof(Database));
+        private static readonly string userPath = ConfigurationManager.ConnectionStrings["userPath"].ConnectionString;
 
         public Database()
         {
@@ -36,7 +38,7 @@ namespace TourPlaner_DL
         public static List<TourItem> LoadJson()
         {
             List<TourItem> tempTour = new();
-            using (StreamReader r = new(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json"))
+            using (StreamReader r = new(userPath + @"TourPlaner_DL\TourJson\TourData.json"))
             {
                 string json = r.ReadToEnd();
                 tempTour = JsonConvert.DeserializeObject<List<TourItem>>(json);
@@ -111,7 +113,7 @@ namespace TourPlaner_DL
         public List<TourItem> AddLogs(string tourName, string logEntry, int rating, int actualTime, string description, DateTime date)
         {
 
-            var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
+            var jsonData = System.IO.File.ReadAllText(userPath + @"TourPlaner_DL\TourJson\TourData.json");
             var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
             var account = employeeList.FirstOrDefault(p => p.Name == tourName);
             UserRating tempRating = new();
@@ -123,14 +125,14 @@ namespace TourPlaner_DL
             account.TourLogs.Add(tempRating);
 
             jsonData = JsonConvert.SerializeObject(employeeList);
-            File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
+            File.WriteAllText(userPath + @"TourPlaner_DL\TourJson\TourData.json", jsonData);
             return GetItems();
         }
 
         public List<TourItem> EditLogs(string tourName, string oldLogEntry, string logEntry, int rating, int actualTime, string description, DateTime? date = null, bool toDelete = false)
         {
 
-            var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
+            var jsonData = System.IO.File.ReadAllText(userPath + @"TourPlaner_DL\TourJson\TourData.json");
             var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
             var account = employeeList.FirstOrDefault(p => p.Name == tourName);
             var oldLog = account.TourLogs.FirstOrDefault(p => p.Logs == oldLogEntry);
@@ -149,7 +151,7 @@ namespace TourPlaner_DL
             
 
             jsonData = JsonConvert.SerializeObject(employeeList);
-            File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
+            File.WriteAllText(userPath + @"TourPlaner_DL\TourJson\TourData.json", jsonData);
             return GetItems();
         }
 
@@ -209,7 +211,7 @@ namespace TourPlaner_DL
             };
             if (isInserted)
             {
-                var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
+                var jsonData = System.IO.File.ReadAllText(userPath + @"TourPlaner_DL\TourJson\TourData.json");
                 var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
                 employeeList.Add(new TourItem()
                 {
@@ -220,14 +222,14 @@ namespace TourPlaner_DL
                         Goal = goalName,
                         Method = method,
                         Distance = jDistance,
-                        MapImagePath = $@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\{tourName}.png",
+                        MapImagePath = userPath + $@"TourPlaner_DL\TourMaps\{tourName}.png",
                         CreationTime = dateTime,
                         TotalTime = jTime,
                         JsonData = jsonString
                     }
                 });
                 jsonData = JsonConvert.SerializeObject(employeeList);
-                File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
+                File.WriteAllText(userPath + @"TourPlaner_DL\TourJson\TourData.json", jsonData);
                 return GetItems();
             }
             else
@@ -285,33 +287,52 @@ namespace TourPlaner_DL
                 cmd.Parameters.AddWithValue("t", jTime);
                 cmd.Parameters.AddWithValue("o", tourName);
                 int a = cmd.ExecuteNonQuery();
-                if (a != 1)
-                    isInserted = false;
+                if (a == 0)
+                    isInserted = true;
 
             };
             if (isInserted)
             {
-                var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
+                var jsonData = System.IO.File.ReadAllText(userPath + @"TourPlaner_DL\TourJson\TourData.json");
                 var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
                 var account = employeeList.FirstOrDefault(p => p.Name == tourName);
                 try
                 {
+                    if (File.Exists(Path.Combine(userPath + $@"TourPlaner_DL\TourMaps\", $@"{tourName}.png")))
+                    {
+                        // If file found, delete it    
+                        File.Delete(Path.Combine(userPath + $@"TourPlaner_DL\TourMaps\", $@"{tourName}.png"));
+                    }
+
+                    if (File.Exists(Path.Combine(userPath + $@"TourPlaner_DL\GoalPics\", $@"{tourName}.png")))
+                    {
+                        // If file found, delete it    
+                        File.Move(Path.Combine(userPath + $@"TourPlaner_DL\GoalPics\", $@"{tourName}.png"), Path.Combine(userPath + $@"TourPlaner_DL\GoalPics\", $@"{newTourName}.png"));
+                    }
+
+                    if (File.Exists(Path.Combine(userPath + $@"TourPlaner_DL\TourPDFs\", $@"{tourName}Log.pdf")))
+                    {
+                        // If file found, delete it    
+                        File.Move(Path.Combine(userPath + $@"TourPlaner_DL\TourPDFs\", $@"{tourName}Log.pdf"), Path.Combine(userPath + $@"TourPlaner_DL\TourPDFs\", $@"{newTourName}Log.pdf"));
+                    }
+
+
                     account.Name = newTourName;
                     account.TourInfo.Start = startName;
                     account.TourInfo.Goal = goalName;
                     account.TourInfo.Method = method;
                     account.TourInfo.Distance = jDistance;
-                    account.TourInfo.MapImagePath = $@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\{newTourName}.png";
+                    account.TourInfo.MapImagePath = userPath + $@"TourPlaner_DL\TourMaps\{newTourName}.png";
                     account.TourInfo.CreationTime = dateTime;
                     account.TourInfo.TotalTime = jTime;
                     account.TourInfo.JsonData = jsonString;
+                    jsonData = JsonConvert.SerializeObject(employeeList);
+                    File.WriteAllText(userPath + $@"TourPlaner_DL\TourJson\TourData.json", jsonData);
                 }
                 catch (Exception e)
                 {
                     throw new Exception("Error occurred! " + e);
                 }
-                jsonData = JsonConvert.SerializeObject(employeeList);
-                File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
                 return GetItems();
             }
             else
@@ -345,33 +366,84 @@ namespace TourPlaner_DL
             };
             if (isDeleted)
             {
-                var jsonData = System.IO.File.ReadAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json");
+                var jsonData = System.IO.File.ReadAllText(userPath + $@"TourPlaner_DL\TourJson\TourData.json");
                 var employeeList = JsonConvert.DeserializeObject<List<TourItem>>(jsonData) ?? new List<TourItem>();
                 var account = employeeList.FirstOrDefault(p => p.Name == tourName);
                 employeeList.Remove(account);
                 jsonData = JsonConvert.SerializeObject(employeeList);
-                File.WriteAllText(@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourJson\TourData.json", jsonData);
-                if (File.Exists(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\", $@"{tourName}.png")))
+                File.WriteAllText(userPath + $@"TourPlaner_DL\TourJson\TourData.json", jsonData);
+                if (File.Exists(Path.Combine(userPath + $@"TourPlaner_DL\TourMaps\", $@"{tourName}.png")))
                 {
                     // If file found, delete it    
-                    File.Delete(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourMaps\", $@"{tourName}.png"));
+                    File.Delete(Path.Combine(userPath + $@"TourPlaner_DL\TourMaps\", $@"{tourName}.png"));
                 }
 
-                if (File.Exists(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\GoalPics\", $@"{tourName}.png")))
+                if (File.Exists(Path.Combine(userPath + $@"TourPlaner_DL\GoalPics\", $@"{tourName}.png")))
                 {
                     // If file found, delete it    
-                    File.Delete(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\GoalPics\", $@"{tourName}.png"));
+                    File.Delete(Path.Combine(userPath + $@"TourPlaner_DL\GoalPics\", $@"{tourName}.png"));
                 }
 
-                if (File.Exists(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourPDFs\", $@"{tourName}Log.pdf")))
+                if (File.Exists(Path.Combine(userPath + $@"TourPlaner_DL\TourPDFs\", $@"{tourName}Log.pdf")))
                 {
                     // If file found, delete it    
-                    File.Delete(Path.Combine($@"C:\Users\Gregor\source\repos\TourPlaner\TourPlaner_DL\TourPDFs\", $@"{tourName}Log.pdf"));
+                    File.Delete(Path.Combine(userPath + $@"TourPlaner_DL\TourPDFs\", $@"{tourName}Log.pdf"));
                 }
                 return GetItems();
             }
             else
                 return null;
         }
+
+
+
+        public void Export(IEnumerable<TourItem> tourList, string filename)
+        {
+            try
+            {
+                JsonSerializerOptions options = new() { WriteIndented = true, MaxDepth = 0, ReferenceHandler = ReferenceHandler.Preserve };
+                string jsonString = System.Text.Json.JsonSerializer.Serialize<IEnumerable<TourItem>>(tourList, options);
+
+                FileInfo file = new FileInfo(userPath + @"TourPlaner_DL\TourExport\");
+                file.Directory.Create();
+
+                File.WriteAllText(userPath + @"TourPlaner_DL\TourExport\" + filename, jsonString);
+            }
+            catch (Exception e)
+            {
+                log.Info(e.ToString() + " Source: " + e.Source + "\n" + e.Message);
+            }
+        }
+
+
+        public List<TourItem> Import(string fileName)
+        {
+            try
+            {
+                JsonSerializerOptions options = new() { WriteIndented = true, MaxDepth = 0, ReferenceHandler = ReferenceHandler.Preserve };
+                string fileString = File.ReadAllText(userPath + @"TourPlaner_DL\TourExport\" + fileName);
+
+
+                List<TourItem> tourList = System.Text.Json.JsonSerializer.Deserialize<List<TourItem>>(fileString, options);
+
+                foreach (TourItem TourItem in tourList)
+                {
+                    AddTour(TourItem.Name, TourItem.TourInfo.Start, TourItem.TourInfo.Goal, TourItem.TourInfo.CreationTime, TourItem.TourInfo.Method);
+                    if (TourItem.TourLogs != null)
+                    {
+                        foreach (UserRating log in TourItem.TourLogs)
+                        {
+                            AddLogs(TourItem.Name, log.Logs, log.Rating, log.ActualTime, log.Weather, log.TravelDate);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                 log.Error(e.ToString() + " Source: " + e.Source + "\n" + e.Message);
+            }
+            return GetItems();
+        }
+
     }
 }

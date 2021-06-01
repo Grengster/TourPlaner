@@ -17,6 +17,7 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using log4net;
+using Microsoft.VisualBasic;
 using log4net.Config;
 
 namespace TourPlaner.ViewModels
@@ -68,12 +69,13 @@ namespace TourPlaner.ViewModels
         }
         private UserRating currentLog;
         private TourItem currentItem;
-        private ICommand searchCommand, removeLogCommand, clearCommand, executeCommand, removeCommand, showMap, createCommand, logsCommand, createSummaryCommand, editLogsCommand;
+        private ICommand searchCommand, exportCommand, updateCommand, importCommand, removeLogCommand, clearCommand, executeCommand, removeCommand, showMap, createCommand, logsCommand, createSummaryCommand, editLogsCommand;
         public ICommand RemoveItems { get; }
         public ICommand AddItems { get; }
         public ICommand SearchCommand => searchCommand ??= new RelayCommand(Search);
         public ICommand ShowMap => showMap ??= new RelayCommand(Show);
         public ICommand CreateCommand => createCommand ??= new RelayCommand(Create, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null) return false; else return true; });
+        public ICommand UpdateCommand => updateCommand ??= new RelayCommand(EditTour, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null) return false; else return true; });
         public ICommand CreateSummaryCommand => createSummaryCommand ??= new RelayCommand(CreateSummary, (_) => { if (this.tourItemFactory.GetItems() == null) return false; else return true; });
         public ICommand ClearCommand => clearCommand ??= new RelayCommand(Clear);
         public ICommand ExecuteCommand => executeCommand ??= new RelayCommand(AddTourWindow);
@@ -81,6 +83,8 @@ namespace TourPlaner.ViewModels
         public ICommand EditLogsCommand => editLogsCommand ??= new RelayCommand(EditLogWindow, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null || currentLog == null || currentLog.Logs == "No Logs added yet.") return false; else return true; });
         public ICommand RemoveCommand => removeCommand ??= new RelayCommand(RemoveTourWindow);
         public ICommand RemoveLogCommand => removeLogCommand ??= new RelayCommand(RemoveLogWindow, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null || currentLog == null || currentLog.Logs == "No Logs added yet.") return false; else return true; });
+        public ICommand ExportCommand => exportCommand ??= new RelayCommand(ExportTours, (_) => { if (this.tourItemFactory.GetItems() == null) return false; else return true; });
+        public ICommand ImportCommand => importCommand ??= new RelayCommand(ImportTours);
         public new event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<TourItem> Tours { get; set; }
         public TourItem CurrentItem
@@ -310,6 +314,8 @@ namespace TourPlaner.ViewModels
             }
         }
 
+        
+
         private void RemoveLogWindow(object commandParameter)
         {
             if (commandParameter != null)
@@ -399,6 +405,44 @@ namespace TourPlaner.ViewModels
             }
         }
 
+        private async void EditTour(object commandParameter)
+        {
+            AddTourViewModel plusButtonVM;
+            PlusButtonWindow plusWin = new();
+            plusButtonVM = (AddTourViewModel)plusWin.DataContext; //creates link to new window's data --> IMPORTANT
+            plusButtonVM.Input = CurrentItem.Name;
+            plusButtonVM.Goal = CurrentItem.TourInfo.Goal;
+            plusButtonVM.Start = CurrentItem.TourInfo.Start;
+            plusButtonVM.SelectedDate = CurrentItem.TourInfo.CreationTime;
+
+            Debug.Print("Before");
+            foreach (var item in Tours)
+            {
+                plusButtonVM.TourList.Add(item);
+            }
+            plusButtonVM.RefreshList();
+
+            plusWin.ShowDialog();  //when using List List<string> tempList = new List<string>(stringList); StringList = tempList; 
+            if (plusButtonVM.Input != null)
+            {
+                try
+                {
+                    var tempVar = await this.tourItemFactory.EditTour(CurrentItem.Name, plusButtonVM.Input, plusButtonVM.Start, plusButtonVM.Goal, plusButtonVM.SelectedDate, EnumDescriptionExtension.GetDescription(plusButtonVM.Method));
+                    if (tempVar == null)
+                        MessageBox.Show("There has been an error updating your tour, please try again!");
+                    else
+                        await this.tourItemFactory.ShowMapTourAsync(plusButtonVM.Start, plusButtonVM.Goal, plusButtonVM.Input);
+
+                }
+                catch (Exception e)
+                {
+                    log.Error(e);
+                }
+                Tours.Clear();
+                FillListBox();
+            }
+        }
+
         private void RemoveTourWindow(object commandParameter)
         {
             if (commandParameter != null)
@@ -450,7 +494,8 @@ namespace TourPlaner.ViewModels
                 if (messageBoxResult == MessageBoxResult.Yes)
                     if (this?.CurrentItem?.TourInfo?.MapImagePath != null)
                     {
-                        if (this.tourItemFactory.CreatePDF(commandParameter.ToString()) == null)
+                        var task = Task.Run(async () => await this.tourItemFactory.CreatePDF(commandParameter.ToString()));
+                        if (task == null)
                             MessageBox.Show("There has been an error inserting your tour, please try again!");
                     }
                 Tours.Clear();
@@ -467,11 +512,39 @@ namespace TourPlaner.ViewModels
                 MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to create a summary PDF?", "Select Confirmation", System.Windows.MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                     {
-                        if (this.tourItemFactory.CreateSummary() == null)
+                        var task = Task.Run(async () => await this.tourItemFactory.CreateSummary());
+                        if (task == null)
                             MessageBox.Show("There has been an error inserting your tour, please try again!");
                     }
                 Tours.Clear();
                 FillListBox();
+        }
+
+        private void ImportTours(object commandParameter)
+        {
+            string messageBoxResult = Interaction.InputBox("Type in your Filename you wish to import?", "Title", "Default Text");
+            if (messageBoxResult != "" || messageBoxResult != null)
+            {
+                var task = this.tourItemFactory.Import(messageBoxResult);
+                if (task == null)
+                    MessageBox.Show("There has been an error inserting your tour, please try again!");
+            }
+            Tours.Clear();
+            FillListBox();
+        }
+
+
+        private void ExportTours(object commandParameter)
+        {
+            string messageBoxResult = Interaction.InputBox("Type in your Filename you wish to import?", "Title", "Default Text");
+            if (messageBoxResult != "" || messageBoxResult != null)
+            {
+                var tourList = this.tourItemFactory.GetItems();
+                if (tourList != null)
+                this.tourItemFactory.Export(this.tourItemFactory.GetItems(), messageBoxResult);
+            }
+            Tours.Clear();
+            FillListBox();
         }
 
 

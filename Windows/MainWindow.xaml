@@ -21,31 +21,15 @@
             <RowDefinition Height="121*"/>
             <RowDefinition Height="182*"/>
         </Grid.RowDefinitions>
-        <!-- <ToolBarTray DockPanel.Dock="Top" Grid.ColumnSpan="2">
+        <ToolBarTray DockPanel.Dock="Top" Grid.ColumnSpan="2">
             <ToolBar>
-                <Button Command="File" Content="File" ToolTip="Cut selection to Windows Clipboard.">
-                    
+                <Button Command="{Binding ImportCommand}" Content="Import" ToolTip="Import Tours.">
                 </Button>
-                <Button Command="Copy" Content="Copy" ToolTip="Copy selection to Windows Clipboard.">
-                    
-                </Button>
-                <Button Command="Paste" ToolTip="Paste from Windows Clipboard.">
-                    <StackPanel Orientation="Horizontal">
-                        
-                        <TextBlock Margin="3,0,0,0">Paste</TextBlock>
-                    </StackPanel>
+                <Button Command="{Binding ExportCommand}" Content="Export" ToolTip="Export Tours.">
                 </Button>
                 <Separator />
-                <Label>Font size:</Label>
-                <ComboBox>
-                    <ComboBoxItem>10</ComboBoxItem>
-                    <ComboBoxItem IsSelected="True">12</ComboBoxItem>
-                    <ComboBoxItem>14</ComboBoxItem>
-                    <ComboBoxItem>16</ComboBoxItem>
-                </ComboBox>
             </ToolBar>
         </ToolBarTray>
-        -->
         <StackPanel Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0,37,0,0" Grid.RowSpan="2">
             <TextBlock Grid.Column="0"  Margin="3" VerticalAlignment="Center" Text="Name:"></TextBlock>
             <TextBox Grid.Column="1" Margin="3" Width="610" Height="20" Text="{Binding SearchName, Mode=TwoWay}"></TextBox>
@@ -68,6 +52,7 @@
         <local:TourData TourInformations="{Binding TourInformations}" Grid.Row="1" Grid.Column="1" Margin="0,33,0,0" Grid.RowSpan="2" ></local:TourData>
         <!--<local:TourLogs TourLogInformations="{Binding TourLogInformations}" Grid.Row="3" Grid.Column="1" ></local:TourLogs>-->
         <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding TourLogInformations}" SelectedItem="{Binding CurrentLog}" Margin="0,61,0,0" Grid.RowSpan="2"></DataGrid>
+        <Button Grid.Row="2" Grid.Column="2" Content="Edit Tour" Command="{Binding UpdateCommand}" CommandParameter="{Binding CurrentItem}" Height="25" DockPanel.Dock="Right" MinWidth="40" VerticalAlignment="Top" Grid.RowSpan="2"/>
         <Button Grid.Row="2" Grid.Column="2" Content="Add Logs" Command="{Binding LogsCommand}" CommandParameter="{Binding CurrentItem.Name}" Height="25" DockPanel.Dock="Right" MinWidth="40" VerticalAlignment="Top" Margin="0,61,0,0" Grid.RowSpan="2"/>
         <Button Grid.Row="2" Grid.Column="3" Content="Edit Logs" Command="{Binding EditLogsCommand}" CommandParameter="{Binding CurrentLog}" Height="25" DockPanel.Dock="Right" MinWidth="40" VerticalAlignment="Top" Margin="0,61,0,0" Grid.RowSpan="2"/>
         <Button Grid.Row="3" Grid.Column="3" Content="Remove Logs" Command="{Binding RemoveLogCommand}" CommandParameter="{Binding CurrentLog.Logs}" Height="25" DockPanel.Dock="Right"  MinWidth="40" VerticalAlignment="Top" Margin="0,30,0,0" Grid.RowSpan="2"/>

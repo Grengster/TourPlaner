@@ -46,5 +46,16 @@ namespace TourPlaner_DL
         {
             return dataAccess.RemoveTour(itemName);
         }
+
+        public List<TourItem> Import(string fileName)
+        {
+            return dataAccess.Import(fileName);
+        }
+
+        public void Export(IEnumerable<TourItem> tourList, string filename)
+        {
+            dataAccess.Export(tourList, filename);
+        }
+
     }
 }
