@@ -199,18 +199,12 @@ namespace TourPlaner_BL
 
         public async Task CreatePDF(string tourName, TourItem mockItem = null)
         {
-            if(mockItem == null)
-                await PDFHandler.CreatePDF(tourName);
-            else
-                await PDFHandler.CreatePDF(tourName, mockItem);
+            await tourItemDAO.CreatePDF(tourName, mockItem);
         }
 
         public async Task CreateSummary(List<TourItem> mockList = null)
         {
-            if (mockList == null)
-                await PDFHandler.CreateSummary();
-            else
-                await PDFHandler.CreateSummary(mockList);
+            await tourItemDAO.CreateSummary(mockList);
         }
     }
 }

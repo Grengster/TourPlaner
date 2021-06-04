@@ -14,11 +14,6 @@ namespace TourPlaner_DL
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(FileSystem));
         static readonly List<TourItem> mockList = new();
-        //private readonly string filePath;
-        public FileSystem()
-        {
-            //this.filePath = "";
-        }
 
         public static List<TourItem> LoadJson()
         {

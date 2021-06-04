@@ -10,15 +10,15 @@
     
     <StackPanel>
         <DataGrid Name="TourDatas" IsReadOnly="true" AutoGenerateColumns="false" >
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
+            <!--<DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">s
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding TourInfo.CreationTime}" vm:DataTriggerAssists.Value="{Binding ElementName=SelCal, Path=SelectedDate}">
                             <Setter Property="Background" Value="Red"></Setter>
-                        </DataTrigger> <!-- NOT WORKNIG AS OF NOW, STILL NEED TO COMPARE CREATIONTIME WITH SELECTEDDATE AND THEN HIGHLIGHT ALL TOURS WITH SAID DATE-->
+                        </DataTrigger> NOT WORKNIG AS OF NOW, STILL NEED TO COMPARE CREATIONTIME WITH SELECTEDDATE AND THEN HIGHLIGHT ALL TOURS WITH SAID DATE
                     </Style.Triggers>
                 </Style>
-            </DataGrid.RowStyle>
+            </DataGrid.RowStyle> -->
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Start" Binding="{Binding TourInfo.Start}" />
