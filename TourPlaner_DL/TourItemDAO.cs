@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TourPlaner_Models;
 
 namespace TourPlaner_DL
@@ -55,6 +56,18 @@ namespace TourPlaner_DL
         public void Export(IEnumerable<TourItem> tourList, string filename)
         {
             dataAccess.Export(tourList, filename);
+        }
+
+        public async Task CreatePDF(string tourName, TourItem mockItem = null)
+        {
+            PDFHandler tempHandler = new();
+            await tempHandler.CreatePDF(tourName, mockItem);
+        }
+
+        public async Task CreateSummary(List<TourItem> mockList = null)
+        {
+            PDFHandler tempHandler = new();
+            await tempHandler.CreateSummary(mockList);
         }
 
     }

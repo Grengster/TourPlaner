@@ -1,29 +1,22 @@
 ﻿using DinkToPdf;
-using DinkToPdf.Contracts;
 using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
 using System.Linq;
-using System.Runtime.Loader;
-using System.Text;
 using System.Threading.Tasks;
 using TourPlaner_Models;
 
-namespace TourPlaner_BL
+namespace TourPlaner_DL
 {
-
-
-
     public class PDFHandler
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(PDFHandler));
         private static string userPath = ConfigurationManager.ConnectionStrings["userPath"].ConnectionString;
 
-        public static async Task CreateSummary(List<TourItem> mockList = null)
+        public async Task CreateSummary(List<TourItem> mockList = null)
         {
             var employeeList = new List<TourItem>();
             if (mockList == null)
@@ -35,9 +28,8 @@ namespace TourPlaner_BL
             {
                 employeeList = mockList;
             }
-            
+
             float totalDistance = 0;
-            //dynamic dynJson = JToken.Parse(account.TourInfo.JsonData).ToObject<dynamic>(); //need to find a way of iterating through narrative
             string summaryText = "";
 
             TimeSpan total = new();
@@ -46,7 +38,7 @@ namespace TourPlaner_BL
             {
                 totalDistance += item.TourInfo.Distance;
 
-                if(mockList == null)
+                if (mockList == null)
                 {
                     var split = item.TourInfo.TotalTime.Split(':');
                     total = total.Add(new TimeSpan(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2])));
@@ -83,8 +75,7 @@ namespace TourPlaner_BL
             converter.Convert(doc);
         }
 
-
-        public static async Task CreatePDF(string tourName, TourItem mockItem = null)
+        public async Task CreatePDF(string tourName, TourItem mockItem = null)
         {
             var account = new TourItem();
             var employeeList = new List<TourItem>();
@@ -99,16 +90,16 @@ namespace TourPlaner_BL
             }
             else
                 account = mockItem;
-            
 
-            
+
+
             string navigationText = "", logText = "";
 
             int i = 1;
             foreach (var item in account.TourLogs)
             {
                 string test = i.ToString();
-                logText +=  @$"Logs-Nr." + test + 
+                logText += @$"Logs-Nr." + test +
                             "<br><span style='margin-left: 50px;'>Text: " + item.Logs + "</span>" +
                             "<br><span style='margin-left: 50px;'>Weather: " + item.Weather + "</span>" +
                             "<br><span style='margin-left: 50px;'>Rating: " + item.Rating + "</span>" +
@@ -130,7 +121,7 @@ namespace TourPlaner_BL
             if (account.TourInfo.Method == "fastest")
                 travelMethod = "car";
 
-                var doc = new HtmlToPdfDocument()
+            var doc = new HtmlToPdfDocument()
             {
                 GlobalSettings = {
                 ColorMode = ColorMode.Color,
@@ -164,7 +155,7 @@ namespace TourPlaner_BL
             {
                 log.Error(e);
             }
-            
+
         }
 
     }

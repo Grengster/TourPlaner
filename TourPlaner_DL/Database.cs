@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Security.Cryptography;
 using Npgsql;
 using System.IO;
-using System.Net;
-using System.Net.Sockets;
 using System.Linq;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using TourPlaner_Models;
 using Newtonsoft.Json;
 using log4net;
-using log4net.Config;
 using TourPlanner_DL;
-using NugetJObject;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using System.Configuration;
@@ -307,7 +300,7 @@ namespace TourPlaner_DL
                     if (File.Exists(Path.Combine(userPath + $@"TourPlaner_DL\GoalPics\", $@"{tourName}.png")))
                     {
                         // If file found, delete it    
-                        File.Move(Path.Combine(userPath + $@"TourPlaner_DL\GoalPics\", $@"{tourName}.png"), Path.Combine(userPath + $@"TourPlaner_DL\GoalPics\", $@"{newTourName}.png"));
+                        File.Delete(Path.Combine(userPath + $@"TourPlaner_DL\GoalPics\", $@"{tourName}.png"));
                     }
 
                     if (File.Exists(Path.Combine(userPath + $@"TourPlaner_DL\TourPDFs\", $@"{tourName}Log.pdf")))
