@@ -17,26 +17,24 @@
             <ColumnDefinition Width="265*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0" FontSize="20" VerticalAlignment="Center" Height="36" Content="Log Entry:" />
         <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Logs, UpdateSourceTrigger=PropertyChanged}"  />
         <Label Grid.Column="0" Grid.Row="1" FontSize="20" VerticalAlignment="Center" Height="36" Content="Rating from 1 - 5:" />
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Rating, UpdateSourceTrigger=PropertyChanged}"  />
+        <TextBox Grid.Column="1" Text="{Binding Rating, UpdateSourceTrigger=PropertyChanged}" Margin="0,80,0,0" Grid.RowSpan="2"  />
         <Label Grid.Column="0" Grid.Row="2" FontSize="20" VerticalAlignment="Center" Height="36" Content="Actual Time taken:" />
-        <TextBox Grid.Column="1" Grid.Row="2"  Text="{Binding ActualTime, UpdateSourceTrigger=PropertyChanged}"  />
+        <TextBox Grid.Column="1" Grid.Row="1"  Text="{Binding ActualTime, UpdateSourceTrigger=PropertyChanged}" Margin="0,80,0,0" Grid.RowSpan="2"  />
         <Label Grid.Column="0" Grid.Row="3" FontSize="20" VerticalAlignment="Center" Height="36" Content="Weather:" />
-        <TextBox Grid.Column="1" Grid.Row="3"  Text="{Binding Weather, UpdateSourceTrigger=PropertyChanged}"  />
-        <Label Grid.Column="0" Grid.Row="4" FontSize="20" VerticalAlignment="Center" Content="Type of travelling:"/>
+        <TextBox Grid.Column="1" Grid.Row="2"  Text="{Binding Weather, UpdateSourceTrigger=PropertyChanged}" Margin="0,80,0,0" Grid.RowSpan="2"  />
         <!--<TextBox Grid.Column="1" Grid.Row="3" Height="50"  Text="{Binding Distance, UpdateSourceTrigger=PropertyChanged}" Margin="0,28,0,28"/>-->
         <!--<Label Grid.Row="1" HorizontalAlignment="Left" Content="{Binding Input}" VerticalAlignment="Top" FontSize="14" RenderTransformOrigin="0.369,0.643" Grid.ColumnSpan="2" Margin="166,152,0,0"/>-->
-        <Button Grid.Column="0" Margin="3,30,40,30" Grid.Row="5" Command="{Binding CloseLogsCommand}" CommandParameter="{Binding ElementName=LogWindow}" Content="CANCEL" IsCancel="True" />
-        <Button Grid.Column="1" Margin="40,30,40,30" Grid.Row="5" Content="ADD" MinWidth="40" Command="{Binding AddLogsCommand}" CommandParameter="{Binding ElementName=LogWindow}"/>
+        <Button Grid.Column="0" Margin="3,30,40,30" Grid.Row="6" Command="{Binding CloseLogsCommand}" CommandParameter="{Binding ElementName=LogWindow}" Content="CANCEL" IsCancel="True" />
+        <Button Grid.Column="1" Margin="40,30,40,30" Grid.Row="6" Content="ADD" MinWidth="40" Command="{Binding AddLogsCommand}" CommandParameter="{Binding ElementName=LogWindow}"/>
     </Grid>
 </Window>

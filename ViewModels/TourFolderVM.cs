@@ -76,7 +76,7 @@ namespace TourPlaner.ViewModels
         public ICommand ShowMap => showMap ??= new RelayCommand(Show);
         public ICommand CreateCommand => createCommand ??= new RelayCommand(Create, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null) return false; else return true; });
         public ICommand UpdateCommand => updateCommand ??= new RelayCommand(EditTour, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null) return false; else return true; });
-        public ICommand CreateSummaryCommand => createSummaryCommand ??= new RelayCommand(CreateSummary, (_) => { if (this.tourItemFactory.GetItems() == null) return false; else return true; });
+        public ICommand CreateSummaryCommand => createSummaryCommand ??= new RelayCommand(CreateSummary, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null) return false; else return true; });
         public ICommand ClearCommand => clearCommand ??= new RelayCommand(Clear);
         public ICommand ExecuteCommand => executeCommand ??= new RelayCommand(AddTourWindow);
         public ICommand LogsCommand => logsCommand ??= new RelayCommand(AddLogWindow, (_) => { if (currentItem == null || this.tourItemFactory.GetItems() == null || currentLog == null) return false; else return true; });
